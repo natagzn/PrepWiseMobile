@@ -1,7 +1,6 @@
 package com.example.prepwise.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
 import com.example.prepwise.fragments.ViewSetFragment
-import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class AdapterSet(
@@ -32,7 +29,7 @@ class AdapterSet(
         val setUsername: TextView = itemView.findViewById(R.id.username)
         val setNumberOfQuestions: TextView = itemView.findViewById(R.id.number_of_questions)
         val setDate: TextView = itemView.findViewById(R.id.date)
-        val elemAccess: LinearLayout = itemView.findViewById(R.id.access)
+        val elemAccess: LinearLayout = itemView.findViewById(R.id.visisibility)
         val setAccessType: TextView = itemView.findViewById(R.id.access_type)
         val setAccessImg: ImageView = itemView.findViewById(R.id.access_img)
         val categoriesContainer: LinearLayout = itemView.findViewById(R.id.categories_container)

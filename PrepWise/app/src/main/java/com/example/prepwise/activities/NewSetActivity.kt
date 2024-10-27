@@ -27,13 +27,17 @@ import com.example.prepwise.adapters.AdapterAddQuestion
 
 class NewSetActivity : AppCompatActivity() {
     private lateinit var categoryListContainer: LinearLayout
-    private var availableCategories = listOf("Category 1", "Category 2", "Category 3", "Category 4", "Category 5")
+    private var availableCategories = listOf("Android", "Kotlin", "Category 3", "Category 4", "Category 5")
+    private var selectedCategories = mutableListOf<String>()
     private val levels = arrayOf("Trainee", "Junior", "Middle", "Senior", "Team lead")
     private val visibility = arrayOf("private", "public")
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterAddQuestion
-    private lateinit var visibilityLayout: LinearLayout
+    private lateinit var titleTxt: TextView
+    private lateinit var accessLayout: LinearLayout
+    private lateinit var accessTxt: TextView
     private lateinit var levelLayout: LinearLayout
+    private lateinit var levelTxt: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +49,11 @@ class NewSetActivity : AppCompatActivity() {
             insets
         }
 
-        visibilityLayout = findViewById(R.id.visisibility)
+        titleTxt = findViewById(R.id.title_set)
+        accessLayout = findViewById(R.id.access)
+        accessTxt = findViewById(R.id.access_type)
         levelLayout = findViewById(R.id.level)
+        levelTxt = findViewById(R.id.level_type)
         categoryListContainer = findViewById(R.id.category_list_container)
         recyclerView = findViewById(R.id.question_list)
         adapter = AdapterAddQuestion(mutableListOf(), this)
@@ -77,11 +84,11 @@ class NewSetActivity : AppCompatActivity() {
             )
         }
 
-        visibilityLayout.setOnClickListener {
+        accessLayout.setOnClickListener {
             showSelectionDialog(
                 title = getString(R.string.select_visibility),
                 items = visibility,
-                selectedItemTextViewId = R.id.visible_type,
+                selectedItemTextViewId = R.id.access_type,
                 dialogLayoutId = R.layout.dialog_level_selection,
                 itemLayoutId = R.layout.dialog_item
             )
@@ -118,13 +125,11 @@ class NewSetActivity : AppCompatActivity() {
         val dialogTitle: TextView = dialogView.findViewById(R.id.dialog_title)
         dialogTitle.text = title
 
-        // Створюємо кастомний адаптер для елементів
+        // Створюємо адаптер для елементів
         val adapter = object : ArrayAdapter<String>(this, itemLayoutId, items) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = convertView ?: layoutInflater.inflate(itemLayoutId, parent, false)
                 val textView: TextView = view.findViewById(R.id.level_item)
-
-                // Задаємо текст для кожного пункту
                 textView.text = getItem(position)
 
                 return view
@@ -150,13 +155,17 @@ class NewSetActivity : AppCompatActivity() {
     }
 
     private fun loadDataForEditing(setId: Int) {
-        val setData = MainActivity.setList.get(setId)
+        val setData = MainActivity.getSetById(setId)
 
-        findViewById<TextView>(R.id.level_type).text = setData.level
-        findViewById<TextView>(R.id.visible_type).text = setData.access
-        updateCategoryList(setData.categories)
+        if (setData != null) {
+            titleTxt.text = setData.name
+            levelTxt.text = setData.level
+            accessTxt.text = setData.access
+            selectedCategories = setData.categories
+            updateCategoryList(setData.categories)
 
-        adapter.updateQuestions(setData.questions)
+            adapter.updateQuestions(setData.questions)
+        }
     }
 
     // Діалог вибору категорій
@@ -168,6 +177,7 @@ class NewSetActivity : AppCompatActivity() {
         for (category in availableCategories) {
             val checkBox = CheckBox(ContextThemeWrapper(this, R.style.CustomCheckBoxStyle)).apply {
                 text = category
+                isChecked = selectedCategories.contains(category)
             }
             categoryLayout.addView(checkBox)
             checkBoxes.add(checkBox)
@@ -185,7 +195,7 @@ class NewSetActivity : AppCompatActivity() {
             .setCustomTitle(titleView)
             .setView(dialogView)
             .setPositiveButton(getString(R.string.apply)) { dialog, _ ->
-                val selectedCategories = mutableListOf<String>()
+                selectedCategories.clear()
                 for (checkBox in checkBoxes) {
                     if (checkBox.isChecked) {
                         selectedCategories.add(checkBox.text.toString())

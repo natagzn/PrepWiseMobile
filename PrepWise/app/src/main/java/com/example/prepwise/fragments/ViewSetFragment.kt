@@ -195,7 +195,6 @@ class ViewSetFragment : Fragment() {
         }
     }
 
-
     private fun showBottomDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
