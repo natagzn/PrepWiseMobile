@@ -8,6 +8,7 @@ import java.time.LocalDate
 object LikedFolderListProvider {
     val folderList = arrayListOf(
         Folder(
+            id = 1,
             name = "Mobile Development",
             sets = arrayListOf(
                 Set(
@@ -45,6 +46,7 @@ object LikedFolderListProvider {
             isLiked = true
         ),
         Folder(
+            id = 2,
             name = "Data Science",
             sets = arrayListOf(
                 Set(
@@ -89,6 +91,7 @@ object LikedFolderListProvider {
             isLiked = true
         ),
         Folder(
+            id = 3,
             name = "Web Development",
             sets = arrayListOf(
                 Set(
@@ -128,6 +131,7 @@ object LikedFolderListProvider {
             isLiked = true
         ),
         Folder(
+            id = 4,
             name = "Cloud Computing",
             sets = arrayListOf(
                 Set(

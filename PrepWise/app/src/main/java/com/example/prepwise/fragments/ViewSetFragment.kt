@@ -11,10 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,7 @@ import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewSetActivity
 import com.example.prepwise.activities.PremiumActivity
 import com.example.prepwise.adapters.AdapterQuestion
+import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
 
@@ -46,6 +50,8 @@ class ViewSetFragment : Fragment() {
     private lateinit var setProgressPersent: TextView
     private lateinit var setKnow: TextView
     private lateinit var setStillLearning: TextView
+
+    private var folders = arrayOf("Folder 1", "Folder 2", "Folder 3", "Folder 4", "Folder 5")
 
     companion object {
         private const val ARG_SET_ID = "set_id"
@@ -229,6 +235,7 @@ class ViewSetFragment : Fragment() {
 
         addToFolder.setOnClickListener {
             dialog.dismiss()
+            showSelectionDialog("Select folder ", MainActivity.folderList, dialogLayoutId = R.layout.dialog_level_selection, itemLayoutId = R.layout.dialog_item)
         }
 
         close.setOnClickListener {
@@ -240,6 +247,51 @@ class ViewSetFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.BOTTOM)
+    }
+
+    fun showSelectionDialog(
+        title: String,
+        items: List<Folder>,
+        dialogLayoutId: Int,
+        itemLayoutId: Int
+    ) {
+        val dialogView = layoutInflater.inflate(dialogLayoutId, null)
+        val listView: ListView = dialogView.findViewById(R.id.levels_list)
+        val dialogTitle: TextView = dialogView.findViewById(R.id.dialog_title)
+        dialogTitle.text = title
+
+        // Створюємо кастомний адаптер для елементів
+        val adapter = object : ArrayAdapter<Folder>(requireContext(), itemLayoutId, items) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = convertView ?: layoutInflater.inflate(itemLayoutId, parent, false)
+                val textView: TextView = view.findViewById(R.id.level_item)
+                textView.text = getItem(position)?.name  // Відображаємо назву папки
+                return view
+            }
+        }
+        listView.adapter = adapter
+
+        // Створюємо AlertDialog з кастомним макетом
+        val builder = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
+            .setView(dialogView)
+
+        val dialog = builder.create()
+
+        // Обробка вибору елемента
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedFolder = items[position]
+            val selectedFolderId = selectedFolder.id
+            saveSelectedFolderId(selectedFolderId)
+
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    // Функція для збереження ID вибраної папки
+    private fun saveSelectedFolderId(folderId: Int) {
+
     }
 
 }
