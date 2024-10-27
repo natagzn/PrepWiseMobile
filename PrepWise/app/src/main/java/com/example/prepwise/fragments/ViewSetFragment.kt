@@ -21,8 +21,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
+import com.example.prepwise.activities.LoginActivity
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewSetActivity
@@ -225,17 +227,41 @@ class ViewSetFragment : Fragment() {
 
         resetProgress.setOnClickListener {
             dialog.dismiss()
-            set?.let { s ->
-                for(question in s.questions){
-                    question.learned=false
+            DialogUtils.showConfirmationDialog(
+                context = requireContext(),
+                message = getString(R.string.are_you_sure_you_want_to_reset_progress),
+                positiveButtonText = getString(R.string.Reset_progress),
+                negativeButtonText = getString(R.string.cancel)
+            ) { confirmed ->
+                set?.let { s ->
+                    for(question in s.questions){
+                        question.learned=false
+                    }
+                    updateUI()
                 }
-                updateUI()
             }
         }
 
         addToFolder.setOnClickListener {
             dialog.dismiss()
-            showSelectionDialog("Select folder ", MainActivity.folderList, dialogLayoutId = R.layout.dialog_level_selection, itemLayoutId = R.layout.dialog_item)
+            showSelectionDialog(getString(R.string.select_folder), MainActivity.folderList, dialogLayoutId = R.layout.dialog_level_selection, itemLayoutId = R.layout.dialog_item)
+        }
+
+        delete.setOnClickListener{
+            dialog.dismiss()
+            DialogUtils.showConfirmationDialog(
+                context = requireContext(),
+                message = getString(R.string.are_you_sure_you_want_to_delete_this_set),
+                positiveButtonText = getString(R.string.Delete),
+                negativeButtonText = getString(R.string.cancel)
+            ) { confirmed ->
+                if (confirmed) {
+
+                } else {
+
+                }
+            }
+
         }
 
         close.setOnClickListener {

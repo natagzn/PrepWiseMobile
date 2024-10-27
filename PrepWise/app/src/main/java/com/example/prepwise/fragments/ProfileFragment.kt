@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.LocaleHelper.loadLocale
 import com.example.prepwise.LocaleHelper.setLocale
 import com.example.prepwise.R
@@ -38,9 +39,18 @@ class ProfileFragment : Fragment() {
         // Вихід з системи
         val logOut: LinearLayout = view.findViewById(R.id.log_out)
         logOut.setOnClickListener{
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
+            DialogUtils.showConfirmationDialog(
+                context = requireContext(),
+                message = getString(R.string.are_you_sure_you_want_to_log_out),
+                positiveButtonText = getString(R.string.log_out),
+                negativeButtonText = getString(R.string.cancel)
+            ) { confirmed ->
+                if (confirmed) {
+                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
         }
 
         // Редагування профілю
