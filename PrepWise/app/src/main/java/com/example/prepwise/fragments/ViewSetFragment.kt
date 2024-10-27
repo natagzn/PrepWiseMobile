@@ -22,6 +22,7 @@ import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.dpToPx
+import com.example.prepwise.activities.NewSetActivity
 import com.example.prepwise.activities.PremiumActivity
 import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Question
@@ -211,7 +212,10 @@ class ViewSetFragment : Fragment() {
 
         edit.setOnClickListener {
             dialog.dismiss()
-
+            val intent = Intent(requireActivity(), NewSetActivity::class.java)
+            intent.putExtra("mode", "edit")
+            intent.putExtra("setId", setId)
+            startActivity(intent)
         }
 
         resetProgress.setOnClickListener {

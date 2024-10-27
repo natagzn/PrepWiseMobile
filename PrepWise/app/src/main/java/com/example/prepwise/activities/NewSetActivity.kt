@@ -32,6 +32,8 @@ class NewSetActivity : AppCompatActivity() {
     private val visibility = arrayOf("private", "public")
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterAddQuestion
+    private lateinit var visibilityLayout: LinearLayout
+    private lateinit var levelLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +45,18 @@ class NewSetActivity : AppCompatActivity() {
             insets
         }
 
+        visibilityLayout = findViewById(R.id.visisibility)
+        levelLayout = findViewById(R.id.level)
         categoryListContainer = findViewById(R.id.category_list_container)
-        addCategoryTextView("+")
+        recyclerView = findViewById(R.id.question_list)
+        adapter = AdapterAddQuestion(mutableListOf(), this)
+
+        val mode = intent.getStringExtra("mode") ?: "create"
+        val setId = intent.getIntExtra("setId", -1)
+
+        if (mode == "edit" && setId != -1) {
+            loadDataForEditing(setId)
+        }else addCategoryTextView("+")
 
         // Закриття сторінки
         val close: TextView = findViewById(R.id.cancel)
@@ -55,7 +67,6 @@ class NewSetActivity : AppCompatActivity() {
             finish()
         }
 
-        val levelLayout: LinearLayout = findViewById(R.id.level)
         levelLayout.setOnClickListener {
             showSelectionDialog(
                 title = getString(R.string.select_level),
@@ -66,7 +77,6 @@ class NewSetActivity : AppCompatActivity() {
             )
         }
 
-        val visibilityLayout: LinearLayout = findViewById(R.id.visisibility)
         visibilityLayout.setOnClickListener {
             showSelectionDialog(
                 title = getString(R.string.select_visibility),
@@ -80,9 +90,6 @@ class NewSetActivity : AppCompatActivity() {
         categoryListContainer.setOnClickListener {
             showCategoryDialog()
         }
-
-        recyclerView = findViewById(R.id.question_list)
-        adapter = AdapterAddQuestion(mutableListOf(), this)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
@@ -140,6 +147,16 @@ class NewSetActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    private fun loadDataForEditing(setId: Int) {
+        val setData = MainActivity.setList.get(setId)
+
+        findViewById<TextView>(R.id.level_type).text = setData.level
+        findViewById<TextView>(R.id.visible_type).text = setData.access
+        updateCategoryList(setData.categories)
+
+        adapter.updateQuestions(setData.questions)
     }
 
     // Діалог вибору категорій

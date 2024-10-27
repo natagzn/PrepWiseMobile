@@ -63,6 +63,12 @@ class AdapterAddQuestion(
         notifyItemInserted(questions.size - 1)
     }
 
+    fun updateQuestions(newQuestions: List<Question>) {
+        questions.clear()
+        questions.addAll(newQuestions)
+        notifyDataSetChanged()
+    }
+
     // Видаляємо питання
     private fun removeQuestion(position: Int) {
         questions.removeAt(position)
