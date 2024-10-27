@@ -144,4 +144,29 @@
     <string name="we_sent_a_confirm_4_digit_code_to">Ми надіслали 4-значний код підтвердження на</string>
     <string name="confirm">Підтвердити</string>
 
+    <string name="share">share</string>
+    <string name="export_to_pdf">export to pdf</string>
+    <string name="reset_progress">reset progress</string>
+    <string name="Reset_progress">Reset progress</string>
+    <string name="add_to_folder">add to folder</string>
+    <string name="report">report</string>
+    <string name="delete">delete</string>
+    <string name="Delete">Delete</string>
+    <string name="select_folder">Select folder</string>
+
+    <string name="are_you_sure_you_want_to_delete_this_set">Ви справді хочете видалити цей модуль?</string>
+    <string name="are_you_sure_you_want_to_delete_this_folder">Ви справді хочете видалити цю папку?</string>
+    <string name="are_you_sure_you_want_to_delete_this_resource">Ви справді хочете видалити цей ресурс</string>
+    <string name="are_you_sure_you_want_to_log_out">Ви справді хочете вийти з акаунту?</string>
+    <string name="are_you_sure_you_want_to_reset_progress">Ви справді хочете скинути прогрес вивчення модуля?</string>
+
+    <string name="report_this_set">Скарга на модуль</string>
+    <string name="please_select_a_reason">Будь ласка, оберіть причину</string>
+    <string name="why_are_you_reporting_this">Why are you reporting this?</string>
+    <string name="it_contains_inaccurate_information">It contains inaccurate information</string>
+    <string name="it_is_inappropriate">It is inappropriate</string>
+    <string name="it_is_being_used_to_cheat">It is being used to cheat</string>
+    <string name="it_violates_my_intellectual_property_rights">It violates my intellectual property rights</string>
+    <string name="Report">Поскаржитись</string>
+
 </resources>

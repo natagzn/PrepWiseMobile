@@ -158,4 +158,13 @@
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
     <string name="are_you_sure_you_want_to_reset_progress">Are you sure you want to reset your learning progress?</string>
 
+    <string name="report_this_set">Report this set</string>
+    <string name="please_select_a_reason">Please select a reason</string>
+    <string name="why_are_you_reporting_this">Why are you reporting this?</string>
+    <string name="it_contains_inaccurate_information">It contains inaccurate information</string>
+    <string name="it_is_inappropriate">It is inappropriate</string>
+    <string name="it_is_being_used_to_cheat">It is being used to cheat</string>
+    <string name="it_violates_my_intellectual_property_rights">It violates my intellectual property rights</string>
+    <string name="Report">Report</string>
+
 </resources>

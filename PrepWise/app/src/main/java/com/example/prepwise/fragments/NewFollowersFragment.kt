@@ -1,5 +1,6 @@
 package com.example.prepwise.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -63,11 +64,19 @@ class NewFollowersFragment : DialogFragment() {
     private var adapterFriend: AdapterNewFriend? = null
     private lateinit var recyclerViewFriend: RecyclerView
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return dialog
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_new_followers, container, false)
+
+        setStyle(STYLE_NO_TITLE, R.style.RoundedDialogTheme)
 
         val close: ImageView = view.findViewById(R.id.close)
         close.setOnClickListener{

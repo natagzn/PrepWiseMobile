@@ -71,10 +71,6 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
 
-//        if(savedInstanceState==null){
-//            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
-//        }
-
         // Перенаправленнян на фрагмент
         val fragmentToOpen = intent.getStringExtra("openFragment")
         if (fragmentToOpen == "ProfileFragment") replaceFragment(ProfileFragment())

@@ -17,11 +17,13 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
+import com.example.prepwise.DialogUtils.showReportDialog
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.LoginActivity
@@ -239,6 +241,13 @@ class ViewSetFragment : Fragment() {
                     }
                     updateUI()
                 }
+            }
+        }
+
+        report.setOnClickListener{
+            dialog.dismiss()
+            DialogUtils.showReportDialog(requireContext()) { selectedReason ->
+                Toast.makeText(requireContext(), "Скаргу надіслано: $selectedReason", Toast.LENGTH_SHORT).show()
             }
         }
 
