@@ -92,7 +92,7 @@ class ViewSetFragment : Fragment() {
 
         recyclerViewQuestion = view.findViewById(R.id.recyclerView)
         recyclerViewQuestion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapterQuestion = AdapterQuestion(questionList, requireContext())
+        adapterQuestion = AdapterQuestion(questionList, requireContext(), childFragmentManager)
         recyclerViewQuestion.adapter = adapterQuestion
 
         val spacingInDp = 10

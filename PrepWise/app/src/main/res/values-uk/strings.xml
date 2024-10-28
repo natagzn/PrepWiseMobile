@@ -144,15 +144,15 @@
     <string name="we_sent_a_confirm_4_digit_code_to">Ми надіслали 4-значний код підтвердження на</string>
     <string name="confirm">Підтвердити</string>
 
-    <string name="share">share</string>
-    <string name="export_to_pdf">export to pdf</string>
-    <string name="reset_progress">reset progress</string>
-    <string name="Reset_progress">Reset progress</string>
-    <string name="add_to_folder">add to folder</string>
-    <string name="report">report</string>
-    <string name="delete">delete</string>
-    <string name="Delete">Delete</string>
-    <string name="select_folder">Select folder</string>
+    <string name="share">поширити</string>
+    <string name="export_to_pdf">експортувати в pdf</string>
+    <string name="reset_progress">скинути прогрес</string>
+    <string name="Reset_progress">Скинути прогрес</string>
+    <string name="add_to_folder">додати до папки</string>
+    <string name="report">скарга</string>
+    <string name="delete">видалити</string>
+    <string name="Delete">Видалити</string>
+    <string name="select_folder">Оберіть папку</string>
 
     <string name="are_you_sure_you_want_to_delete_this_set">Ви справді хочете видалити цей модуль?</string>
     <string name="are_you_sure_you_want_to_delete_this_folder">Ви справді хочете видалити цю папку?</string>
@@ -168,5 +168,12 @@
     <string name="it_is_being_used_to_cheat">It is being used to cheat</string>
     <string name="it_violates_my_intellectual_property_rights">It violates my intellectual property rights</string>
     <string name="Report">Поскаржитись</string>
+
+    <string name="answers">Відповіді</string>
+    <string name="send_request">Відправити запит</string>
+    <string name="select_friend">Оберіть друга</string>
+    <string name="search_friend">Search друга</string>
+    <string name="ask_for_help">попросити допомоги</string>
+    <string name="look_answer">подивитися відповіді</string>
 
 </resources>

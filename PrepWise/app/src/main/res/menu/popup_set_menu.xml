@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ask_for_help"
+        android:title="@string/ask_for_help"
+        android:icon="@drawable/ask_for_help"/>
+    <item
+        android:id="@+id/look_answer"
+        android:title="@string/look_answer"
+        android:icon="@drawable/look_answer" />
+</menu>

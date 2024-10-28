@@ -241,7 +241,7 @@
             android:paddingVertical="15dp">
 
             <TextView
-                style="@style/semi_bold_12"
+                style="@style/semi_bold_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"

@@ -63,7 +63,6 @@ class AdapterSet(
             holder.setAccessImg.setImageResource(R.drawable.resource_private)
         }
 
-        // Очищуємо контейнер категорій перед додаванням нових категорій
         holder.categoriesContainer.removeAllViews()
 
         // Додаємо категорії в контейнер

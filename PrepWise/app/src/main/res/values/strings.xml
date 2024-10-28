@@ -167,4 +167,11 @@
     <string name="it_violates_my_intellectual_property_rights">It violates my intellectual property rights</string>
     <string name="Report">Report</string>
 
+    <string name="answers">Answers</string>
+    <string name="send_request">Send request</string>
+    <string name="select_friend">Select friend</string>
+    <string name="search_friend">Search friend</string>
+    <string name="ask_for_help">ask for help</string>
+    <string name="look_answer">look answer</string>
+
 </resources>
