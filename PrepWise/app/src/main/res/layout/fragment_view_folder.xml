@@ -132,7 +132,31 @@
                     style="@style/light_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/question_sets_"
+                    android:layout_marginEnd="17dp"
+                    android:text="@string/sets"
+                    android:textColor="@color/gray" />
+
+                <ImageView
+                    android:layout_width="2dp"
+                    android:layout_height="15dp"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/line_or" />
+
+                <TextView
+                    android:id="@+id/number_of_questions"
+                    style="@style/light_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:text="50"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    style="@style/light_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/questions"
                     android:textColor="@color/gray" />
 
             </LinearLayout>

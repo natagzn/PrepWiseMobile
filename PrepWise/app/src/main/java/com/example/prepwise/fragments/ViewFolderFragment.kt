@@ -31,6 +31,7 @@ class ViewFolderFragment : Fragment() {
 
     private lateinit var setFolderName: TextView
     private lateinit var setNumberOfSet: TextView
+    private lateinit var setNumberOfQuestion: TextView
     private lateinit var setLike: ImageView
 
     companion object {
@@ -65,11 +66,15 @@ class ViewFolderFragment : Fragment() {
 
         setFolderName = view.findViewById(R.id.folder_name)
         setNumberOfSet = view.findViewById(R.id.number_of_sets)
+        setNumberOfQuestion = view.findViewById(R.id.number_of_questions)
         setLike = view.findViewById(R.id.like)
 
         folder?.let {
             setFolderName.text = it.name
             setNumberOfSet.text = it.sets.size.toString()
+
+            val totalQuestions = it.sets.sumOf { set -> set.questions.size }
+            setNumberOfQuestion.text = totalQuestions.toString()
         }
 
         // Меню роботи з сетом
