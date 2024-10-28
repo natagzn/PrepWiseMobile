@@ -75,48 +75,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/sort"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_marginStart="15dp"
-                android:background="@drawable/gray_rounded_stroke"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingHorizontal="10dp">
-
-                <TextView
-                    android:id="@+id/txt5"
-                    style="@style/semi_bold_15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/sort"
-                    android:textColor="@color/black" />
-
-                <ImageView
-                    android:id="@+id/img1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/arrow_down" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"/>
-
-            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
-                android:layout_marginEnd="15dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -161,13 +127,48 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <LinearLayout
+                android:id="@+id/sort"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/gray_rounded_stroke"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp">
+
+                <TextView
+                    android:id="@+id/txt5"
+                    style="@style/semi_bold_15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/sort"
+                    android:textColor="@color/black" />
+
+                <ImageView
+                    android:id="@+id/img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/arrow_down" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:background="@drawable/white_rounded_background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="5dp" />
+            android:layout_margin="15dp"
+            android:paddingTop="15dp"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

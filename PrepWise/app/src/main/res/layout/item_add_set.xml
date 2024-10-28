@@ -26,7 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name set"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -47,7 +49,7 @@
                     android:id="@+id/txt2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="questions"
+                    android:text="@string/questions"
                     android:textColor="@color/gray"
                     style="@style/medium_11"/>
 
@@ -61,12 +63,21 @@
             android:layout_weight="1"
             android:orientation="vertical"/>
 
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="18.09.2024"
+        android:textColor="@color/gray"
+        style="@style/medium_11"/>
+
         <ImageView
             android:id="@+id/add_delete_to_folder"
             android:layout_width="30dp"
             android:layout_marginTop="3dp"
             android:layout_height="30dp"
             android:scaleType="fitXY"
+            android:visibility="gone"
             android:layout_gravity="center_vertical"
             android:src="@drawable/add_set" />
     </LinearLayout>

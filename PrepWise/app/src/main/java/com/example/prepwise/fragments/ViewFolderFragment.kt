@@ -15,11 +15,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
+import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewFolderActivity
+import com.example.prepwise.adapters.AdapterQuestion
+import com.example.prepwise.adapters.AdapterSetInFolder
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Set
 
@@ -33,6 +38,9 @@ class ViewFolderFragment : Fragment() {
     private lateinit var setNumberOfSet: TextView
     private lateinit var setNumberOfQuestion: TextView
     private lateinit var setLike: ImageView
+
+    private var adapterSet: AdapterSetInFolder? = null
+    private lateinit var recyclerViewSet: RecyclerView
 
     companion object {
         private const val ARG_FOLDER_ID = "folder_id"
@@ -64,6 +72,16 @@ class ViewFolderFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_view_folder, container, false)
 
+        recyclerViewSet = view.findViewById(R.id.recyclerView)
+        recyclerViewSet.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        adapterSet = AdapterSetInFolder(setList, requireContext(), parentFragmentManager)
+        recyclerViewSet.adapter = adapterSet
+
+        val spacingInDp = 15
+        val scale = requireContext().resources.displayMetrics.density
+        val spacingInPx = (spacingInDp * scale).toInt()
+        recyclerViewSet.addItemDecoration(SpaceItemDecoration(spacingInPx))
+
         setFolderName = view.findViewById(R.id.folder_name)
         setNumberOfSet = view.findViewById(R.id.number_of_sets)
         setNumberOfQuestion = view.findViewById(R.id.number_of_questions)
@@ -75,6 +93,17 @@ class ViewFolderFragment : Fragment() {
 
             val totalQuestions = it.sets.sumOf { set -> set.questions.size }
             setNumberOfQuestion.text = totalQuestions.toString()
+
+            if (it.isLiked) setLike.setImageResource(R.drawable.save)
+            else setLike.setImageResource(R.drawable.not_save)
+        }
+
+
+        setLike.setOnClickListener {
+            folder?.let { s ->
+                s.isLiked = !s.isLiked
+                setLike.setImageResource(if (s.isLiked) R.drawable.save else R.drawable.not_save)
+            }
         }
 
         // Меню роботи з сетом
