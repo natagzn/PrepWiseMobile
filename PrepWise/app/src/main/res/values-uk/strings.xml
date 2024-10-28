@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home">Домашня</string>
+    <string name="library">Бібліотека</string>
+    <string name="liked">Вподобане</string>
+    <string name="profile">Профіль</string>
+
+    <string name="app_name">PrepWise</string>
+    <string name="level">Рівень</string>
+    <string name="category">Категорія</string>
+    <string name="questions">питання</string>
+    <string name="article_book">Назва</string>
+    <string name="description">Опис</string>
+    <string name="free_trial">Безкоштовна версія</string>
+    <string name="recommended_from_your_following">Рекомендовано від ваших друзів</string>
+    <string name="question_sets">Модулі питань</string>
+    <string name="resources">Ресурси</string>
+    <string name="enter_your_request">Введіть свій запит</string>
+    <string name="your_activity">Ваша активність</string>
+
+    <string name="welcome_back">З поверненням!</string>
+    <string name="enter_your_credential_for_login">Введіть свої дані для входу</string>
+    <string name="Login">Вхід</string>
+    <string name="forgot_password">Забули пароль?</string>
+    <string name="or">або</string>
+    <string name="continue_with_Google">Продовжити з Google</string>
+    <string name="username_email">Username/Email</string>
+    <string name="password">Пароль</string>
+
+    <string name="sign_up">Реєстрація</string>
+    <string name="create_your_account">Створіть новий акаунт</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Підтверження пароля</string>
+
+    <string name="location">Розташування</string>
+    <string name="my_people">Мої люди</string>
+    <string name="ask_a_question">Задати запитання</string>
+    <string name="prepWise_premium">PrepWise Premium</string>
+    <string name="language">Мова</string>
+    <string name="english">Українська</string>
+    <string name="log_out">Вийти</string>
+    <string name="delete_account">Видалити акаунт</string>
+    <string name="question_for_email">Запитання</string>
+
+    <string name="Activity">Активність</string>
+    <string name="new_followers">Нові підписники</string>
+    <string name="you_have_won_an_award">Ви отримали нову винагороду</string>
+    <string name="you_have_studied_5_modules">Ви вивчили 5 модулів. Вам доступна нова рамка у профілі. 4д</string>
+    <string name="you_have_created_a_new_activity_thread">Ви створили новий ланцюжок активності</string>
+    <string name="you_have_received_a_help_request">Ви отримали запит на допомогу</string>
+    <string name="can_you_help_me_with_this_question_please">Чи можете ви допомогти мені з цим запитанням? 5d
+Натисніть, щоб переглянути питання -></string>
+    <string name="you_have_received_an_answer_to_your_request">Ви отримали відповідь на свій запит</string>
+    <string name="here_is_my_answer_maybe_it_will_help">Ось моя відповідь, можливо, це допоможе. 5d
+Натисніть, щоб переглянути відповіді -></string>
+
+    <string name="new_folder">Нова папка</string>
+    <string name="edit_folder">Редагування папки</string>
+    <string name="cancel">Скасувати</string>
+    <string name="save">Зберегти</string>
+    <string name="title">Назва</string>
+    <string name="by">від</string>
+
+    <string name="new_question">Нове питання</string>
+    <string name="incoming">Incoming</string>
+    <string name="question">Питання</string>
+    <string name="answer">Відповідь</string>
+
+    <string name="new_question_set">Новий модуль</string>
+    <string name="new_resource">Новий ресурс</string>
+    <string name="name_article_book">Назва статті/книги</string>
+    <string name="question_set">Модуль питань</string>
+    <string name="folder">Папка</string>
+    <string name="resource">Ресурс</string>
+
+    <string name="choose_language">Оберіть мову</string>
+
+    <string name="already_have_an_account">Вже маєте акаунт? </string>
+    <string name="dont_have_an_account">Немає акаунту? </string>
+
+    <string name="folders">Папки</string>
+    <string name="shared">Поширені</string>
+    <string name="sort">Сортування</string>
+    <string name="filter">Фільтрація</string>
+
+    <string name="search_your_sets">Шукайте свої модулі</string>
+    <string name="search_your_folders">Шукайте свої папки</string>
+    <string name="search_shared_sets">Шукайте свої поширеня модулі</string>
+    <string name="search_your_resources">Шукайте свої ресурси</string>
+
+    <string name="premium">PREMIUM</string>
+    <string name="you_will_receive">Ви отримаєте:</string>
+    <string name="unlimited_search_results">необмежені результати пошуку</string>
+    <string name="unlimited_sets">необмежена кількість модулів</string>
+    <string name="unlimited_number_of_questions_in_the_set">необмежена кількість питань в модулі</string>
+    <string name="the_ability_to_share_access_to_the_set">можливість надати спільний доступ до модуля</string>
+    <string name="one_month">1 Місяць</string>
+    <string name="three_day_free_trial">триденна пробна версія</string>
+    <string name="per_month">на місяць</string>
+    <string name="one_year">1 Рік</string>
+    <string name="save_20">Збережіть 20%</string>
+    <string name="per_year">на рік</string>
+    <string name="subscribe_now">ПІДПИСАТИСЯ ЗАРАЗ</string>
+
+    <string name="following">Підписки</string>
+    <string name="followers">Підписники</string>
+    <string name="friends">Друзі</string>
+    <string name="accept">Прийняти</string>
+    <string name="follow_back">Follow back</string>
+
+    <string name="private_str">приватний</string>
+    <string name="public_str">публічний</string>
+
+    <string name="view_profile">Переглянути профіль</string>
+    <string name="sharing">поширено</string>
+    <string name="view">перегляд</string>
+    <string name="edit">редагування</string>
+    <string name="author">Автор:</string>
+    <string name="co_authors">Співавтори:</string>
+
+    <string name="select_category">Оберіть категорію</string>
+    <string name="select_level">Оберіть рівень</string>
+    <string name="select_visibility">Оберіть доступ</string>
+    <string name="select_set">Оберіть модуль</string>
+    <string name="apply">Застосувати</string>
+    <string name="without_category">без категорії</string>
+    <string name="select_up_to_3_categories">Оберіть до 3 категорій</string>
+
+    <string name="progress_learning">Прогрес вивчення</string>
+    <string name="known">Знаю</string>
+    <string name="still_learning">Вивчаю</string>
+    <string name="study_flashcards">Вивчення карток</string>
+
+    <string name="forgot_password_">Забули пароль</string>
+    <string name="please_enter_your_email_to_reset_the_password">Введіть, будь ласка, свою електронну адресу, щоб скинути пароль</string>
+    <string name="reset_password">Скинути пароль</string>
+
+    <string name="set_a_new_password">Встановіть новий пароль</string>
+    <string name="create_a_new_password">Створіть новий пароль. Для безпеки переконайтеся, що він відрізняється від попередніх</string>
+    <string name="update_password">Оновити пароль</string>
+
+    <string name="confirm_email">Підтвердити електронну адресу</string>
+    <string name="we_sent_a_confirm_4_digit_code_to">Ми надіслали 4-значний код підтвердження на</string>
+    <string name="confirm">Підтвердити</string>
+
+    <string name="share">поширити</string>
+    <string name="export_to_pdf">експортувати в pdf</string>
+    <string name="reset_progress">скинути прогрес</string>
+    <string name="Reset_progress">Скинути прогрес</string>
+    <string name="add_to_folder">додати до папки</string>
+    <string name="report">скарга</string>
+    <string name="delete">видалити</string>
+    <string name="Delete">Видалити</string>
+    <string name="select_folder">Оберіть папку</string>
+
+    <string name="are_you_sure_you_want_to_delete_this_set">Ви справді хочете видалити цей модуль?</string>
+    <string name="are_you_sure_you_want_to_delete_this_folder">Ви справді хочете видалити цю папку?</string>
+    <string name="are_you_sure_you_want_to_delete_this_resource">Ви справді хочете видалити цей ресурс</string>
+    <string name="are_you_sure_you_want_to_log_out">Ви справді хочете вийти з акаунту?</string>
+    <string name="are_you_sure_you_want_to_reset_progress">Ви справді хочете скинути прогрес вивчення модуля?</string>
+
+    <string name="report_this_set">Скарга на модуль</string>
+    <string name="please_select_a_reason">Будь ласка, оберіть причину</string>
+    <string name="why_are_you_reporting_this">Why are you reporting this?</string>
+    <string name="it_contains_inaccurate_information">It contains inaccurate information</string>
+    <string name="it_is_inappropriate">It is inappropriate</string>
+    <string name="it_is_being_used_to_cheat">It is being used to cheat</string>
+    <string name="it_violates_my_intellectual_property_rights">It violates my intellectual property rights</string>
+    <string name="Report">Поскаржитись</string>
+
+    <string name="answers">Відповіді</string>
+    <string name="send_request">Запитати</string>
+    <string name="select_friend">Оберіть друга</string>
+    <string name="search_friend">Шукати друга</string>
+    <string name="ask_for_help">попросити допомоги</string>
+    <string name="look_answer">подивитися відповіді</string>
+
+</resources>
