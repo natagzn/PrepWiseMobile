@@ -46,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             return setList.find { it.id == setId }
         }
 
+        fun getFolderById(folderId: Int): Folder? {
+            return folderList.find { it.id == folderId }
+        }
+
         fun dpToPx(dp: Int, context: Context): Int {
             return (dp * context.resources.displayMetrics.density).toInt()
         }

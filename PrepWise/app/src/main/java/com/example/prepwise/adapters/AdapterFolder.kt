@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
+import com.example.prepwise.fragments.ViewFolderFragment
+import com.example.prepwise.fragments.ViewSetFragment
 import com.example.prepwise.models.Folder
 import java.time.format.DateTimeFormatter
 
-class AdapterFolder(private val folderList: ArrayList<Folder>, private val context: Context) :
+class AdapterFolder(private val folderList: ArrayList<Folder>, private val context: Context, private val fragmentManager: FragmentManager,) :
     RecyclerView.Adapter<AdapterFolder.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
@@ -48,6 +51,7 @@ class AdapterFolder(private val folderList: ArrayList<Folder>, private val conte
             holder.setLike.setImageResource(R.drawable.not_save)
             holder.setLike.setTag(R.id.set_like_tag, R.drawable.not_save)
         }
+
         holder.setLike.setOnClickListener {
             val currentTag = holder.setLike.getTag(R.id.set_like_tag) as? Int
             if (currentTag == R.drawable.not_save) {
@@ -59,6 +63,16 @@ class AdapterFolder(private val folderList: ArrayList<Folder>, private val conte
                 holder.setLike.setImageResource(R.drawable.not_save)
                 holder.setLike.setTag(R.id.set_like_tag, R.drawable.not_save)
             }
+        }
+
+        // Додаємо клік на елемент
+        holder.itemView.setOnClickListener {
+            // Передаємо дані через Bundle у фрагмент
+            val fragment = ViewFolderFragment.newInstance(folder.id)
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
