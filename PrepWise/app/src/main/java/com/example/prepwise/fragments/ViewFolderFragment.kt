@@ -96,7 +96,22 @@ class ViewFolderFragment : Fragment() {
         val delete = dialog.findViewById<LinearLayout>(R.id.delete)
         val close: ImageView = dialog.findViewById(R.id.close)
 
+        delete.setOnClickListener {
+            dialog.dismiss()
+            DialogUtils.showConfirmationDialog(
+                context = requireContext(),
+                message = getString(R.string.are_you_sure_you_want_to_delete_this_folder),
+                positiveButtonText = getString(R.string.Delete),
+                negativeButtonText = getString(R.string.cancel)
+            ) { confirmed ->
+                if (confirmed) {
 
+                } else {
+
+                }
+            }
+
+        }
 
         close.setOnClickListener {
             dialog.dismiss()
