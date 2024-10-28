@@ -35,23 +35,12 @@
                 android:layout_weight="1"
                 android:orientation="vertical" />
 
-            <TextView
-                android:id="@+id/free_trial"
-                style="@style/semi_bold_15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/yellow_rounded_background"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:text="@string/free_trial"
-                android:textColor="@color/black" />
-
             <ImageView
                 android:id="@+id/more"
-                android:layout_width="18dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="10dp"
+                android:paddingHorizontal="5dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/three_dots" />
 
@@ -77,9 +66,9 @@
 
             <ImageView
                 android:id="@+id/like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:layout_width="20dp"
+                android:layout_height="17dp"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/not_save" />
         </LinearLayout>
 

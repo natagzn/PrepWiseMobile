@@ -55,8 +55,6 @@ class ViewSetFragment : Fragment() {
     private lateinit var setKnow: TextView
     private lateinit var setStillLearning: TextView
 
-    private var folders = arrayOf("Folder 1", "Folder 2", "Folder 3", "Folder 4", "Folder 5")
-
     companion object {
         private const val ARG_SET_ID = "set_id"
 
@@ -173,14 +171,6 @@ class ViewSetFragment : Fragment() {
                 s.isLiked = !s.isLiked
                 setLike.setImageResource(if (s.isLiked) R.drawable.save else R.drawable.not_save)
             }
-        }
-
-        // Преміум
-        val premium: TextView = view.findViewById(R.id.free_trial)
-        premium.setOnClickListener {
-            val intent = Intent(requireActivity(), PremiumActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
         }
 
         // Меню роботи з сетом

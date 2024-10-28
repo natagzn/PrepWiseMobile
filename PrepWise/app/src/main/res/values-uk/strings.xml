@@ -170,9 +170,9 @@
     <string name="Report">Поскаржитись</string>
 
     <string name="answers">Відповіді</string>
-    <string name="send_request">Відправити запит</string>
+    <string name="send_request">Запитати</string>
     <string name="select_friend">Оберіть друга</string>
-    <string name="search_friend">Search друга</string>
+    <string name="search_friend">Шукати друга</string>
     <string name="ask_for_help">попросити допомоги</string>
     <string name="look_answer">подивитися відповіді</string>
 
