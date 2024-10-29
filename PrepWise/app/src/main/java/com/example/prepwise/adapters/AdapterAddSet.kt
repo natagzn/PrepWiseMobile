@@ -12,8 +12,12 @@ import com.example.prepwise.R
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
 
-class AdapterAddSet(private val setlist: ArrayList<Set>, private val context: Context) :
-    RecyclerView.Adapter<AdapterAddSet.SetViewHolder>() {
+class AdapterAddSet(
+    private val setlist: ArrayList<Set>,
+    private val selectedSetId: ArrayList<Int>,
+    private val context: Context
+) : RecyclerView.Adapter<AdapterAddSet.SetViewHolder>() {
+
     // ViewHolder клас для утримання посилань на UI елементи
     class SetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val setName: TextView = itemView.findViewById(R.id.set_name)
@@ -32,9 +36,22 @@ class AdapterAddSet(private val setlist: ArrayList<Set>, private val context: Co
         val set = setlist[position]
         holder.setName.text = set.name
         holder.setNumberOfQuestions.text = set.questions.size.toString()
-        holder.addDelBtn.setImageResource(R.drawable.add_set)
-        holder.addDelBtn.setOnClickListener{
+
+        if (selectedSetId.contains(set.id)) {
             holder.addDelBtn.setImageResource(R.drawable.added_set)
+        } else {
+            holder.addDelBtn.setImageResource(R.drawable.add_set)
+        }
+
+        // Обробка кліка на кнопку додавання/видалення сету
+        holder.addDelBtn.setOnClickListener {
+            if (selectedSetId.contains(set.id)) {
+                selectedSetId.remove(set.id)
+                holder.addDelBtn.setImageResource(R.drawable.add_set)
+            } else {
+                selectedSetId.add(set.id)
+                holder.addDelBtn.setImageResource(R.drawable.added_set)
+            }
         }
 
         holder.itemView.findViewById<TextView>(R.id.date).visibility = View.GONE

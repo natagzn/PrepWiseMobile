@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
         val resourceList: ArrayList<Resourse> = arrayListOf()
         val folderList: ArrayList<Folder> = arrayListOf()
 
-        fun getSetById(setId: Int): Set? {
-            return setList.find { it.id == setId }
+        fun getSetById(setId: Int): Set {
+            return setList.find { it.id == setId }!!
         }
 
         fun getFolderById(folderId: Int): Folder? {

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddSet
+import com.example.prepwise.models.Folder
 
 class NewFolderActivity : AppCompatActivity() {
 
@@ -20,6 +21,7 @@ class NewFolderActivity : AppCompatActivity() {
     private lateinit var recyclerViewSet: RecyclerView
 
     private lateinit var titleTxt: TextView
+    private lateinit var selectedSetId: ArrayList<Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,7 @@ class NewFolderActivity : AppCompatActivity() {
         }
 
         titleTxt = findViewById(R.id.title)
+        selectedSetId = arrayListOf()
 
         val mode = intent.getStringExtra("mode") ?: "create"
         val folderId = intent.getIntExtra("folderId", -1)
@@ -49,7 +52,7 @@ class NewFolderActivity : AppCompatActivity() {
 
         recyclerViewSet = findViewById(R.id.list_sets)
         recyclerViewSet.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        adapterAddSet = AdapterAddSet(MainActivity.setList, this)
+        adapterAddSet = AdapterAddSet(MainActivity.setList, selectedSetId, this)
         recyclerViewSet.adapter = adapterAddSet
 
         val spacingInDp = 10
@@ -59,11 +62,13 @@ class NewFolderActivity : AppCompatActivity() {
     }
 
     private fun loadDataForEditing(folderId: Int) {
-        val folderData = MainActivity.getFolderById(folderId)
+         val folderData = MainActivity.getFolderById(folderId)
 
         if (folderData != null) {
             titleTxt.text = folderData.name
-
+            folderData.sets.forEach { set ->
+                selectedSetId.add(set.id)
+            }
             adapterAddSet?.updateSets(folderData.sets)
         }
     }
