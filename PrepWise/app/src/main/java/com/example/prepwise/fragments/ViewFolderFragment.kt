@@ -98,7 +98,6 @@ class ViewFolderFragment : Fragment() {
             else setLike.setImageResource(R.drawable.not_save)
         }
 
-
         setLike.setOnClickListener {
             folder?.let { s ->
                 s.isLiked = !s.isLiked
@@ -145,6 +144,14 @@ class ViewFolderFragment : Fragment() {
                 }
             }
 
+        }
+
+        edit.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(requireActivity(), NewFolderActivity::class.java)
+            intent.putExtra("mode", "edit")
+            intent.putExtra("folderId", folderId)
+            startActivity(intent)
         }
 
         close.setOnClickListener {

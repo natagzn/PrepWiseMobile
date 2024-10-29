@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
+import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
 
 class AdapterAddSet(private val setlist: ArrayList<Set>, private val context: Context) :
@@ -35,10 +36,18 @@ class AdapterAddSet(private val setlist: ArrayList<Set>, private val context: Co
         holder.addDelBtn.setOnClickListener{
             holder.addDelBtn.setImageResource(R.drawable.added_set)
         }
+
+        holder.itemView.findViewById<TextView>(R.id.date).visibility = View.GONE
     }
 
     // Повертаємо кількість елементів у списку
     override fun getItemCount(): Int {
         return setlist.size
+    }
+
+    fun updateSets(newSets: List<Set>) {
+        setlist.clear()
+        setlist.addAll(newSets)
+        notifyDataSetChanged()
     }
 }

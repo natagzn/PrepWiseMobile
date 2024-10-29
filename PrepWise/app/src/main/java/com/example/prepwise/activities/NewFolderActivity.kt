@@ -2,6 +2,7 @@ package com.example.prepwise.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,8 @@ class NewFolderActivity : AppCompatActivity() {
     private var adapterAddSet: AdapterAddSet? = null
     private lateinit var recyclerViewSet: RecyclerView
 
+    private lateinit var titleTxt: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,12 +31,19 @@ class NewFolderActivity : AppCompatActivity() {
             insets
         }
 
+        titleTxt = findViewById(R.id.title)
+
+        val mode = intent.getStringExtra("mode") ?: "create"
+        val folderId = intent.getIntExtra("folderId", -1)
+
+        if (mode == "edit" && folderId != -1) {
+            loadDataForEditing(folderId)
+            findViewById<TextView>(R.id.mode).text = getString(R.string.edit_folder)
+        }
+
         // Закриття сторінки
         val close: TextView = findViewById(R.id.cancel)
         close.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("openFragment", "HomeFragment")
-            startActivity(intent)
             finish()
         }
 
@@ -46,5 +56,15 @@ class NewFolderActivity : AppCompatActivity() {
         val scale = this.resources.displayMetrics.density
         val spacingInPx = (spacingInDp * scale).toInt()
         recyclerViewSet.addItemDecoration(SpaceItemDecoration(spacingInPx))
+    }
+
+    private fun loadDataForEditing(folderId: Int) {
+        val folderData = MainActivity.getFolderById(folderId)
+
+        if (folderData != null) {
+            titleTxt.text = folderData.name
+
+            adapterAddSet?.updateSets(folderData.sets)
+        }
     }
 }

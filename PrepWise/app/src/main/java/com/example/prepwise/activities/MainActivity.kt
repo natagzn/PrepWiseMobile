@@ -141,25 +141,21 @@ class MainActivity : AppCompatActivity() {
         addQuestion.setOnClickListener{
             val intent = Intent(this, NewQuestionActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         addSet.setOnClickListener{
             val intent = Intent(this, NewSetActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         addResource.setOnClickListener{
             val intent = Intent(this, NewResourceActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         addFolder.setOnClickListener{
             val intent = Intent(this, NewFolderActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         close.setOnClickListener{

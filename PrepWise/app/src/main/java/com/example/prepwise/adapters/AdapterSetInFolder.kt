@@ -54,6 +54,8 @@ class AdapterSetInFolder(
                 .addToBackStack(null)
                 .commit()
         }
+
+        holder.itemView.findViewById<ImageView>(R.id.add_delete_to_folder).visibility = View.GONE
     }
 
     // Повертаємо кількість елементів у списку

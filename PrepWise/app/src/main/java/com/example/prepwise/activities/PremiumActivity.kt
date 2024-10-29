@@ -25,9 +25,6 @@ class PremiumActivity : AppCompatActivity() {
         // Закриття сторінки
         val close: ImageView = findViewById(R.id.close)
         close.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("openFragment", "HomeFragment")
-            startActivity(intent)
             finish()
         }
 
