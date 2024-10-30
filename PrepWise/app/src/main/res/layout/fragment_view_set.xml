@@ -248,7 +248,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:backgroundTint="@color/gray"
-                    android:progressDrawable="@drawable/progress_bar"
+                    android:progressDrawable="@drawable/progress_bar_linear"
                     android:max="100"
                     android:maxHeight="30dp"
                     android:minHeight="30dp"

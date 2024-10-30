@@ -4,10 +4,11 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,19 +21,16 @@ class StudyFlascardActivity : AppCompatActivity() {
     private lateinit var flashcard: CardView
     private lateinit var flashcardText: TextView
     private lateinit var progressBar: ProgressBar
-    private lateinit var leftCountTextView: TextView
-    private lateinit var rightCountTextView: TextView
-    private lateinit var knowCountTextView: TextView
-    private lateinit var stillLearningCountTextView: TextView
+    private lateinit var leftCount: TextView
+    private lateinit var rightCount: TextView
+    private lateinit var knowCount: TextView
+    private lateinit var stillLearningCount: TextView
     private var flashcardIndex = 0
     private var showingQuestion = true
 
-    private val flashcards = listOf(
-        Question("Question 1", "Answer 1", false),
-        Question("Question 2", "Answer 2", false),
-        Question("Question 3", "Answer 3", false),
-        Question("Question 4", "Answer 4", false)
-    )
+    private var setId: Int = 0
+    private lateinit var flashcardsAll: List<Question>
+    private lateinit var flashcards: List<Question>
 
     private var learnedCount = 0
     private var learningCount = 0
@@ -44,13 +42,26 @@ class StudyFlascardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_study_flascard)
 
+        findViewById<ImageView>(R.id.close).setOnClickListener{
+            finish()
+        }
+
+        setId = intent.getIntExtra("setId", -1)
+        val set = MainActivity.getSetById(setId)
+        if (set != null) {
+            flashcardsAll = set.questions
+            flashcards = flashcardsAll.filter { question -> !question.learned }
+        } else {
+            flashcardsAll = emptyList()
+        }
+
         flashcard = findViewById(R.id.flashcard)
         flashcardText = findViewById(R.id.question_text)
         progressBar = findViewById(R.id.progress_bar)
-        leftCountTextView = findViewById(R.id.left)
-        rightCountTextView = findViewById(R.id.right)
-        knowCountTextView = findViewById(R.id.number_of_know)
-        stillLearningCountTextView = findViewById(R.id.number_of_still_learning)
+        leftCount = findViewById(R.id.left)
+        rightCount = findViewById(R.id.right)
+        knowCount = findViewById(R.id.number_of_know)
+        stillLearningCount = findViewById(R.id.number_of_still_learning)
 
         updateFlashcard()
         updateProgress()
@@ -168,20 +179,28 @@ class StudyFlascardActivity : AppCompatActivity() {
             showingQuestion = true
             updateFlashcard()
         }
+        else{
+            val intent = Intent(this, ResultStudyingActivity::class.java)
+            intent.putExtra("learnedCount", learnedCount)
+            intent.putExtra("learningCount", learningCount)
+            intent.putExtra("rightCount", flashcards.size)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun updateFlashcard() {
         flashcardText.text = flashcards[flashcardIndex].content
-        leftCountTextView.text = (learningCount+learnedCount + 1).toString()
-        rightCountTextView.text = flashcards.size.toString()
+        leftCount.text = (learningCount+learnedCount + 1).toString()
+        rightCount.text = flashcards.size.toString()
     }
 
     private fun updateProgress() {
         val progress = ((learnedCount + learningCount).toDouble() / flashcards.size * 100).toInt()
 
         progressBar.progress = progress
-        knowCountTextView.text = learnedCount.toString()
-        stillLearningCountTextView.text = learningCount.toString()
+        knowCount.text = learnedCount.toString()
+        stillLearningCount.text = learningCount.toString()
     }
 
 }

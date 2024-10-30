@@ -16,7 +16,7 @@ object SetListProvider {
             questions = arrayListOf(
                 Question("What is Activity?", "A component in Android", false),
                 Question("What is Fragment?", "Part of a UI", true),
-                Question("What is Fragment?", "Part of a UI", true)
+                Question("What is a variable?", "A container for data", false)
             ),
             username = "dev_junior",
             isLiked = false

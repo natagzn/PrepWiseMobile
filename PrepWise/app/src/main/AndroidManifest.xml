@@ -13,7 +13,7 @@
         android:theme="@style/Theme.PrepWise"
         tools:targetApi="31">
         <activity
-            android:name=".activities.ResultStudingActivity"
+            android:name=".activities.ResultStudyingActivity"
             android:exported="false" />
         <activity
             android:name=".activities.StudyFlascardActivity"

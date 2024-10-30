@@ -184,6 +184,7 @@ class ViewSetFragment : Fragment() {
         val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
         studyFlashcards.setOnClickListener{
             val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
+            intent.putExtra("setId", setId)
             startActivity(intent)
         }
 

@@ -8,7 +8,7 @@
         android:topLeftRadius="0dp"
         android:bottomLeftRadius="0dp" />
 
-    <solid android:color="#B2D4C3" />
+    <solid android:color="#BFDCCE" />
 
     <stroke
         android:width="0.7dp"
