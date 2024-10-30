@@ -62,7 +62,7 @@ class NewFolderActivity : AppCompatActivity() {
     }
 
     private fun loadDataForEditing(folderId: Int) {
-         val folderData = MainActivity.getFolderById(folderId)
+        val folderData = MainActivity.getFolderById(folderId)
 
         if (folderData != null) {
             titleTxt.text = folderData.name
