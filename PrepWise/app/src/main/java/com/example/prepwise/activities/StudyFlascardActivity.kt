@@ -1,8 +1,13 @@
 package com.example.prepwise.activities
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +25,7 @@ class StudyFlascardActivity : AppCompatActivity() {
     private lateinit var knowCountTextView: TextView
     private lateinit var stillLearningCountTextView: TextView
     private var flashcardIndex = 0
+    private var showingQuestion = true
 
     private val flashcards = listOf(
         Question("Question 1", "Answer 1", false),
@@ -49,6 +55,12 @@ class StudyFlascardActivity : AppCompatActivity() {
         updateFlashcard()
         updateProgress()
 
+        flashcard.setOnClickListener {
+            if (flashcard.translationX == 0f) {
+                flipCard()
+            }
+        }
+
         flashcard.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -59,9 +71,9 @@ class StudyFlascardActivity : AppCompatActivity() {
                     val deltaX = event.rawX - downX
                     view.translationX = deltaX
 
-                    if (deltaX < -SWIPE_THRESHOLD / 1) {
+                    if (deltaX < -SWIPE_THRESHOLD) {
                         flashcard.setBackgroundResource(R.drawable.know_border)
-                    } else if (deltaX > SWIPE_THRESHOLD / 1) {
+                    } else if (deltaX > SWIPE_THRESHOLD) {
                         flashcard.setBackgroundResource(R.drawable.learning_border)
                     } else {
                         flashcard.setBackgroundResource(R.drawable.default_border)
@@ -78,6 +90,8 @@ class StudyFlascardActivity : AppCompatActivity() {
                             markAsLearning()
                         }
                         updateProgress()
+                    } else {
+                        view.performClick()
                     }
 
                     view.animate()
@@ -91,6 +105,44 @@ class StudyFlascardActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+    }
+
+    private fun flipCard() {
+
+        val flipOut = ObjectAnimator.ofFloat(flashcard, "rotationY", 0f, 90f)
+        flipOut.duration = 150
+
+        val flipIn = ObjectAnimator.ofFloat(flashcard, "rotationY", -90f, 0f)
+        flipIn.duration = 150
+
+        flipOut.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+
+            override fun onAnimationEnd(animation: Animator) {
+                flashcard.visibility = View.INVISIBLE
+                flashcardText.text = if (showingQuestion) flashcards[flashcardIndex].answer else flashcards[flashcardIndex].content
+                showingQuestion = !showingQuestion
+                flashcard.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+
+        flipIn.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+
+            override fun onAnimationEnd(animation: Animator) {
+            }
+
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+
+        AnimatorSet().apply {
+            playSequentially(flipOut, flipIn)
+            start()
         }
     }
 
@@ -113,6 +165,7 @@ class StudyFlascardActivity : AppCompatActivity() {
     private fun goToNextCard() {
         if (flashcardIndex < flashcards.size - 1) {
             flashcardIndex++
+            showingQuestion = true
             updateFlashcard()
         }
     }
@@ -130,6 +183,7 @@ class StudyFlascardActivity : AppCompatActivity() {
         knowCountTextView.text = learnedCount.toString()
         stillLearningCountTextView.text = learningCount.toString()
     }
+
 }
 
 
