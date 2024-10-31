@@ -32,6 +32,7 @@ import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewSetActivity
 import com.example.prepwise.activities.PremiumActivity
 import com.example.prepwise.activities.StudyFlascardActivity
+import com.example.prepwise.activities.ViewFlashcardActivity
 import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Question
@@ -184,6 +185,14 @@ class ViewSetFragment : Fragment() {
         val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
         studyFlashcards.setOnClickListener{
             val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
+            intent.putExtra("setId", setId)
+            startActivity(intent)
+        }
+
+        // Відкриття сторінки перегляду питань сета
+        val viewFlashcards: LinearLayout = view.findViewById(R.id.view_flashcards)
+        viewFlashcards.setOnClickListener{
+            val intent = Intent(requireActivity(), ViewFlashcardActivity::class.java)
             intent.putExtra("setId", setId)
             startActivity(intent)
         }

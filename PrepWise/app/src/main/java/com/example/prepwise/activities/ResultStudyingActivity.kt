@@ -1,7 +1,9 @@
 package com.example.prepwise.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.prepwise.R
@@ -41,7 +43,13 @@ class ResultStudyingActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.restart).setOnClickListener{
+            val intent = Intent(this, StudyFlascardActivity::class.java)
+            startActivity(intent)
             finish()
         }
+
+        val persent: Int = (learnedCount.toDouble() / rightCount * 100).toInt()
+        findViewById<ProgressBar>(R.id.progress_bar).progress = persent
+        findViewById<TextView>(R.id.progress_persent).text = persent.toString() + "%"
     }
 }

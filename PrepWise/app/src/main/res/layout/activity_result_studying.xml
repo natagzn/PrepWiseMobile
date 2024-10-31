@@ -92,13 +92,15 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyle"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="6"
         android:progressDrawable="@drawable/progress_bar_circular"
-        android:progress="60"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/motivation" />
 
@@ -107,14 +109,15 @@
         style="@style/regular_16"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/green_rounded_background"
         android:gravity="center"
         android:paddingVertical="10dp"
-        android:text="Continue studying the set"
+        android:text="@string/continue_studying_the_set"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/back_to_set"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -126,7 +129,7 @@
         android:background="@drawable/white_rounded_background"
         android:gravity="center"
         android:paddingVertical="10dp"
-        android:text="Return to set"
+        android:text="@string/return_to_set"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
