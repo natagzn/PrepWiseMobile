@@ -179,4 +179,13 @@
     <string name="sets">модулі</string>
     <string name="edit_set">Редагування модулів</string>
 
+    <string name="view_flashcards">Переглянути картки</string>
+    <string name="continue_studying_the_set">Продовжити вивчати сет</string>
+    <string name="return_to_set">Повернутися до сету</string>
+    <string name="attention">Увага</string>
+    <string name="all_questions_in_this_set_have_already_been_studied">Всі питання в цьому сеті вже вивчені!</string>
+    <string name="other">Інша</string>
+    <string name="describe_your_reason">Опишість вашу причину</string>
+    <string name="please_enter_your_reason">Будь ласка введіть причину</string>
+
 </resources>

@@ -31,6 +31,8 @@ import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewSetActivity
 import com.example.prepwise.activities.PremiumActivity
+import com.example.prepwise.activities.StudyFlascardActivity
+import com.example.prepwise.activities.ViewFlashcardActivity
 import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Question
@@ -177,6 +179,35 @@ class ViewSetFragment : Fragment() {
         val setMenu: ImageView = view.findViewById(R.id.more)
         setMenu.setOnClickListener{
             showBottomDialog()
+        }
+
+        // Відкриття сторінки вчивчення сета
+        val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
+        studyFlashcards.setOnClickListener{
+            if(set!=null && set!!.questions.any{!it.learned}){
+                val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
+                intent.putExtra("setId", setId)
+                startActivity(intent)
+            }
+            else{
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setTitle("Увага")
+                    .setMessage("Всі питання в цьому сеті вже вивчені!")
+                    .setPositiveButton("ОК") { dialog, _ -> dialog.dismiss() }
+                    .create()
+
+                dialog.show()
+
+            }
+
+        }
+
+        // Відкриття сторінки перегляду питань сета
+        val viewFlashcards: LinearLayout = view.findViewById(R.id.view_flashcards)
+        viewFlashcards.setOnClickListener{
+            val intent = Intent(requireActivity(), ViewFlashcardActivity::class.java)
+            intent.putExtra("setId", setId)
+            startActivity(intent)
         }
 
         return view

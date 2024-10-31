@@ -79,8 +79,30 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             style="@style/regular_16"
+            android:layout_marginBottom="10dp"
             android:text="It violates my intellectual property rights"
             android:fontFamily="@font/regular" />
+
+        <RadioButton
+            android:id="@+id/other"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:textColor="@color/black"
+            style="@style/regular_16"
+            android:text="@string/other"
+            android:fontFamily="@font/regular" />
+
+        <EditText
+            android:id="@+id/other_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            style="@style/regular_16"
+            android:layout_marginStart="27dp"
+            android:visibility="gone"
+            android:hint="@string/describe_your_reason"
+            android:inputType="textMultiLine" />
     </RadioGroup>
 
     <Button
