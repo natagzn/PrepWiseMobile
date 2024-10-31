@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.prepwise.R
 
@@ -27,6 +28,8 @@ class ResultStudyingActivity : AppCompatActivity() {
         val learnedCount = intent.getIntExtra("learnedCount", 0)
         val learningCount = intent.getIntExtra("learningCount", 0)
         val rightCount = intent.getIntExtra("rightCount", 0)
+        val setId = intent.getIntExtra("setId",-1)
+        val set = MainActivity.getSetById(setId)
 
         // Відображаємо їх на екрані
         knowCountTextView.text = learnedCount.toString()
@@ -42,11 +45,24 @@ class ResultStudyingActivity : AppCompatActivity() {
             finish()
         }
 
-        findViewById<TextView>(R.id.restart).setOnClickListener{
-            val intent = Intent(this, StudyFlascardActivity::class.java)
-            startActivity(intent)
-            finish()
+        findViewById<TextView>(R.id.restart).setOnClickListener {
+            if (set != null && set!!.questions.any { !it.learned }) {
+                val intent = Intent(this, StudyFlascardActivity::class.java)
+                intent.putExtra("setId", setId)
+                startActivity(intent)
+            } else {
+                val dialog = AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.attention))
+                    .setMessage(getString(R.string.all_questions_in_this_set_have_already_been_studied))
+                    .setPositiveButton("ОК") { dialog, _ ->
+                        dialog.dismiss()
+                        finish()
+                    }
+                    .create()
+                dialog.show()
+            }
         }
+
 
         val persent: Int = (learnedCount.toDouble() / rightCount * 100).toInt()
         findViewById<ProgressBar>(R.id.progress_bar).progress = persent

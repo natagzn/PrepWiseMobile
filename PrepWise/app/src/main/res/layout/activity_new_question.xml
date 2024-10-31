@@ -86,14 +86,16 @@
                 android:src="@drawable/two_arrows" />
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/question"
             style="@style/regular_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/question"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
             android:textColor="@color/black"
-            android:inputType="text"
             android:textColorHint="@color/gray" />
 
         <TextView
@@ -105,14 +107,16 @@
             android:textColor="@color/gray"
             style="@style/light_12" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/answer"
             style="@style/regular_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:hint="@string/answer"
-            android:inputType="text"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
             android:textColorHint="@color/gray" />
 
         <TextView

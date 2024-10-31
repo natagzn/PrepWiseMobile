@@ -9,13 +9,15 @@
     android:paddingHorizontal="8dp"
     android:paddingVertical="16dp">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/question"
         style="@style/regular_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/question"
-        android:inputType="text"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
         android:textColorHint="@color/gray" />
 
     <TextView
@@ -27,13 +29,15 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="52dp" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/answer"
         style="@style/regular_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/answer"
-        android:inputType="text"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
         android:textColorHint="@color/gray" />
 
     <TextView

@@ -180,5 +180,10 @@
     <string name="view_flashcards">View flashcards</string>
     <string name="continue_studying_the_set">Continue studying the set</string>
     <string name="return_to_set">Return to set</string>
+    <string name="attention">Attention</string>
+    <string name="all_questions_in_this_set_have_already_been_studied">All questions in this set have already been studied!</string>
+    <string name="other">Other</string>
+    <string name="describe_your_reason">Describe your reason</string>
+    <string name="please_enter_your_reason">Please enter your reason</string>
 
 </resources>

@@ -49,6 +49,7 @@ class ViewFlashcardActivity : AppCompatActivity() {
         val set = MainActivity.getSetById(setId)
         if (set != null) {
             flashcards = set.questions
+            flashcards = flashcards.shuffled()
         } else {
             flashcardsAll = emptyList()
         }
@@ -60,7 +61,6 @@ class ViewFlashcardActivity : AppCompatActivity() {
         rightCount = findViewById(R.id.right)
 
         updateProgress()
-        counter++
         updateFlashcard()
 
         flashcard.setOnClickListener {
@@ -96,6 +96,29 @@ class ViewFlashcardActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        findViewById<ImageView>(R.id.back).setOnClickListener {
+            if (flashcardIndex > 0) {
+                flashcardIndex--
+                counter--
+
+                showingQuestion = true
+                updateFlashcard()
+                updateProgress()
+            }
+        }
+
+        findViewById<ImageView>(R.id.restart).setOnClickListener {
+            flashcardIndex = 0
+            counter = 0
+            showingQuestion = true
+
+            val intent = Intent(this, ViewFlashcardActivity::class.java)
+            intent.putExtra("setId", setId)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     private fun flipCard() {
@@ -140,8 +163,8 @@ class ViewFlashcardActivity : AppCompatActivity() {
         if (flashcardIndex < flashcards.size - 1) {
             flashcardIndex++
             showingQuestion = true
-            updateProgress()
             counter++
+            updateProgress()
             updateFlashcard()
         }
         else{
@@ -154,7 +177,7 @@ class ViewFlashcardActivity : AppCompatActivity() {
 
     private fun updateFlashcard() {
         flashcardText.text = flashcards[flashcardIndex].content
-        leftCount.text = counter.toString()
+        leftCount.text = (counter+1).toString()
         rightCount.text = flashcards.size.toString()
     }
 

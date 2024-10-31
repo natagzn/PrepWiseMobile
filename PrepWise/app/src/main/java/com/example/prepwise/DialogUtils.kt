@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -67,6 +69,8 @@ object DialogUtils {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_report, null)
         val reasonRadioGroup: RadioGroup = dialogView.findViewById(R.id.reason_radio_group)
         val submitButton: Button = dialogView.findViewById(R.id.submit_button)
+        val otherReasonRadioButton: RadioButton = dialogView.findViewById(R.id.other)
+        val otherReasonEditText: EditText = dialogView.findViewById(R.id.other_reason)
 
         val builder = AlertDialog.Builder(context, R.style.RoundedDialogTheme)
             .setView(dialogView)
@@ -74,18 +78,38 @@ object DialogUtils {
 
         val dialog = builder.create()
 
+        // Показати або сховати поле для введення тексту при виборі пункту "Інше"
+        reasonRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (checkedId == otherReasonRadioButton.id) {
+                otherReasonEditText.visibility = View.VISIBLE
+            } else {
+                otherReasonEditText.visibility = View.GONE
+            }
+        }
+
         submitButton.setOnClickListener {
             val selectedReasonId = reasonRadioGroup.checkedRadioButtonId
             if (selectedReasonId != -1) {
-                val selectedReason = dialogView.findViewById<RadioButton>(selectedReasonId).text.toString()
+                val selectedReason = if (selectedReasonId == otherReasonRadioButton.id) {
+                    val otherReasonText = otherReasonEditText.text.toString().trim()
+                    if (otherReasonText.isEmpty()) {
+                        Toast.makeText(context, context.getString(R.string.please_enter_your_reason), Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+                    otherReasonText
+                } else {
+                    dialogView.findViewById<RadioButton>(selectedReasonId).text.toString()
+                }
+
                 onReportSubmitted(selectedReason)
                 dialog.dismiss()
             } else {
-                Toast.makeText(context, getString(context, R.string.please_select_a_reason), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT).show()
             }
         }
 
         dialog.show()
     }
+
 }
 

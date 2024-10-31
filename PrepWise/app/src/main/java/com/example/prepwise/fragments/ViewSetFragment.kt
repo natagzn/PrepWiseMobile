@@ -184,9 +184,22 @@ class ViewSetFragment : Fragment() {
         // Відкриття сторінки вчивчення сета
         val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
         studyFlashcards.setOnClickListener{
-            val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
-            intent.putExtra("setId", setId)
-            startActivity(intent)
+            if(set!=null && set!!.questions.any{!it.learned}){
+                val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
+                intent.putExtra("setId", setId)
+                startActivity(intent)
+            }
+            else{
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setTitle("Увага")
+                    .setMessage("Всі питання в цьому сеті вже вивчені!")
+                    .setPositiveButton("ОК") { dialog, _ -> dialog.dismiss() }
+                    .create()
+
+                dialog.show()
+
+            }
+
         }
 
         // Відкриття сторінки перегляду питань сета

@@ -51,6 +51,7 @@ class StudyFlascardActivity : AppCompatActivity() {
         if (set != null) {
             flashcardsAll = set.questions
             flashcards = flashcardsAll.filter { question -> !question.learned }
+            flashcards = flashcards.shuffled()
         } else {
             flashcardsAll = emptyList()
         }
@@ -117,6 +118,23 @@ class StudyFlascardActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        findViewById<ImageView>(R.id.back).setOnClickListener {
+            if (flashcardIndex > 0) {
+                // Повертаємось до попереднього питання
+                flashcardIndex--
+
+                // Скидаємо статус питання як незасвоєне
+                flashcards[flashcardIndex].learned = false
+                learnedCount = maxOf(0, learnedCount - 1)
+
+                // Оновлюємо картку та прогрес
+                showingQuestion = true
+                updateFlashcard()
+                updateProgress()
+            }
+        }
+
     }
 
     private fun flipCard() {
@@ -184,6 +202,7 @@ class StudyFlascardActivity : AppCompatActivity() {
             intent.putExtra("learnedCount", learnedCount)
             intent.putExtra("learningCount", learningCount)
             intent.putExtra("rightCount", flashcards.size)
+            intent.putExtra("setId", setId)
             startActivity(intent)
             finish()
         }
