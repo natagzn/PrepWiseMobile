@@ -2,7 +2,6 @@ package com.example.prepwise
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -12,7 +11,6 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getString
 import androidx.core.content.res.ResourcesCompat
 
 object DialogUtils {
@@ -23,7 +21,7 @@ object DialogUtils {
         negativeButtonText: String,
         onResult: (Boolean) -> Unit
     ) {
-        val builder = AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(context, R.style.RoundedDialogTheme)
 
         val messageView = TextView(context).apply {
             text = message
@@ -72,7 +70,7 @@ object DialogUtils {
         val otherReasonRadioButton: RadioButton = dialogView.findViewById(R.id.other)
         val otherReasonEditText: EditText = dialogView.findViewById(R.id.other_reason)
 
-        val builder = AlertDialog.Builder(context, R.style.RoundedDialogTheme)
+        val builder = AlertDialog.Builder(context, R.style.TransparentDialogTheme)
             .setView(dialogView)
             .setCancelable(true)
 
@@ -106,6 +104,36 @@ object DialogUtils {
             } else {
                 Toast.makeText(context, context.getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        dialog.show()
+    }
+
+    // Функція для створення діалогового вікна щоб користувач задав питання у підримку
+    fun showAnswerDialog(context: Context) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_ask_a_question, null)
+        val textQuestion: EditText = dialogView.findViewById(R.id.question_input)
+        val applyButton: TextView = dialogView.findViewById(R.id.apply_button)
+        val cancelButton: TextView = dialogView.findViewById(R.id.cancel_button)
+
+        val builder = AlertDialog.Builder(context, R.style.RoundedDialogTheme)
+            .setView(dialogView)
+            .setCancelable(true)
+
+        val dialog = builder.create()
+
+        applyButton.setOnClickListener {
+            val answer = textQuestion.text.toString()
+            if (answer.isNotBlank()) {
+                Toast.makeText(context, context.getString(R.string.question_sent), Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            } else {
+                Toast.makeText(context, context.getString(R.string.please_enter_a_question), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()

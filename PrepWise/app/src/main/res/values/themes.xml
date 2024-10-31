@@ -98,7 +98,7 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
-    <style name="RoundedDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="TransparentDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
@@ -108,6 +108,10 @@
         <item name="android:elevation">4dp</item>
     </style>
 
-
+    <style name="RoundedDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 
 </resources>

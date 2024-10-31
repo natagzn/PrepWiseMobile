@@ -53,6 +53,18 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        // Видалення акаунту
+        val deleteAccount: LinearLayout = view.findViewById(R.id.delete_account)
+        deleteAccount.setOnClickListener{
+            DialogUtils.showConfirmationDialog(
+                context = requireContext(),
+                message = getString(R.string.are_you_sure_you_want_to_delete_account),
+                positiveButtonText = getString(R.string.Delete),
+                negativeButtonText = getString(R.string.cancel)
+            ) { confirmed ->
+            }
+        }
+
         // Редагування профілю
         val editProfile: ImageView = view.findViewById(R.id.edit)
         editProfile.setOnClickListener{
@@ -73,12 +85,7 @@ class ProfileFragment : Fragment() {
         // Лист із запитанням
         val askQuestionLayout: LinearLayout = view.findViewById(R.id.ask_a_question)
         askQuestionLayout.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("nahalkaanna06@gmail.com"))
-                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.question_sets))
-            }
-            startActivity(emailIntent)
+            DialogUtils.showAnswerDialog(requireContext())
         }
 
         // Відкриття списку друзів
