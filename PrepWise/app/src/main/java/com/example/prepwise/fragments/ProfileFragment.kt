@@ -68,8 +68,6 @@ class ProfileFragment : Fragment() {
         premium.setOnClickListener{
             val intent = Intent(requireActivity(), PremiumActivity::class.java)
             startActivity(intent)
-
-            requireActivity().finish()
         }
 
         // Лист із запитанням
@@ -83,13 +81,11 @@ class ProfileFragment : Fragment() {
             startActivity(emailIntent)
         }
 
-        // Преміум
+        // Відкриття списку друзів
         val myPeople: LinearLayout = view.findViewById(R.id.my_people)
         myPeople.setOnClickListener{
             val intent = Intent(requireActivity(), PeopleActivity::class.java)
             startActivity(intent)
-
-            requireActivity().finish()
         }
 
         return view

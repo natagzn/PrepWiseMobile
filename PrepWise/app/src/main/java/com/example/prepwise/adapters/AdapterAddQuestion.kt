@@ -69,7 +69,6 @@ class AdapterAddQuestion(
         notifyDataSetChanged()
     }
 
-    // Видаляємо питання
     private fun removeQuestion(position: Int) {
         questions.removeAt(position)
         notifyItemRemoved(position)

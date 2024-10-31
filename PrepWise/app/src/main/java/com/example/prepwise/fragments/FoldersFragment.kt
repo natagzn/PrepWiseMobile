@@ -48,7 +48,7 @@ class FoldersFragment : Fragment() {
 
         recyclerViewFolder = view.findViewById(R.id.folder_list)
         recyclerViewFolder.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapterFolder = AdapterFolder(folderList, requireContext())
+        adapterFolder = AdapterFolder(folderList, requireContext(), parentFragmentManager)
         recyclerViewFolder.adapter = adapterFolder
 
         val spacingInDp = 8

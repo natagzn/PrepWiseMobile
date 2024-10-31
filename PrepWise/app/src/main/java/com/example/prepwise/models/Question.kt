@@ -1,4 +1,6 @@
 package com.example.prepwise.models
 
-class Question(var content: String, var answer: String, var  learned: Boolean) {
+import java.io.Serializable
+
+class Question(var content: String, var answer: String, var  learned: Boolean): Serializable {
 }

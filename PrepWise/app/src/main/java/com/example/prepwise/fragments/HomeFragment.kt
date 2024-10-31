@@ -48,7 +48,6 @@ class HomeFragment : Fragment() {
         notify.setOnClickListener {
             val intent = Intent(requireActivity(), NotificationActivity::class.java)
             startActivity(intent)
-            requireActivity().finish()
         }
 
         // Преміум
@@ -56,8 +55,6 @@ class HomeFragment : Fragment() {
         premium.setOnClickListener{
             val intent = Intent(requireActivity(), PremiumActivity::class.java)
             startActivity(intent)
-
-            requireActivity().finish()
         }
 
         // Ініціалізуємо RecyclerView

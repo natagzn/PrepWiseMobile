@@ -176,4 +176,7 @@
     <string name="ask_for_help">попросити допомоги</string>
     <string name="look_answer">подивитися відповіді</string>
 
+    <string name="sets">модулі</string>
+    <string name="edit_set">Редагування модулів</string>
+
 </resources>

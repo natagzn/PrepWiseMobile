@@ -63,14 +63,12 @@ class NewSetActivity : AppCompatActivity() {
 
         if (mode == "edit" && setId != -1) {
             loadDataForEditing(setId)
+            findViewById<TextView>(R.id.mode).text = getString(R.string.edit_set)
         }else addCategoryTextView("+")
 
         // Закриття сторінки
         val close: TextView = findViewById(R.id.cancel)
         close.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("openFragment", "HomeFragment")
-            startActivity(intent)
             finish()
         }
 

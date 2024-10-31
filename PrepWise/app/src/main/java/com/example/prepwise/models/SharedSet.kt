@@ -1,6 +1,7 @@
 package com.example.prepwise.models
 
 import androidx.core.util.Pools
+import java.io.Serializable
 import java.time.LocalDate
 
 class SharedSet(
@@ -15,4 +16,4 @@ class SharedSet(
     questions: ArrayList<Question>,
     username: String,
     isLiked: Boolean
-) : Set(id, name, level, categories, access, date, questions, username, isLiked)
+) : Set(id, name, level, categories, access, date, questions, username, isLiked), Serializable

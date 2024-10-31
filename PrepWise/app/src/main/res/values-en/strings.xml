@@ -175,4 +175,7 @@
     <string name="ask_for_help">ask for help</string>
     <string name="look_answer">look answer</string>
 
+    <string name="sets">sets</string>
+    <string name="edit_set">Edit question set</string>
+
 </resources>

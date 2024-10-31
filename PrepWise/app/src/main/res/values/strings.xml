@@ -173,7 +173,8 @@
     <string name="search_friend">Search friend</string>
     <string name="ask_for_help">ask for help</string>
     <string name="look_answer">look answer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="sets">sets</string>
+    <string name="edit_set">Edit question set</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.prepwise.models
 
+import java.io.Serializable
 import java.time.LocalDate
 import java.util.ArrayList
 
@@ -12,7 +13,7 @@ open class Set(
     var date: LocalDate,
     var questions: ArrayList<Question>,
     var username: String,
-    var isLiked: Boolean) {
+    var isLiked: Boolean): Serializable {
 
     fun calculateProgress(): Int {
         val totalQuestions = questions.size

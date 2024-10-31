@@ -7,22 +7,25 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
-import com.example.prepwise.models.Question
+import com.example.prepwise.fragments.ViewSetFragment
 import com.example.prepwise.models.Set
+import java.time.format.DateTimeFormatter
 
-class AdapterAddSet(
-    private val setlist: ArrayList<Set>,
-    private val selectedSetId: ArrayList<Int>,
-    private val context: Context
-) : RecyclerView.Adapter<AdapterAddSet.SetViewHolder>() {
+class AdapterSetInFolder(
+    private val setList: ArrayList<Set>,
+    private val context: Context,
+    private val fragmentManager: FragmentManager
+) : RecyclerView.Adapter<AdapterSetInFolder.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
     class SetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val setName: TextView = itemView.findViewById(R.id.set_name)
         val setNumberOfQuestions: TextView = itemView.findViewById(R.id.number_of_questions)
-        val addDelBtn: ImageView = itemView.findViewById(R.id.add_delete_to_folder)
+        val setDate: TextView = itemView.findViewById(R.id.date)
     }
 
     // Створюємо новий ViewHolder
@@ -33,38 +36,30 @@ class AdapterAddSet(
 
     // Прив'язуємо дані до ViewHolder
     override fun onBindViewHolder(holder: SetViewHolder, position: Int) {
-        val set = setlist[position]
+        val set = setList[position]
+
         holder.setName.text = set.name
         holder.setNumberOfQuestions.text = set.questions.size.toString()
 
-        if (selectedSetId.contains(set.id)) {
-            holder.addDelBtn.setImageResource(R.drawable.added_set)
-        } else {
-            holder.addDelBtn.setImageResource(R.drawable.add_set)
+        // Форматуємо дату
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        holder.setDate.text = set.date.format(formatter)
+
+        // Додаємо клік на елемент
+        holder.itemView.setOnClickListener {
+            // Передаємо дані через Bundle у фрагмент
+            val fragment = ViewSetFragment.newInstance(set.id)
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
 
-        // Обробка кліка на кнопку додавання/видалення сету
-        holder.addDelBtn.setOnClickListener {
-            if (selectedSetId.contains(set.id)) {
-                selectedSetId.remove(set.id)
-                holder.addDelBtn.setImageResource(R.drawable.add_set)
-            } else {
-                selectedSetId.add(set.id)
-                holder.addDelBtn.setImageResource(R.drawable.added_set)
-            }
-        }
-
-        holder.itemView.findViewById<TextView>(R.id.date).visibility = View.GONE
+        holder.itemView.findViewById<ImageView>(R.id.add_delete_to_folder).visibility = View.GONE
     }
 
     // Повертаємо кількість елементів у списку
     override fun getItemCount(): Int {
-        return setlist.size
-    }
-
-    fun updateSets(newSets: List<Set>) {
-        setlist.clear()
-        setlist.addAll(newSets)
-        notifyDataSetChanged()
+        return setList.size
     }
 }
