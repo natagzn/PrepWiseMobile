@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
-import com.example.prepwise.adapters.AdapterFriend
 import com.example.prepwise.adapters.AdapterNewFriend
 import com.example.prepwise.models.People
 import com.example.prepwise.models.Resourse
@@ -76,7 +75,7 @@ class NewFollowersFragment : DialogFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_new_followers, container, false)
 
-        setStyle(STYLE_NO_TITLE, R.style.RoundedDialogTheme)
+        setStyle(STYLE_NO_TITLE, R.style.TransparentDialogTheme)
 
         val close: ImageView = view.findViewById(R.id.close)
         close.setOnClickListener{
@@ -98,9 +97,9 @@ class NewFollowersFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
+
 }

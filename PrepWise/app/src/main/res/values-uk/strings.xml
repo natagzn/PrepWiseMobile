@@ -188,4 +188,11 @@
     <string name="describe_your_reason">Опишість вашу причину</string>
     <string name="please_enter_your_reason">Будь ласка введіть причину</string>
 
+    <string name="enter_the_text_of_your_question">Введіть ваше питання</string>
+    <string name="text">Текс...</string>
+    <string name="send">Відправити</string>
+    <string name="question_sent">Питання відправлено</string>
+    <string name="please_enter_a_question">Будь ласка введіть питання</string>
+    <string name="are_you_sure_you_want_to_delete_account">Ви справді хочете видалити акаунт?</string>
+
 </resources>
