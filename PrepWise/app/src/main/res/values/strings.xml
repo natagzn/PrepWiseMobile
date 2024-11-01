@@ -233,6 +233,9 @@
     <string name="set_image">Set image</string>
     <string name="delete_image">Delete image</string>
     <string name="choose_an_action">Choose an action</string>
+    <string name="report_sent_successfully_thank_you_for_your_help">Report sent successfully. Thank you for your help!</string>
+    <string name="report_this_user">Report this user</string>
+    <string name="report_this_resourse">Report this resource</string>
 
 
 </resources>

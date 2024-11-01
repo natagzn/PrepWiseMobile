@@ -160,14 +160,14 @@
     <string name="are_you_sure_you_want_to_log_out">Ви справді хочете вийти з акаунту?</string>
     <string name="are_you_sure_you_want_to_reset_progress">Ви справді хочете скинути прогрес вивчення модуля?</string>
 
-    <string name="report_this_set">Скарга на модуль</string>
+    <string name="report_this_set">Повідомити про цей модуль</string>
     <string name="please_select_a_reason">Будь ласка, оберіть причину</string>
-    <string name="why_are_you_reporting_this">Why are you reporting this?</string>
-    <string name="it_contains_inaccurate_information">It contains inaccurate information</string>
-    <string name="it_is_inappropriate">It is inappropriate</string>
-    <string name="it_is_being_used_to_cheat">It is being used to cheat</string>
-    <string name="it_violates_my_intellectual_property_rights">It violates my intellectual property rights</string>
-    <string name="Report">Поскаржитись</string>
+    <string name="why_are_you_reporting_this">Чому ви повідомляєте про це?</string>
+    <string name="it_contains_inaccurate_information">Містить недостовірну інформацію</string>
+    <string name="it_is_inappropriate">Це недоречно</string>
+    <string name="it_is_being_used_to_cheat">Це використовується для обману</string>
+    <string name="it_violates_my_intellectual_property_rights">Це порушує мої права інтелектуальної власності</string>
+    <string name="Report">Повідомити</string>
 
     <string name="answers">Відповіді</string>
     <string name="send_request">Запитати</string>
@@ -232,5 +232,10 @@
         <item>Наполегливість — це ключ. Не зупиняйся!</item>
     </string-array>
 
-
+    <string name="set_image">Встановити зображення</string>
+    <string name="delete_image">Видалити зображення</string>
+    <string name="choose_an_action">Виберіть дію</string>
+    <string name="report_sent_successfully_thank_you_for_your_help">Звіт успішно відправлено. Дякуємо за вашу допомогу!</string>
+    <string name="report_this_user">Повідомити про цього користувача</string>
+    <string name="report_this_resourse">Повідомити про цей ресурс</string>
 </resources>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -62,13 +63,19 @@ object DialogUtils {
     // Функція для діалогу скарг
     fun showReportDialog(
         context: Context,
+        title: String,
         onReportSubmitted: (String) -> Unit
     ) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_report, null)
+        val titleTextView: TextView = dialogView.findViewById(R.id.title)
         val reasonRadioGroup: RadioGroup = dialogView.findViewById(R.id.reason_radio_group)
         val submitButton: Button = dialogView.findViewById(R.id.submit_button)
         val otherReasonRadioButton: RadioButton = dialogView.findViewById(R.id.other)
         val otherReasonEditText: EditText = dialogView.findViewById(R.id.other_reason)
+        val close: ImageView = dialogView.findViewById(R.id.close)
+
+        // Встановлюємо текст заголовку
+        titleTextView.text = title
 
         val builder = AlertDialog.Builder(context, R.style.TransparentDialogTheme)
             .setView(dialogView)
@@ -104,6 +111,10 @@ object DialogUtils {
             } else {
                 Toast.makeText(context, context.getString(R.string.please_select_a_reason), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        close.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()

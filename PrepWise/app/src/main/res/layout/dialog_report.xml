@@ -39,7 +39,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Why are you reporting this?"
+        android:text="@string/why_are_you_reporting_this"
         android:textColor="@color/black"
         style="@style/regular_16"
         android:layout_marginBottom="20dp" />
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             style="@style/regular_16"
-            android:text="It contains inaccurate information"
+            android:text="@string/it_contains_inaccurate_information"
             android:fontFamily="@font/regular" />
 
         <RadioButton
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/regular"
-            android:text="It is inappropriate"
+            android:text="@string/it_is_inappropriate"
             android:textColor="@color/black" />
 
         <RadioButton
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             style="@style/regular_16"
-            android:text="It is being used to cheat"
+            android:text="@string/it_is_being_used_to_cheat"
             android:fontFamily="@font/regular" />
 
         <RadioButton
@@ -80,7 +80,7 @@
             android:textColor="@color/black"
             style="@style/regular_16"
             android:layout_marginBottom="10dp"
-            android:text="It violates my intellectual property rights"
+            android:text="@string/it_violates_my_intellectual_property_rights"
             android:fontFamily="@font/regular" />
 
         <RadioButton
@@ -110,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="Report"
+        android:text="@string/Report"
         android:backgroundTint="@color/green"
         android:textColor="@color/white"
         style="@style/regular_16"/>

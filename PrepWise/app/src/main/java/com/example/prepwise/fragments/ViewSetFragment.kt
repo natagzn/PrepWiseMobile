@@ -295,8 +295,8 @@ class ViewSetFragment : Fragment() {
 
         report.setOnClickListener{
             dialog.dismiss()
-            DialogUtils.showReportDialog(requireContext()) { selectedReason ->
-                Toast.makeText(requireContext(), "Скаргу надіслано: $selectedReason", Toast.LENGTH_SHORT).show()
+            DialogUtils.showReportDialog(requireContext(), getString(R.string.report_this_set)) { selectedReason ->
+                Toast.makeText(requireContext(), getString(R.string.report_sent_successfully_thank_you_for_your_help), Toast.LENGTH_SHORT).show()
             }
         }
 

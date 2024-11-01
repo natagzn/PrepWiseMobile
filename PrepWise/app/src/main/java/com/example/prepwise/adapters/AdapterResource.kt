@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import java.time.format.DateTimeFormatter
 
@@ -29,6 +31,7 @@ class AdapterResource(private val resourceList: ArrayList<Resourse>, private val
         val setDisLike: ImageView = itemView.findViewById(R.id.dislike)
         val numberOfLikes: TextView = itemView.findViewById(R.id.number_of_likes)
         val numberOfDislikes: TextView = itemView.findViewById(R.id.number_of_dislikes)
+        val report: ImageView = itemView.findViewById(R.id.report)
     }
 
     // Створюємо новий ViewHolder
@@ -94,6 +97,28 @@ class AdapterResource(private val resourceList: ArrayList<Resourse>, private val
                 resourse.numberOfDislikes--
             }
             notifyItemChanged(position)
+        }
+
+        holder.report.setOnClickListener{
+            DialogUtils.showReportDialog(context, context.getString(R.string.report_this_resourse)) { selectedReason ->
+                Toast.makeText(context, context.getString(R.string.report_sent_successfully_thank_you_for_your_help), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            DialogUtils.showConfirmationDialog(
+                context = context,
+                message = context.getString(R.string.are_you_sure_you_want_to_delete_this_resource),
+                positiveButtonText = context.getString(R.string.Delete),
+                negativeButtonText = context.getString(R.string.cancel)
+            ) { confirmed ->
+                if (confirmed) {
+
+                } else {
+
+                }
+            }
+            true
         }
     }
 
