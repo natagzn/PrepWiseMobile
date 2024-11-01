@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import com.exampl.HomeFragment
+import com.example.HomeFragment
 import com.example.prepwise.FolderListProvider
 import com.example.prepwise.LocaleHelper.loadLocale
 import com.example.prepwise.R
