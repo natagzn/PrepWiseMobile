@@ -45,9 +45,6 @@ class HomeFragment : Fragment() {
     private var adapterResourse: AdapterResource? = null
     private lateinit var recyclerViewResourse: RecyclerView
 
-    private lateinit var calendarRecyclerView: RecyclerView
-    private lateinit var calendarAdapter: CalendarAdapter
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

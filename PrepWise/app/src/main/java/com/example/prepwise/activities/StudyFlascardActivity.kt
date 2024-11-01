@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
@@ -14,6 +15,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.prepwise.R
+import com.example.prepwise.fragments.ViewSetFragment
 import com.example.prepwise.models.Question
 
 
@@ -199,12 +201,16 @@ class StudyFlascardActivity : AppCompatActivity() {
         }
         else{
             val intent = Intent(this, ResultStudyingActivity::class.java)
+            val resultIntent = Intent(this, ViewSetFragment::class.java)
+            resultIntent.putExtra("isUpdated", true)
             intent.putExtra("learnedCount", learnedCount)
             intent.putExtra("learningCount", learningCount)
             intent.putExtra("rightCount", flashcards.size)
             intent.putExtra("setId", setId)
+            setResult(Activity.RESULT_OK, resultIntent)
             startActivity(intent)
             finish()
+
         }
     }
 

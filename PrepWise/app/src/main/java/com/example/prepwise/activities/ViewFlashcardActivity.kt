@@ -83,7 +83,14 @@ class ViewFlashcardActivity : AppCompatActivity() {
                     true
                 }
                 MotionEvent.ACTION_UP -> {
-                    goToNextCard()
+                    val deltaX = event.rawX - downX
+
+                    if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+                        goToNextCard()
+                        updateProgress()
+                    } else {
+                        view.performClick()
+                    }
                     view.animate()
                         .translationX(0f)
                         .setDuration(300)

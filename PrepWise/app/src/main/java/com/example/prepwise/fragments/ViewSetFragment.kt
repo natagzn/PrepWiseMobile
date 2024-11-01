@@ -1,5 +1,6 @@
 package com.example.prepwise.fragments
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -67,6 +68,7 @@ class ViewSetFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+        private const val STUDY_REQUEST_CODE = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -183,7 +185,7 @@ class ViewSetFragment : Fragment() {
 
         // Відкриття сторінки вчивчення сета
         val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
-        studyFlashcards.setOnClickListener{
+        /*studyFlashcards.setOnClickListener{
             if(set!=null && set!!.questions.any{!it.learned}){
                 val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
                 intent.putExtra("setId", setId)
@@ -198,9 +200,27 @@ class ViewSetFragment : Fragment() {
 
                 dialog.show()
 
+
             }
 
+        }*/
+
+        studyFlashcards.setOnClickListener {
+            if (set != null && set!!.questions.any { !it.learned }) {
+                val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
+                intent.putExtra("setId", setId)
+                startActivityForResult(intent, STUDY_REQUEST_CODE)
+            } else {
+                val dialog = AlertDialog.Builder(requireContext())
+                    .setTitle("Увага")
+                    .setMessage("Всі питання в цьому сеті вже вивчені!")
+                    .setPositiveButton("ОК") { dialog, _ -> dialog.dismiss() }
+                    .create()
+
+                dialog.show()
+            }
         }
+
 
         // Відкриття сторінки перегляду питань сета
         val viewFlashcards: LinearLayout = view.findViewById(R.id.view_flashcards)
@@ -212,6 +232,14 @@ class ViewSetFragment : Fragment() {
 
         return view
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == STUDY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            updateUI()
+        }
+    }
+
 
     private fun updateUI() {
         set?.let {
