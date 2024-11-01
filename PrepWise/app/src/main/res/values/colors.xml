@@ -8,4 +8,5 @@
     <color name="background">#E9E8F0</color>
     <color name="red">#F96F5D</color>
     <color name="yellow">#F4E04D</color>
+    <color name="highlight">#FFE7C4</color>
 </resources>

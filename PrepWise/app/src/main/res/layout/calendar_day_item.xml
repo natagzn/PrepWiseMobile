@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="30dp"
+    android:layout_height="35dp"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:background="@drawable/fire"
+    android:layout_marginHorizontal="10dp"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/dayNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="4"
+        style="@style/regular_16"
+        android:textSize="16sp"
+        android:textColor="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/activityIcon"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:src="@drawable/dot"
+        android:layout_marginBottom="2dp"
+        android:visibility="gone" />
+</LinearLayout>
