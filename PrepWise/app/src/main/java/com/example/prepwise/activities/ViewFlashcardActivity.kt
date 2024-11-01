@@ -41,10 +41,12 @@ class ViewFlashcardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_flashcard)
 
+        // закриття сторінки
         findViewById<ImageView>(R.id.close).setOnClickListener{
             finish()
         }
 
+        // отрмання списку питань та їх перемішування
         setId = intent.getIntExtra("setId", -1)
         val set = MainActivity.getSetById(setId)
         if (set != null) {
@@ -54,6 +56,7 @@ class ViewFlashcardActivity : AppCompatActivity() {
             flashcardsAll = emptyList()
         }
 
+        // оновлення відображення
         flashcard = findViewById(R.id.flashcard)
         flashcardText = findViewById(R.id.question_text)
         progressBar = findViewById(R.id.progress_bar)
@@ -63,12 +66,14 @@ class ViewFlashcardActivity : AppCompatActivity() {
         updateProgress()
         updateFlashcard()
 
+        // переврот карточки при кліку
         flashcard.setOnClickListener {
             if (flashcard.translationX == 0f) {
                 flipCard()
             }
         }
 
+        // свайп карточки
         flashcard.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -104,6 +109,7 @@ class ViewFlashcardActivity : AppCompatActivity() {
             }
         }
 
+        // повернення до попереднього питання
         findViewById<ImageView>(R.id.back).setOnClickListener {
             if (flashcardIndex > 0) {
                 flashcardIndex--
@@ -115,6 +121,7 @@ class ViewFlashcardActivity : AppCompatActivity() {
             }
         }
 
+        // перегляд карток з початку
         findViewById<ImageView>(R.id.restart).setOnClickListener {
             flashcardIndex = 0
             counter = 0
@@ -128,6 +135,7 @@ class ViewFlashcardActivity : AppCompatActivity() {
 
     }
 
+    // функція для перевертання картки
     private fun flipCard() {
 
         val flipOut = ObjectAnimator.ofFloat(flashcard, "rotationY", 0f, 90f)
@@ -166,6 +174,7 @@ class ViewFlashcardActivity : AppCompatActivity() {
         }
     }
 
+    // перехід до наступного питання
     private fun goToNextCard() {
         if (flashcardIndex < flashcards.size - 1) {
             flashcardIndex++
@@ -175,19 +184,22 @@ class ViewFlashcardActivity : AppCompatActivity() {
             updateFlashcard()
         }
         else{
-//            val intent = Intent(this, ResultStudyingActivity::class.java)
-//            intent.putExtra("rightCount", flashcards.size)
-//            startActivity(intent)
-//            finish()
+            val intent = Intent(this, ResultViewingActivity::class.java)
+            intent.putExtra("count", flashcards.size)
+            intent.putExtra("setId", setId)
+            startActivity(intent)
+            finish()
         }
     }
 
+    // оновлення відомостей на сторінці
     private fun updateFlashcard() {
         flashcardText.text = flashcards[flashcardIndex].content
         leftCount.text = (counter+1).toString()
         rightCount.text = flashcards.size.toString()
     }
 
+    // оновлення прогрес бару
     private fun updateProgress() {
         val progress = (counter.toDouble() / flashcards.size * 100).toInt()
 

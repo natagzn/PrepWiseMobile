@@ -44,10 +44,12 @@ class StudyFlascardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_study_flascard)
 
+        // закриття сторінки
         findViewById<ImageView>(R.id.close).setOnClickListener{
             finish()
         }
 
+        // отрмання списку питань та їх перемішування
         setId = intent.getIntExtra("setId", -1)
         val set = MainActivity.getSetById(setId)
         if (set != null) {
@@ -66,15 +68,18 @@ class StudyFlascardActivity : AppCompatActivity() {
         knowCount = findViewById(R.id.number_of_know)
         stillLearningCount = findViewById(R.id.number_of_still_learning)
 
+        // оновлення відображення
         updateFlashcard()
         updateProgress()
 
+        // переврот карточки при кліку
         flashcard.setOnClickListener {
             if (flashcard.translationX == 0f) {
                 flipCard()
             }
         }
 
+        // свайп карточки
         flashcard.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -121,16 +126,14 @@ class StudyFlascardActivity : AppCompatActivity() {
             }
         }
 
+        // повернення до попереднього питання
         findViewById<ImageView>(R.id.back).setOnClickListener {
             if (flashcardIndex > 0) {
-                // Повертаємось до попереднього питання
                 flashcardIndex--
 
-                // Скидаємо статус питання як незасвоєне
                 flashcards[flashcardIndex].learned = false
                 learnedCount = maxOf(0, learnedCount - 1)
 
-                // Оновлюємо картку та прогрес
                 showingQuestion = true
                 updateFlashcard()
                 updateProgress()
@@ -139,6 +142,7 @@ class StudyFlascardActivity : AppCompatActivity() {
 
     }
 
+    // функція для перевертання картки
     private fun flipCard() {
 
         val flipOut = ObjectAnimator.ofFloat(flashcard, "rotationY", 0f, 90f)
@@ -177,6 +181,7 @@ class StudyFlascardActivity : AppCompatActivity() {
         }
     }
 
+    // позначення питання як вивченого
     private fun markAsLearned() {
         if (!flashcards[flashcardIndex].learned) {
             flashcards[flashcardIndex].learned = true
@@ -185,6 +190,7 @@ class StudyFlascardActivity : AppCompatActivity() {
         goToNextCard()
     }
 
+    // позначення питання як того що це вивчається
     private fun markAsLearning() {
         if (!flashcards[flashcardIndex].learned) {
             flashcards[flashcardIndex].learned = false
@@ -193,6 +199,7 @@ class StudyFlascardActivity : AppCompatActivity() {
         goToNextCard()
     }
 
+    // перехід до наступного питання
     private fun goToNextCard() {
         if (flashcardIndex < flashcards.size - 1) {
             flashcardIndex++
@@ -210,16 +217,17 @@ class StudyFlascardActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, resultIntent)
             startActivity(intent)
             finish()
-
         }
     }
 
+    // оновлення відомостей на сторінці
     private fun updateFlashcard() {
         flashcardText.text = flashcards[flashcardIndex].content
         leftCount.text = (learningCount+learnedCount + 1).toString()
         rightCount.text = flashcards.size.toString()
     }
 
+    // оновлення прогрес бару
     private fun updateProgress() {
         val progress = ((learnedCount + learningCount).toDouble() / flashcards.size * 100).toInt()
 

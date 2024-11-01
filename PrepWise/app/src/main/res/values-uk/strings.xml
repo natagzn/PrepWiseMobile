@@ -180,8 +180,8 @@
     <string name="edit_set">Редагування модулів</string>
 
     <string name="view_flashcards">Переглянути картки</string>
-    <string name="continue_studying_the_set">Продовжити вивчати сет</string>
-    <string name="return_to_set">Повернутися до сету</string>
+    <string name="continue_studying_the_set">Продовжити вивчати картки</string>
+    <string name="return_to_set">Повернутися до модуля</string>
     <string name="attention">Увага</string>
     <string name="all_questions_in_this_set_have_already_been_studied">Всі питання в цьому сеті вже вивчені!</string>
     <string name="other">Інша</string>
@@ -194,5 +194,43 @@
     <string name="question_sent">Питання відправлено</string>
     <string name="please_enter_a_question">Будь ласка введіть питання</string>
     <string name="are_you_sure_you_want_to_delete_account">Ви справді хочете видалити акаунт?</string>
+
+    <string name="continue_viewing_the_set">Продовжити переглядати картки</string>
+    <string name="reviewed">Переглянуто</string>
+
+    <string-array name="low_phrases">
+        <item>Не здавайтесь! Практика веде до досконалості!</item>
+        <item>Це тільки початок, продовжуйте!</item>
+        <item>Ви на правильному шляху, продовжуйте тренуватися!</item>
+        <item>Кожна помилка – крок до успіху!</item>
+        <item>Чудовий початок! Продовжуйте працювати над собою!</item>
+    </string-array>
+    <string-array name="medium_phrases">
+        <item>Ви чудово справляєтесь, продовжуйте!</item>
+        <item>Майже готово! Ще трохи зусиль!</item>
+        <item>Стабільний прогрес! Не зупиняйтесь!</item>
+        <item>Ви покращуєтесь! Так тримати!</item>
+        <item>На правильному шляху! Залишайтесь зосередженими!</item>
+    </string-array>
+    <string-array name="high_phrases">
+        <item>Неймовірно! Ви справжній професіонал!</item>
+        <item>Майже досконало! Молодці!</item>
+        <item>Видатна робота! Продовжуйте у тому ж дусі!</item>
+        <item>Ви досягли майстерності! Так тримати!</item>
+    </string-array>
+
+    <string-array name="random_phrases">
+        <item>Продовжуй! Кожен крок має значення!</item>
+        <item>Ти чудово справляєшся!</item>
+        <item>Фантастичний результат! Продовжуй у тому ж дусі!</item>
+        <item>Відмінна робота! Зберігай темп!</item>
+        <item>Ти крок за кроком здобуваєш знання!</item>
+        <item>Молодець! Продовжуй у тому ж дусі!</item>
+        <item>Прогрес приносить задоволення, чи не так?</item>
+        <item>Ти непереможний!</item>
+        <item>Чудова робота! Продовжуй так далі!</item>
+        <item>Наполегливість — це ключ. Не зупиняйся!</item>
+    </string-array>
+
 
 </resources>

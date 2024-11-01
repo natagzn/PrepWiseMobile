@@ -67,7 +67,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/motivation_text"
+        android:id="@+id/motivation"
         style="@style/bold_20"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         style="@style/regular_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="60%"
+        android:text="100%"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
         app:layout_constraintEnd_toEndOf="@+id/progress_bar"
@@ -99,10 +99,10 @@
         android:layout_marginTop="28dp"
         android:indeterminate="false"
         android:max="100"
-        android:progress="6"
+        android:progress="100"
         android:progressDrawable="@drawable/progress_bar_circular"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/motivation_text" />
+        app:layout_constraintTop_toBottomOf="@+id/motivation" />
 
     <TextView
         android:id="@+id/restart"
@@ -113,7 +113,7 @@
         android:background="@drawable/green_rounded_background"
         android:gravity="center"
         android:paddingVertical="10dp"
-        android:text="@string/continue_studying_the_set"
+        android:text="@string/continue_viewing_the_set"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/back_to_set"
         app:layout_constraintEnd_toEndOf="parent"
@@ -141,7 +141,7 @@
         android:layout_height="120dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
-        app:layout_constraintStart_toEndOf="@+id/motivation_text"
+        app:layout_constraintStart_toEndOf="@+id/motivation"
         app:layout_constraintTop_toBottomOf="@+id/prog_bar"
         app:srcCompat="@drawable/confetti" />
 
@@ -150,7 +150,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="88dp"
         android:background="@drawable/light_green_rounded_background"
         android:paddingHorizontal="10dp"
         android:paddingVertical="5dp"
@@ -162,7 +162,7 @@
             style="@style/semi_bold_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/known"
+            android:text="@string/reviewed"
             android:textColor="#31A659"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -171,8 +171,8 @@
         <TextView
             android:id="@+id/number_of_know"
             style="@style/semi_bold_15"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="7dp"
+            android:layout_height="16dp"
             android:text="2"
             android:textColor="#31A659"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -181,32 +181,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/light_orange_rounded_background"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout4"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
-
-        <TextView
-            android:id="@+id/textView5"
-            style="@style/semi_bold_15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/still_learning"
-            android:textColor="#FF9900" />
-
-        <TextView
-            android:id="@+id/number_of_still_learning"
-            style="@style/semi_bold_15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5"
-            android:textColor="#FF9900"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

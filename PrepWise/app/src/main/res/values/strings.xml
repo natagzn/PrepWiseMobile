@@ -178,7 +178,7 @@
     <string name="edit_set">Edit question set</string>
 
     <string name="view_flashcards">View flashcards</string>
-    <string name="continue_studying_the_set">Continue studying the set</string>
+    <string name="continue_studying_the_set">Continue studying the flashcards</string>
     <string name="return_to_set">Return to set</string>
     <string name="attention">Attention</string>
     <string name="all_questions_in_this_set_have_already_been_studied">All questions in this set have already been studied!</string>
@@ -192,5 +192,43 @@
     <string name="question_sent">Question sent</string>
     <string name="please_enter_a_question">Please enter a question</string>
     <string name="are_you_sure_you_want_to_delete_account">Are you sure you want to delete account?</string>
+
+    <string name="continue_viewing_the_set">Continue viewing the flashcards</string>
+    <string name="reviewed">Reviewed</string>
+
+    <string-array name="low_phrases">
+        <item>Don`t give up! Practice makes perfect!</item>
+        <item>Just the beginning, keep pushing!</item>
+        <item>You`re on your way, keep practicing!</item>
+        <item>Every mistake is a step closer to success!</item>
+        <item>Great start! Keep working on it!</item>
+    </string-array>
+    <string-array name="medium_phrases">
+        <item>You`re doing well, keep it up!</item>
+        <item>Almost there! Just a bit more effort!</item>
+        <item>Solid progress! Don`t stop now!</item>
+        <item>You`re improving! Keep up the great work!</item>
+        <item>On the right track! Stay focused!</item>
+    </string-array>
+    <string-array name="high_phrases">
+        <item>Amazing! You`re a pro at this!</item>
+        <item>Almost perfect! Well done!</item>
+        <item>Outstanding! Keep up the excellent work!</item>
+        <item>Master level! You`ve got this!</item>
+    </string-array>
+
+    <string-array name="random_phrases">
+        <item>Keep going! Every step counts!</item>
+        <item>You`re doing amazing!</item>
+        <item>Fantastic effort! Stay consistent!</item>
+        <item>Great job! Keep up the momentum!</item>
+        <item>You`re building knowledge step by step!</item>
+        <item>Well done! Keep going strong!</item>
+        <item>Progress feels great, doesn’t it?</item>
+        <item>You`re unstoppable!</item>
+        <item>Excellent work! Keep it up!</item>
+        <item>Persistence is key. Keep it up!</item>
+    </string-array>
+
 
 </resources>

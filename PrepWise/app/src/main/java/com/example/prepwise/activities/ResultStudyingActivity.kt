@@ -37,14 +37,17 @@ class ResultStudyingActivity : AppCompatActivity() {
         leftCountTxt.text = rightCount.toString()
         rightCountTxt.text = rightCount.toString()
 
+        // закриття сторінки
         findViewById<ImageView>(R.id.close).setOnClickListener{
             finish()
         }
 
+        // Повернення до сторінки про сет
         findViewById<TextView>(R.id.back_to_set).setOnClickListener{
             finish()
         }
 
+        // перезапуск сторінки вивчення карток
         findViewById<TextView>(R.id.restart).setOnClickListener {
             if (set != null && set!!.questions.any { !it.learned }) {
                 val intent = Intent(this, StudyFlascardActivity::class.java)
@@ -61,11 +64,26 @@ class ResultStudyingActivity : AppCompatActivity() {
                     .create()
                 dialog.show()
             }
+            finish()
         }
 
+        // встановлення результатів вивчення у вигляді відсотків
+        val percentage: Int = if (rightCount != 0) (learnedCount * 100) / rightCount else 0
+        findViewById<ProgressBar>(R.id.progress_bar).progress = percentage
+        findViewById<TextView>(R.id.progress_persent).text = "$percentage%"
 
-        val persent: Int = (learnedCount.toDouble() / rightCount * 100).toInt()
-        findViewById<ProgressBar>(R.id.progress_bar).progress = persent
-        findViewById<TextView>(R.id.progress_persent).text = persent.toString() + "%"
+        // встановлення мотиваціної фрази
+        val motivationTextView = findViewById<TextView>(R.id.motivation_text)
+        motivationTextView.text = getRandomComment(percentage)
+    }
+
+    // Отримання рандомної мотиваційної фраази
+    private fun getRandomComment(percentage: Int): String {
+        val phrasesArray = when {
+            percentage < 30 -> resources.getStringArray(R.array.low_phrases)
+            percentage < 80 -> resources.getStringArray(R.array.medium_phrases)
+            else -> resources.getStringArray(R.array.high_phrases)
+        }
+        return phrasesArray.random()
     }
 }
