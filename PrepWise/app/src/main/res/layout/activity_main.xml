@@ -38,8 +38,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="65dp"
                 android:background="@color/white"
-                app:labelVisibilityMode="labeled"
+                app:itemIconTint="@color/bottom_nav_item_color"
+                app:itemTextColor="@color/bottom_nav_item_color"
+                app:labelVisibilityMode="selected"
                 app:menu="@menu/bottom_menu" />
+
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 
@@ -49,8 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/white"
+            android:tintMode="multiply"
             android:src="@drawable/add_menu"
-            android:tint="@color/white"
             app:fabSize="normal"
             app:layout_anchor="@id/bottomAppBar"
             app:maxImageSize="40dp" />

@@ -9,4 +9,8 @@
     <color name="red">#F96F5D</color>
     <color name="yellow">#F4E04D</color>
     <color name="highlight">#FFE7C4</color>
+
+    <color name="active_color">#004466</color>
+    <color name="inactive_color">#9E9E9E</color>
+
 </resources>
