@@ -325,6 +325,7 @@ class ViewSetFragment : Fragment() {
 
         val users = arrayListOf(
             People(
+                id = 1,
                 userImg = "img_anna",
                 username = "Anna",
                 status = "active",
@@ -337,6 +338,7 @@ class ViewSetFragment : Fragment() {
                 resouces = arrayListOf()
             ),
             People(
+                id = 1,
                 userImg = "img_john",
                 username = "John",
                 status = "active",
@@ -349,6 +351,7 @@ class ViewSetFragment : Fragment() {
                 resouces = arrayListOf()
             ),
             People(
+                id = 1,
                 userImg = "img_nina",
                 username = "Nina",
                 status = "active",

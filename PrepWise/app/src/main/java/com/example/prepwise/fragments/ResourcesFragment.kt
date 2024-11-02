@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
@@ -48,15 +50,26 @@ class ResourcesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_resources, container, false)
 
-        recyclerViewResoure = view.findViewById(R.id.resource_list)
-        recyclerViewResoure.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapterResource = AdapterResource(resourceList, requireContext())
-        recyclerViewResoure.adapter = adapterResource
+        val contentLayout: LinearLayout = view.findViewById(R.id.content)
+        val emptyListTxt: TextView = view.findViewById(R.id.empty)
 
-        val spacingInDp = 10
-        val scale = requireContext().resources.displayMetrics.density
-        val spacingInPx = (spacingInDp * scale).toInt()
-        recyclerViewResoure.addItemDecoration(SpaceItemDecoration(spacingInPx))
+        if (resourceList.isEmpty()) {
+            emptyListTxt.visibility = View.VISIBLE
+            contentLayout.visibility = View.GONE
+        } else {
+            emptyListTxt.visibility = View.GONE
+            contentLayout.visibility = View.VISIBLE
+
+            recyclerViewResoure = view.findViewById(R.id.resource_list)
+            recyclerViewResoure.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapterResource = AdapterResource(resourceList, requireContext())
+            recyclerViewResoure.adapter = adapterResource
+
+            val spacingInDp = 10
+            val scale = requireContext().resources.displayMetrics.density
+            val spacingInPx = (spacingInDp * scale).toInt()
+            recyclerViewResoure.addItemDecoration(SpaceItemDecoration(spacingInPx))
+        }
 
         return view
     }

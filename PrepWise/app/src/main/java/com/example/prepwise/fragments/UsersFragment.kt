@@ -10,68 +10,64 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
-import com.example.prepwise.SetListProvider
 import com.example.prepwise.SpaceItemDecoration
-import com.example.prepwise.adapters.AdapterSet
-import com.example.prepwise.models.Set
+import com.example.prepwise.adapters.AdapterPeople
+import com.example.prepwise.adapters.AdapterResource
+import com.example.prepwise.models.People
 
+class UsersFragment : Fragment() {
 
-class SetsFragment : Fragment() {
-
-    private lateinit var setList: ArrayList<Set>
+    private lateinit var userList: ArrayList<People>
 
     companion object {
-        private const val ARG_SET_LIST = "set_list"
+        private const val ARG_USER_LIST = "user_list"
 
-        fun newInstance(setList: ArrayList<Set>): SetsFragment {
-            val fragment = SetsFragment()
+        fun newInstance(userList: ArrayList<People>): UsersFragment {
+            val fragment = UsersFragment()
             val args = Bundle()
-            args.putSerializable(ARG_SET_LIST, setList)
+            args.putSerializable(ARG_USER_LIST, userList)
             fragment.arguments = args
             return fragment
         }
     }
 
+    private var adapterUser: AdapterPeople? = null
+    private lateinit var recyclerViewUser: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             @Suppress("UNCHECKED_CAST")
-            setList = it.getSerializable(ARG_SET_LIST) as? ArrayList<Set> ?: arrayListOf()
+            userList = it.getSerializable(UsersFragment.ARG_USER_LIST) as? ArrayList<People> ?: arrayListOf()
         }
     }
-
-    private var adapterSet: AdapterSet? = null
-    private lateinit var recyclerViewSet: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_sets, container, false)
-
-        val contentLayout:LinearLayout = view.findViewById(R.id.content)
+        val view = inflater.inflate(R.layout.fragment_users, container, false)
         val emptyListTxt: TextView = view.findViewById(R.id.empty)
 
-        if (setList.isEmpty()) {
+        if (userList.isEmpty()) {
             emptyListTxt.visibility = View.VISIBLE
-            contentLayout.visibility = View.GONE
+            recyclerViewUser.visibility = View.GONE
         } else {
             emptyListTxt.visibility = View.GONE
-            contentLayout.visibility = View.VISIBLE
+            recyclerViewUser.visibility = View.VISIBLE
 
-            recyclerViewSet = view.findViewById(R.id.set_list)
-            recyclerViewSet.layoutManager =
+            recyclerViewUser = view.findViewById(R.id.user_list)
+            recyclerViewUser.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapterSet = AdapterSet(setList, requireContext(), parentFragmentManager,"with access")
-            recyclerViewSet.adapter = adapterSet
+            adapterUser = AdapterPeople(userList, requireContext(), parentFragmentManager)
+            recyclerViewUser.adapter = adapterUser
 
             val spacingInDp = 10
             val scale = requireContext().resources.displayMetrics.density
             val spacingInPx = (spacingInDp * scale).toInt()
-            recyclerViewSet.addItemDecoration(SpaceItemDecoration(spacingInPx))
+            recyclerViewUser.addItemDecoration(SpaceItemDecoration(spacingInPx))
         }
 
         return view
     }
 }
-

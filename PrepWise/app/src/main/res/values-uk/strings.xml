@@ -13,7 +13,7 @@
     <string name="description">Опис</string>
     <string name="free_trial">Безкоштовна версія</string>
     <string name="recommended_from_your_following">Рекомендовано від ваших друзів</string>
-    <string name="question_sets">Модулі питань</string>
+    <string name="sets">Модулі</string>
     <string name="resources">Ресурси</string>
     <string name="enter_your_request">Введіть свій запит</string>
     <string name="your_activity">Ваша активність</string>
@@ -176,7 +176,6 @@
     <string name="ask_for_help">попросити допомоги</string>
     <string name="look_answer">подивитися відповіді</string>
 
-    <string name="sets">модулі</string>
     <string name="edit_set">Редагування модулів</string>
 
     <string name="view_flashcards">Переглянути картки</string>
@@ -247,4 +246,20 @@
     <string name="None">Немає</string>
     <string name="View">Перегляд</string>
     <string name="Edit">Редагування</string>
+
+    <string name="all_results">All results</string>
+    <string name="users">Users</string>
+    <string name="Sets">Sets</string>
+    <string name="view_all">View all</string>
+
+    <string name="are_you_sure_you_want_to_unsubscribe">Ви справді хочете відписатись?</string>
+    <string name="unfollow">Відписатись</string>
+    <string name="follower">Підписник</string>
+    <string name="follow">Підписатись</string>
+
+    <string name="no_set_created_yet">Ще немає створених модулів</string>
+    <string name="no_resource_created_yet">Ще немає стоворених ресурсів</string>
+    <string name="no_shared_set_created_yet">Ще немає поширених модулів</string>
+    <string name="no_folder_created_yet">Ще немає створених папок</string>
+    <string name="no_users_found">Користувачів не знайдено</string>
 </resources>

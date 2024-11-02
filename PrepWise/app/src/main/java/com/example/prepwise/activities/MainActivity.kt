@@ -28,6 +28,7 @@ import com.example.prepwise.fragments.LibraryFragment
 import com.example.prepwise.fragments.LikedFragment
 import com.example.prepwise.fragments.ProfileFragment
 import com.example.prepwise.models.Folder
+import com.example.prepwise.models.People
 import com.example.prepwise.models.Resourse
 import com.example.prepwise.models.Set
 import com.example.prepwise.models.SharedSet
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         val sharedSetList: ArrayList<SharedSet> = arrayListOf()
         val resourceList: ArrayList<Resourse> = arrayListOf()
         val folderList: ArrayList<Folder> = arrayListOf()
+        val userList: ArrayList<People> = arrayListOf()
 
         fun getSetById(setId: Int): Set {
             return setList.find { it.id == setId }!!
@@ -48,6 +50,10 @@ class MainActivity : AppCompatActivity() {
 
         fun getFolderById(folderId: Int): Folder? {
             return folderList.find { it.id == folderId }
+        }
+
+        fun getUserById(userId: Int): People? {
+            return userList.find { it.id == userId }
         }
 
         fun dpToPx(dp: Int, context: Context): Int {
@@ -71,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         folderList.addAll(FolderListProvider.folderList)
         resourceList.addAll(ResourceListProvider.resourceList)
         sharedSetList.addAll(SharedSetListProvider.sharedSetList)
+        userList.addAll(SharedSetListProvider.peopleList)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE

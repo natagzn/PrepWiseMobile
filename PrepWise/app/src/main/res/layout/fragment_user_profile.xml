@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".fragments.UserProfileFragment">
 
     <LinearLayout
@@ -12,14 +13,13 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/r32q3sa5cfpw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/rn8qhyhtevn"
+                android:id="@+id/back"
                 android:layout_width="17dp"
                 android:layout_height="16dp"
                 android:layout_marginStart="15dp"
@@ -44,7 +44,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/r5mwovkeh31l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="15dp"
@@ -66,23 +65,21 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/rthyd3itqwh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/r2cg3wzg702b"
+                    android:id="@+id/number_of_following"
+                    style="@style/bold_20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginBottom="2dp"
                     android:text="10"
-                    style="@style/bold_20"
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/r7p5rjqswx5g"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="following"
@@ -97,13 +94,12 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/rm1rft0qiglm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/rovzhelmsk5g"
+                    android:id="@+id/number_of_followers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -114,7 +110,6 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/r7mug357w4yg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="followers"
@@ -128,7 +123,7 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/r92jwhieg8u"
+                android:id="@+id/status_btn"
                 android:layout_width="120dp"
                 android:layout_height="34dp"
                 android:background="@drawable/green_rounded_background"
@@ -136,7 +131,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/r0ugq7w3q5jii"
+                    android:id="@+id/people_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Following"
@@ -148,7 +143,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/white_80_background"
             android:elevation="4dp"
             android:orientation="vertical"
@@ -211,13 +206,15 @@
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/background">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/question_sets" />
+                android:text="@string/sets" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"

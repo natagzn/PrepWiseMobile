@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterFolder
+import com.example.prepwise.adapters.AdapterResource
 import com.example.prepwise.models.Folder
 
 
@@ -46,15 +49,27 @@ class FoldersFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_folders, container, false)
 
-        recyclerViewFolder = view.findViewById(R.id.folder_list)
-        recyclerViewFolder.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapterFolder = AdapterFolder(folderList, requireContext(), parentFragmentManager)
-        recyclerViewFolder.adapter = adapterFolder
+        val contentLayout: LinearLayout = view.findViewById(R.id.content)
+        val emptyListTxt: TextView = view.findViewById(R.id.empty)
 
-        val spacingInDp = 8
-        val scale = requireContext().resources.displayMetrics.density
-        val spacingInPx = (spacingInDp * scale).toInt()
-        recyclerViewFolder.addItemDecoration(SpaceItemDecoration(spacingInPx))
+        if (folderList.isEmpty()) {
+            emptyListTxt.visibility = View.VISIBLE
+            contentLayout.visibility = View.GONE
+        } else {
+            emptyListTxt.visibility = View.GONE
+            contentLayout.visibility = View.VISIBLE
+
+            recyclerViewFolder = view.findViewById(R.id.folder_list)
+            recyclerViewFolder.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapterFolder = AdapterFolder(folderList, requireContext(), parentFragmentManager)
+            recyclerViewFolder.adapter = adapterFolder
+
+            val spacingInDp = 8
+            val scale = requireContext().resources.displayMetrics.density
+            val spacingInPx = (spacingInDp * scale).toInt()
+            recyclerViewFolder.addItemDecoration(SpaceItemDecoration(spacingInPx))
+        }
+
         return view
     }
 

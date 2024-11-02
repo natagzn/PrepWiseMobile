@@ -1,5 +1,6 @@
 package com.example.prepwise
 
+import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.models.People
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
@@ -10,21 +11,23 @@ object SharedSetListProvider {
     // Створюємо список людей (People)
     val peopleList = arrayListOf(
         People(
+            id = 1,
             userImg = "img_anna",
-            username = "Anna",
-            status = "active",
+            username = "AnnaNahalkaaaaaaaa",
+            status = "Friends",
             numberOfFollowing = 150,
             numberOfFollowers = 300,
             description = "Loves teaching math",
             email = "anna@example.com",
             location = "Kyiv, Ukraine",
-            sets = arrayListOf(),
+            sets = arrayListOf(MainActivity.getSetById(1)),
             resouces = arrayListOf()
         ),
         People(
+            id = 2,
             userImg = "img_john",
             username = "John",
-            status = "active",
+            status = "Follower",
             numberOfFollowing = 200,
             numberOfFollowers = 500,
             description = "History enthusiast",
@@ -34,9 +37,10 @@ object SharedSetListProvider {
             resouces = arrayListOf()
         ),
         People(
+            id = 3,
             userImg = "img_nina",
             username = "Nina",
-            status = "active",
+            status = "Following",
             numberOfFollowing = 180,
             numberOfFollowers = 320,
             description = "Biology lover",
@@ -46,9 +50,10 @@ object SharedSetListProvider {
             resouces = arrayListOf()
         ),
         People(
+            id = 4,
             userImg = "img_paul",
             username = "Paul",
-            status = "active",
+            status = "Follower",
             numberOfFollowing = 220,
             numberOfFollowers = 430,
             description = "Physics enthusiast",
@@ -58,9 +63,10 @@ object SharedSetListProvider {
             resouces = arrayListOf()
         ),
         People(
+            id = 4,
             userImg = "img_sara",
             username = "Sara",
-            status = "active",
+            status = "Friends",
             numberOfFollowing = 170,
             numberOfFollowers = 290,
             description = "Chemistry teacher",

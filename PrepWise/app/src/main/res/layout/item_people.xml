@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:elevation="4dp"
     android:background="@drawable/white_rounded_background">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="15dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,28 +27,27 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/friend_status"
+                android:id="@+id/people_status"
                 style="@style/semi_bold_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/following"
+                android:text="@string/view_profile"
                 android:textColor="#FFFFFF"
                 android:visibility="visible" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:background="@drawable/blue_rounded_background"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="15dp"
                 android:paddingVertical="3dp">
 
                 <TextView
@@ -70,12 +70,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blue_rounded_background"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="15dp"
                 android:paddingVertical="3dp">
 
                 <TextView
@@ -92,7 +98,7 @@
                     style="@style/medium_11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/question_sets"
+                    android:text="@string/sets"
                     android:textColor="@color/black"
                     android:visibility="visible" />
             </LinearLayout>
@@ -105,6 +111,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingStart="6dp"
+        android:paddingEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
         app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +132,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="nahalkaanna"
-            style="@style/regular_16"
+            style="@style/light_15"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/black"/>
     </LinearLayout>
 
@@ -132,7 +142,7 @@
         android:id="@+id/linearLayout4"
         android:layout_width="2dp"
         android:layout_height="80dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:background="#E4E4E4"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout3"

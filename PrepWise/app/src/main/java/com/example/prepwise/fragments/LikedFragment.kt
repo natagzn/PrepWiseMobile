@@ -10,7 +10,6 @@ import com.example.prepwise.LikedFolderListProvider
 import com.example.prepwise.LikedResourceListProvider
 import com.example.prepwise.LikedSetListProvider
 import com.example.prepwise.R
-import com.example.prepwise.adapters.ViewPagerLibratyAdapter
 import com.example.prepwise.adapters.ViewPagerLikedAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,7 +37,7 @@ class LikedFragment : Fragment() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = getString(R.string.question_sets)
+                0 -> tab.text = getString(R.string.sets)
                 1 -> tab.text = getString(R.string.folders)
                 2 -> tab.text = getString(R.string.resources)
             }

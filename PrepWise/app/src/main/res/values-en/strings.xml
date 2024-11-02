@@ -13,7 +13,7 @@
     <string name="free_trial">Free trial</string>
     <string name="enter_your_request">Enter your request</string>
     <string name="recommended_from_your_following">Recommended from your following</string>
-    <string name="question_sets">Question sets</string>
+    <string name="sets">Sets</string>
     <string name="resources">Resources</string>
     <string name="your_activity">Your activity</string>
 
@@ -174,8 +174,6 @@
     <string name="search_friend">Search friend</string>
     <string name="ask_for_help">ask for help</string>
     <string name="look_answer">look answer</string>
-
-    <string name="sets">sets</string>
     <string name="edit_set">Edit question set</string>
 
     <string name="view_flashcards">View flashcards</string>
@@ -246,5 +244,21 @@ get back to you as soon as possible.</string>
     <string name="None">None</string>
     <string name="View">View</string>
     <string name="Edit">Edit</string>
+
+    <string name="all_results">All results</string>
+    <string name="users">Users</string>
+    <string name="Sets">Sets</string>
+    <string name="view_all">View all</string>
+
+    <string name="are_you_sure_you_want_to_unsubscribe">Are you sure you want to unfollow?</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="follower">Follower</string>
+    <string name="follow">Follow</string>
+
+    <string name="no_set_created_yet">No set created yet</string>
+    <string name="no_resource_created_yet">No resource created yet</string>
+    <string name="no_shared_set_created_yet">No shared set created yet</string>
+    <string name="no_folder_created_yet">No folder created yet</string>
+    <string name="no_users_found">No users found</string>
 
 </resources>

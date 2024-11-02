@@ -18,6 +18,7 @@ class FriendHelpDialog : DialogFragment() {
 
     val peopleList = arrayListOf(
         People(
+            id = 1,
             userImg = "img_anna",
             username = "Anna",
             status = "friend",
@@ -30,6 +31,7 @@ class FriendHelpDialog : DialogFragment() {
             resouces = arrayListOf()
         ),
         People(
+            id = 2,
             userImg = "img_john",
             username = "John",
             status = "friend",
@@ -42,6 +44,7 @@ class FriendHelpDialog : DialogFragment() {
             resouces = arrayListOf()
         ),
         People(
+            id = 3,
             userImg = "img_nina",
             username = "Nina",
             status = "friend",
@@ -54,6 +57,7 @@ class FriendHelpDialog : DialogFragment() {
             resouces = arrayListOf()
         ),
         People(
+            id = 4,
             userImg = "img_paul",
             username = "Paul",
             status = "friend",
@@ -66,6 +70,7 @@ class FriendHelpDialog : DialogFragment() {
             resouces = arrayListOf()
         ),
         People(
+            id = 5,
             userImg = "img_sara",
             username = "Sara",
             status = "friend",

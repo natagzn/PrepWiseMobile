@@ -32,6 +32,7 @@ class PeopleActivity : AppCompatActivity() {
 
         val followingList = arrayListOf(
             People(
+                id = 1,
                 userImg = "img1.png",
                 username = "User1",
                 status = "Following",
@@ -44,6 +45,7 @@ class PeopleActivity : AppCompatActivity() {
                 resouces = emptyResourcesList
             ),
             People(
+                id = 2,
                 userImg = "img2.png",
                 username = "User2",
                 status = "Following",
@@ -56,6 +58,7 @@ class PeopleActivity : AppCompatActivity() {
                 resouces = emptyResourcesList
             ),
             People(
+                id = 3,
                 userImg = "img6.png",
                 username = "User6",
                 status = "Friends",
@@ -71,6 +74,7 @@ class PeopleActivity : AppCompatActivity() {
 
         val followersList = arrayListOf(
             People(
+                id = 4,
                 userImg = "img3.png",
                 username = "User3",
                 status = "Followers",
@@ -83,6 +87,7 @@ class PeopleActivity : AppCompatActivity() {
                 resouces = emptyResourcesList
             ),
             People(
+                id = 5,
                 userImg = "img4.png",
                 username = "User4",
                 status = "Followers",
@@ -95,6 +100,7 @@ class PeopleActivity : AppCompatActivity() {
                 resouces = emptyResourcesList
             ),
             People(
+                id = 6,
                 userImg = "img6.png",
                 username = "User6",
                 status = "Friends",
@@ -110,6 +116,7 @@ class PeopleActivity : AppCompatActivity() {
 
         val friendsList = arrayListOf(
             People(
+                id = 6,
                 userImg = "img5.png",
                 username = "User5",
                 status = "Friends",
@@ -122,6 +129,7 @@ class PeopleActivity : AppCompatActivity() {
                 resouces = emptyResourcesList
             ),
             People(
+                id = 7,
                 userImg = "img6.png",
                 username = "User6",
                 status = "Friends",

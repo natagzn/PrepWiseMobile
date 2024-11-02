@@ -12,6 +12,8 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -36,6 +38,7 @@ import java.time.LocalDate
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
+import com.example.prepwise.fragments.SearchFragment
 
 class HomeFragment : Fragment() {
 
@@ -95,7 +98,29 @@ class HomeFragment : Fragment() {
             }
         }
 
+        var searchInput: EditText
+        searchInput = view.findViewById(R.id.input_search)
+
+        // Додати обробник для клавіші "Пошук" на клавіатурі
+        searchInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                openSearchFragment(searchInput.text.toString())
+                true
+            } else {
+                false
+            }
+        }
 
         return view
+    }
+
+    private fun openSearchFragment(query: String) {
+        val searchFragment = SearchFragment.newInstance(query)
+
+        // Замінюємо поточний фрагмент на SearchFragment
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, searchFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

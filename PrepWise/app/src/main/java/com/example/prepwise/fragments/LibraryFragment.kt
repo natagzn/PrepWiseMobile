@@ -4,19 +4,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.prepwise.FolderListProvider
 import com.example.prepwise.R
-import com.example.prepwise.ResourceListProvider
-import com.example.prepwise.SetListProvider
-import com.example.prepwise.SharedSetListProvider
 import com.example.prepwise.activities.MainActivity
-import com.example.prepwise.adapters.AdapterResource
 import com.example.prepwise.adapters.ViewPagerLibratyAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.MainScope
 import android.view.View as View1
 
 class LibraryFragment : Fragment() {
@@ -43,7 +36,7 @@ class LibraryFragment : Fragment() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = getString(R.string.question_sets)
+                0 -> tab.text = getString(R.string.sets)
                 1 -> tab.text = getString(R.string.folders)
                 2 -> tab.text = getString(R.string.shared)
                 3 -> tab.text = getString(R.string.resources)

@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
+import com.example.prepwise.adapters.AdapterResource
 import com.example.prepwise.adapters.AdapterSet
 import com.example.prepwise.adapters.AdapterSharedSet
 import com.example.prepwise.models.Set
@@ -46,16 +49,28 @@ class SharedFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_shared, container, false)
 
-        recyclerViewSharedSet = view.findViewById(R.id.shared_set_list)
-        recyclerViewSharedSet.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapterSharedSet = AdapterSharedSet(sharedList, requireContext())
-        recyclerViewSharedSet.adapter = adapterSharedSet
+        val contentLayout: LinearLayout = view.findViewById(R.id.content)
+        val emptyListTxt: TextView = view.findViewById(R.id.empty)
 
-        val spacingInDp = 10
-        val scale = requireContext().resources.displayMetrics.density
-        val spacingInPx = (spacingInDp * scale).toInt()
-        recyclerViewSharedSet.addItemDecoration(SpaceItemDecoration(spacingInPx))
+        if (sharedList.isEmpty()) {
+            emptyListTxt.visibility = View.VISIBLE
+            contentLayout.visibility = View.GONE
+        } else {
+            emptyListTxt.visibility = View.GONE
+            contentLayout.visibility = View.VISIBLE
+
+            recyclerViewSharedSet = view.findViewById(R.id.shared_set_list)
+            recyclerViewSharedSet.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapterSharedSet = AdapterSharedSet(sharedList, requireContext())
+            recyclerViewSharedSet.adapter = adapterSharedSet
+
+            val spacingInDp = 10
+            val scale = requireContext().resources.displayMetrics.density
+            val spacingInPx = (spacingInDp * scale).toInt()
+            recyclerViewSharedSet.addItemDecoration(SpaceItemDecoration(spacingInPx))
+        }
+
         return view
     }
 

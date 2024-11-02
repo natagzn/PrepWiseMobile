@@ -7,6 +7,7 @@
     tools:context=".fragments.ResourcesFragment">
 
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -118,5 +119,16 @@
             android:paddingHorizontal="5dp"
             android:scrollbars="vertical" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/empty"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/light_15"
+        android:visibility="gone"
+        android:textColor="@color/gray"
+        android:text="@string/no_resource_created_yet" />
 
 </FrameLayout>

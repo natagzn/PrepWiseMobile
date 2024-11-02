@@ -23,6 +23,7 @@ class NewFollowersFragment : DialogFragment() {
 
     val newFriendList = arrayListOf(
         People(
+            id = 1,
             userImg = "img1.png",
             username = "User1",
             status = "Follower",
@@ -35,6 +36,7 @@ class NewFollowersFragment : DialogFragment() {
             resouces = emptyResourcesList
         ),
         People(
+            id = 2,
             userImg = "img2.png",
             username = "User2",
             status = "Follower",
@@ -47,6 +49,7 @@ class NewFollowersFragment : DialogFragment() {
             resouces = emptyResourcesList
         ),
         People(
+            id = 3,
             userImg = "img6.png",
             username = "User6",
             status = "Friends",

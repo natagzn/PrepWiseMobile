@@ -108,9 +108,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:imeOptions="actionSearch"
                     android:hint="@string/enter_your_request"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <TextView
@@ -130,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/question_sets"
+                android:text="@string/sets"
                 android:textColor="@color/black" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -139,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingHorizontal="5dp"
-                android:scrollbars="horizontal" />
+                android:scrollbars="none" />
 
             <TextView
                 android:id="@+id/txt3"
@@ -157,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingHorizontal="5dp"
-                android:scrollbars="horizontal" />
+                android:scrollbars="none" />
 
             <TextView
                 android:id="@+id/txt4"
