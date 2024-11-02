@@ -122,7 +122,7 @@ object DialogUtils {
 
     // Функція для створення діалогового вікна щоб користувач задав питання у підримку
     fun showAnswerDialog(context: Context) {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_ask_a_question, null)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_support, null)
         val textQuestion: EditText = dialogView.findViewById(R.id.question_input)
         val applyButton: TextView = dialogView.findViewById(R.id.apply_button)
         val cancelButton: TextView = dialogView.findViewById(R.id.cancel_button)

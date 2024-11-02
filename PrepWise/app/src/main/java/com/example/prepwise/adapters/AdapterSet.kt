@@ -112,9 +112,8 @@ class AdapterSet(
             }
         }
 
-        // Додаємо клік на елемент
+        // клік на елемент
         holder.itemView.setOnClickListener {
-            // Передаємо дані через Bundle у фрагмент
             val fragment = ViewSetFragment.newInstance(set.id)
             fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)

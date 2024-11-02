@@ -35,7 +35,7 @@
 
     <string name="location">Розташування</string>
     <string name="my_people">Мої люди</string>
-    <string name="ask_a_question">Задати запитання</string>
+    <string name="support">Служба підримки</string>
     <string name="prepWise_premium">PrepWise Premium</string>
     <string name="language">Мова</string>
     <string name="english">Українська</string>
@@ -188,8 +188,10 @@
     <string name="describe_your_reason">Опишість вашу причину</string>
     <string name="please_enter_your_reason">Будь ласка введіть причину</string>
 
-    <string name="enter_the_text_of_your_question">Введіть ваше питання</string>
-    <string name="text">Текс...</string>
+    <string name="support_request">Служба підримки</string>
+    <string name="type_your_message_here">Введіть своє повідомлення тут...</string>
+    <string name="please_describe_your_issue_or_question_below">Будь ласка, опишіть свою проблему або запитання нижче, і наша служба підтримки зробить це
+ якомога швидше для вас.</string>
     <string name="send">Відправити</string>
     <string name="question_sent">Питання відправлено</string>
     <string name="please_enter_a_question">Будь ласка введіть питання</string>
@@ -237,5 +239,12 @@
     <string name="choose_an_action">Виберіть дію</string>
     <string name="report_sent_successfully_thank_you_for_your_help">Звіт успішно відправлено. Дякуємо за вашу допомогу!</string>
     <string name="report_this_user">Повідомити про цього користувача</string>
-    <string name="report_this_resourse">Повідомити про цей ресурс</string>
+    <string name="report_this_resource">Повідомити про цей ресурс</string>
+    <string name="question_from">Питання від</string>
+    <string name="your_answer">Ваша відповідь</string>
+
+    <string name="Share">Поширення</string>
+    <string name="None">Немає</string>
+    <string name="View">Перегляд</string>
+    <string name="Edit">Редагування</string>
 </resources>

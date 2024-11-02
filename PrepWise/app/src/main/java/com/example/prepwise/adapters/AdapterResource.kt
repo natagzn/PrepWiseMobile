@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
@@ -100,7 +98,7 @@ class AdapterResource(private val resourceList: ArrayList<Resourse>, private val
         }
 
         holder.report.setOnClickListener{
-            DialogUtils.showReportDialog(context, context.getString(R.string.report_this_resourse)) { selectedReason ->
+            DialogUtils.showReportDialog(context, context.getString(R.string.report_this_resource)) { selectedReason ->
                 Toast.makeText(context, context.getString(R.string.report_sent_successfully_thank_you_for_your_help), Toast.LENGTH_SHORT).show()
             }
         }

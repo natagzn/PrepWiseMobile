@@ -34,7 +34,7 @@
 
     <string name="location">Location</string>
     <string name="my_people">My People</string>
-    <string name="ask_a_question">Ask a Question</string>
+    <string name="support">Support</string>
     <string name="prepWise_premium">PrepWise Premium</string>
     <string name="language">Language</string>
     <string name="english">English</string>
@@ -186,8 +186,10 @@
     <string name="describe_your_reason">Describe your reason</string>
     <string name="please_enter_your_reason">Please enter your reason</string>
 
-    <string name="enter_the_text_of_your_question">Enter the text of your question</string>
-    <string name="text">text...</string>
+    <string name="support_request">Support Request</string>
+    <string name="type_your_message_here">Type your message here...</string>
+    <string name="please_describe_your_issue_or_question_below">Please describe your issue or question below, and our support team will
+get back to you as soon as possible.</string>
     <string name="send">Send</string>
     <string name="question_sent">Question sent</string>
     <string name="please_enter_a_question">Please enter a question</string>
@@ -235,7 +237,12 @@
     <string name="choose_an_action">Choose an action</string>
     <string name="report_sent_successfully_thank_you_for_your_help">Report sent successfully. Thank you for your help!</string>
     <string name="report_this_user">Report this user</string>
-    <string name="report_this_resourse">Report this resource</string>
+    <string name="report_this_resource">Report this resource</string>
+    <string name="question_from">Question from</string>
+    <string name="your_answer">Your answer</string>
 
-
+    <string name="Share">Share</string>
+    <string name="None">None</string>
+    <string name="View">View</string>
+    <string name="Edit">Edit</string>
 </resources>

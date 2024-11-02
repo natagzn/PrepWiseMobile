@@ -34,8 +34,10 @@ import com.example.prepwise.activities.NewSetActivity
 import com.example.prepwise.activities.PremiumActivity
 import com.example.prepwise.activities.StudyFlascardActivity
 import com.example.prepwise.activities.ViewFlashcardActivity
+import com.example.prepwise.adapters.AccessAdapter
 import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Folder
+import com.example.prepwise.models.People
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
 
@@ -185,26 +187,6 @@ class ViewSetFragment : Fragment() {
 
         // Відкриття сторінки вчивчення сета
         val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
-        /*studyFlashcards.setOnClickListener{
-            if(set!=null && set!!.questions.any{!it.learned}){
-                val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
-                intent.putExtra("setId", setId)
-                startActivity(intent)
-            }
-            else{
-                val dialog = AlertDialog.Builder(requireContext())
-                    .setTitle("Увага")
-                    .setMessage("Всі питання в цьому сеті вже вивчені!")
-                    .setPositiveButton("ОК") { dialog, _ -> dialog.dismiss() }
-                    .create()
-
-                dialog.show()
-
-
-            }
-
-        }*/
-
         studyFlashcards.setOnClickListener {
             if (set != null && set!!.questions.any { !it.learned }) {
                 val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
@@ -220,7 +202,6 @@ class ViewSetFragment : Fragment() {
                 dialog.show()
             }
         }
-
 
         // Відкриття сторінки перегляду питань сета
         val viewFlashcards: LinearLayout = view.findViewById(R.id.view_flashcards)
@@ -239,7 +220,6 @@ class ViewSetFragment : Fragment() {
             updateUI()
         }
     }
-
 
     private fun updateUI() {
         set?.let {
@@ -322,6 +302,10 @@ class ViewSetFragment : Fragment() {
 
         }
 
+        share.setOnClickListener{
+            showAccessDialog()
+        }
+
         close.setOnClickListener {
             dialog.dismiss()
         }
@@ -332,6 +316,81 @@ class ViewSetFragment : Fragment() {
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.BOTTOM)
     }
+
+    private fun showAccessDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_share_access, null)
+        val recyclerViewUsers: RecyclerView = dialogView.findViewById(R.id.recycler_view_users)
+        val confirmButton: TextView = dialogView.findViewById(R.id.confirm_button)
+        val cancelButton: TextView = dialogView.findViewById(R.id.cancel_button)
+
+        val users = arrayListOf(
+            People(
+                userImg = "img_anna",
+                username = "Anna",
+                status = "active",
+                numberOfFollowing = 150,
+                numberOfFollowers = 300,
+                description = "Loves teaching math",
+                email = "anna@example.com",
+                location = "Kyiv, Ukraine",
+                sets = arrayListOf(),
+                resouces = arrayListOf()
+            ),
+            People(
+                userImg = "img_john",
+                username = "John",
+                status = "active",
+                numberOfFollowing = 200,
+                numberOfFollowers = 500,
+                description = "History enthusiast",
+                email = "john@example.com",
+                location = "Lviv, Ukraine",
+                sets = arrayListOf(),
+                resouces = arrayListOf()
+            ),
+            People(
+                userImg = "img_nina",
+                username = "Nina",
+                status = "active",
+                numberOfFollowing = 180,
+                numberOfFollowers = 320,
+                description = "Biology lover",
+                email = "nina@example.com",
+                location = "Odesa, Ukraine",
+                sets = arrayListOf(),
+                resouces = arrayListOf()
+            )
+        )
+
+        val accessMap = mutableMapOf<String, String>()
+
+        val accessAdapter = AccessAdapter(users, requireContext()) { user, access ->
+            accessMap[user] = access
+        }
+        recyclerViewUsers.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewUsers.adapter = accessAdapter
+
+        val spacingInDp = 10
+        val scale = requireContext().resources.displayMetrics.density
+        val spacingInPx = (spacingInDp * scale).toInt()
+        recyclerViewUsers.addItemDecoration(SpaceItemDecoration(spacingInPx))
+
+        val dialog = AlertDialog.Builder(requireContext(), R.style.RoundedDialogTheme)
+            .setView(dialogView)
+            .create()
+
+        confirmButton.setOnClickListener {
+
+            dialog.dismiss()
+        }
+
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
 
     fun showSelectionDialog(
         title: String,
