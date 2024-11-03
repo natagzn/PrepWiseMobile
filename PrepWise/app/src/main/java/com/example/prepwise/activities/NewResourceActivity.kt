@@ -2,22 +2,18 @@ package com.example.prepwise.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 
 class NewResourceActivity : AppCompatActivity() {
@@ -46,11 +42,13 @@ class NewResourceActivity : AppCompatActivity() {
 
         val levelLayout: LinearLayout = findViewById(R.id.level)
         levelLayout.setOnClickListener {
-            showSelectionDialog(
+            DialogUtils.showSelectionPopup(
+                context = this,
+                anchorView = levelLayout,
                 title = getString(R.string.select_level),
                 items = levels,
                 selectedItemTextViewId = R.id.level_type,
-                dialogLayoutId = R.layout.dialog_level_selection,
+                dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
             )
         }
@@ -61,7 +59,7 @@ class NewResourceActivity : AppCompatActivity() {
                 title = getString(R.string.select_category),
                 items = categories,
                 selectedItemTextViewId = R.id.category_type,
-                dialogLayoutId = R.layout.dialog_level_selection,
+                dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
             )
         }

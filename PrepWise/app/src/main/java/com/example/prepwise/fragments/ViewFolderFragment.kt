@@ -27,6 +27,7 @@ import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.adapters.AdapterSetInFolder
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Set
+import java.time.format.DateTimeFormatter
 
 class ViewFolderFragment : Fragment() {
 
@@ -35,6 +36,7 @@ class ViewFolderFragment : Fragment() {
     private var folder: Folder? = null
 
     private lateinit var setFolderName: TextView
+    private lateinit var setDate: TextView
     private lateinit var setNumberOfSet: TextView
     private lateinit var setNumberOfQuestion: TextView
     private lateinit var setLike: ImageView
@@ -84,12 +86,16 @@ class ViewFolderFragment : Fragment() {
 
         setFolderName = view.findViewById(R.id.folder_name)
         setNumberOfSet = view.findViewById(R.id.number_of_sets)
+        setDate = view.findViewById(R.id.date)
         setNumberOfQuestion = view.findViewById(R.id.number_of_questions)
         setLike = view.findViewById(R.id.like)
 
         folder?.let {
             setFolderName.text = it.name
             setNumberOfSet.text = it.sets.size.toString()
+
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            setDate.text = it.date.format(formatter)
 
             val totalQuestions = it.sets.sumOf { set -> set.questions.size }
             setNumberOfQuestion.text = totalQuestions.toString()
@@ -115,6 +121,21 @@ class ViewFolderFragment : Fragment() {
         val backButton: ImageView = view.findViewById(R.id.back)
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        val sortButton: LinearLayout = view.findViewById(R.id.sort_btn)
+        sortButton.setOnClickListener {
+            val adapter = adapterSet
+            if (adapter != null) {
+                DialogUtils.showSortPopupMenu(
+                    requireContext(),
+                    anchorView = sortButton,
+                    list = setList,
+                    adapter = adapter,
+                    getDate = { it.date },
+                    getName = { it.name }
+                )
+            }
         }
 
         return view

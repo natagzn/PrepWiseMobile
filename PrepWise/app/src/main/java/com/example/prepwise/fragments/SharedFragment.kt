@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterResource
@@ -69,6 +70,22 @@ class SharedFragment : Fragment() {
             val scale = requireContext().resources.displayMetrics.density
             val spacingInPx = (spacingInDp * scale).toInt()
             recyclerViewSharedSet.addItemDecoration(SpaceItemDecoration(spacingInPx))
+
+            val sortButton: LinearLayout = view.findViewById(R.id.sort_btn)
+
+            sortButton.setOnClickListener {
+                val adapter = adapterSharedSet
+                if (adapter != null) {
+                    DialogUtils.showSortPopupMenu(
+                        requireContext(),
+                        anchorView = sortButton,
+                        list = sharedList,
+                        adapter = adapter,
+                        getDate = { it.date },
+                        getName = { it.name }
+                    )
+                }
+            }
         }
 
         return view

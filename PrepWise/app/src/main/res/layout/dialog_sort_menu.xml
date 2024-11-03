@@ -1,0 +1,64 @@
+<!-- res/layout/popup_sort_menu.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/white_rounded_background"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/sort_created_old_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/created_old_new"
+        style="@style/regular_16"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DBDBDB"/>
+
+    <TextView
+        android:id="@+id/sort_created_new_old"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/created_new_old"
+        android:padding="8dp"
+        style="@style/regular_16"
+        android:background="?attr/selectableItemBackground"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DBDBDB"/>
+
+    <TextView
+        android:id="@+id/sort_name_a_z"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name_a_z"
+        android:padding="8dp"
+        style="@style/regular_16"
+        android:background="?attr/selectableItemBackground"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DBDBDB"/>
+
+    <TextView
+        android:id="@+id/sort_name_z_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name_z_a"
+        android:padding="8dp"
+        style="@style/regular_16"
+        android:background="?attr/selectableItemBackground"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</LinearLayout>

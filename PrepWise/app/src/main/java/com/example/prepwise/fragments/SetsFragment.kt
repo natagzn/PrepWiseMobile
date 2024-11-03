@@ -1,14 +1,19 @@
 package com.example.prepwise.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.PopupMenu
+import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SetListProvider
 import com.example.prepwise.SpaceItemDecoration
@@ -69,6 +74,23 @@ class SetsFragment : Fragment() {
             val scale = requireContext().resources.displayMetrics.density
             val spacingInPx = (spacingInDp * scale).toInt()
             recyclerViewSet.addItemDecoration(SpaceItemDecoration(spacingInPx))
+
+            val sortButton: LinearLayout = view.findViewById(R.id.sort_btn)
+
+            sortButton.setOnClickListener {
+                val adapter = adapterSet
+                if (adapter != null) {
+                    DialogUtils.showSortPopupMenu(
+                        requireContext(),
+                        anchorView = sortButton,
+                        list = setList,
+                        adapter = adapter,
+                        getDate = { it.date },
+                        getName = { it.name }
+                    )
+                }
+            }
+
         }
 
         return view

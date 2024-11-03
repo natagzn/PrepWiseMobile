@@ -2,6 +2,7 @@ package com.example.prepwise.fragments
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -16,6 +17,8 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.PopupMenu
+import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -24,14 +27,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
-import com.example.prepwise.DialogUtils.showReportDialog
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
-import com.example.prepwise.activities.LoginActivity
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewSetActivity
-import com.example.prepwise.activities.PremiumActivity
 import com.example.prepwise.activities.StudyFlascardActivity
 import com.example.prepwise.activities.ViewFlashcardActivity
 import com.example.prepwise.adapters.AccessAdapter
@@ -40,16 +40,19 @@ import com.example.prepwise.models.Folder
 import com.example.prepwise.models.People
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
+import java.time.format.DateTimeFormatter
 
 class ViewSetFragment : Fragment() {
 
     private lateinit var questionList: ArrayList<Question>
+    private lateinit var originalQuestionList: List<Question> // Початковий порядок
     private var setId: Int? = null
     private var set: Set? = null
 
     private lateinit var setName: TextView
     private lateinit var setLevel: TextView
     private lateinit var setUsername: TextView
+    private lateinit var setDate: TextView
     private lateinit var setNumberOfQuestions: TextView
     private lateinit var setAccessType: TextView
     private lateinit var setAccessImg: ImageView
@@ -82,6 +85,7 @@ class ViewSetFragment : Fragment() {
         setId?.let {
             set = MainActivity.getSetById(it)
             questionList = set?.questions ?: arrayListOf()
+            originalQuestionList = ArrayList(questionList) // Зберігаємо початковий порядок
         }
     }
 
@@ -115,6 +119,7 @@ class ViewSetFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
         setProgressPersent = view.findViewById(R.id.progress_persent)
         setKnow = view.findViewById(R.id.number_of_know)
+        setDate = view.findViewById(R.id.date)
         setStillLearning = view.findViewById(R.id.number_of_still_learning)
 
         set?.let {
@@ -123,6 +128,9 @@ class ViewSetFragment : Fragment() {
             setUsername.text = it.username
             setNumberOfQuestions.text = it.questions.size.toString()
             setAccessType.text = it.access
+
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            setDate.text = it.date.format(formatter)
 
             if (it.access == "private") {
                 setAccessImg.setImageResource(R.drawable.resource_private)
@@ -211,7 +219,78 @@ class ViewSetFragment : Fragment() {
             startActivity(intent)
         }
 
+        //сортування питань
+        view.findViewById<LinearLayout>(R.id.sort).setOnClickListener {
+            showSortPopupMenu(requireContext(), it) { sortType ->
+                sortQuestions(sortType)
+            }
+        }
+
         return view
+    }
+
+    enum class SortType {
+        DEFAULT, ALPHABETICAL, BY_STATUS
+    }
+
+    fun showSortPopupMenu(
+        context: Context,
+        anchorView: View,
+        sortCallback: (SortType) -> Unit
+    ) {
+        // Інфлюємо макет для PopupWindow
+        val popupView = LayoutInflater.from(context).inflate(R.layout.dialog_sort_question_menu, null)
+        val popupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+
+        // Застосовуємо стиль для фону та тіні
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_green_rounded_background))
+        popupWindow.elevation = 8f
+
+        // Отримуємо посилання на елементи сортування
+        val sortDefault = popupView.findViewById<TextView>(R.id.sort_default)
+        val sortAlphabetical = popupView.findViewById<TextView>(R.id.sort_alphabetical)
+        val sortStatus = popupView.findViewById<TextView>(R.id.sort_status)
+
+        // Додаємо обробники кліків для кожного елементу сортування
+        sortDefault.setOnClickListener {
+            sortCallback(SortType.DEFAULT)
+            popupWindow.dismiss()
+        }
+
+        sortAlphabetical.setOnClickListener {
+            sortCallback(SortType.ALPHABETICAL)
+            popupWindow.dismiss()
+        }
+
+        sortStatus.setOnClickListener {
+            sortCallback(SortType.BY_STATUS)
+            popupWindow.dismiss()
+        }
+
+        // Показуємо PopupWindow під кнопкою
+        popupWindow.showAsDropDown(anchorView, 0, 10)
+    }
+
+    private fun sortQuestions(sortType: SortType) {
+        when (sortType) {
+            SortType.DEFAULT -> {
+                // Відновлюємо початковий порядок
+                questionList.clear()
+                questionList.addAll(originalQuestionList)
+            }
+            SortType.ALPHABETICAL -> {
+                // Сортування за абеткою
+                questionList.sortBy { it.content }
+            }
+            SortType.BY_STATUS -> {
+                // Розділення на два списки за статусом "Still learning" та "Already know"
+                val stillLearning = questionList.filter { !it.learned }
+                val alreadyKnow = questionList.filter { it.learned }
+                questionList.clear()
+                questionList.addAll(stillLearning + alreadyKnow)
+            }
+        }
+        adapterQuestion?.notifyDataSetChanged() // Оновлення адаптера після сортування
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -282,7 +361,7 @@ class ViewSetFragment : Fragment() {
 
         addToFolder.setOnClickListener {
             dialog.dismiss()
-            showSelectionDialog(getString(R.string.select_folder), MainActivity.folderList, dialogLayoutId = R.layout.dialog_level_selection, itemLayoutId = R.layout.dialog_item)
+            showSelectionDialog(getString(R.string.select_folder), MainActivity.folderList, dialogLayoutId = R.layout.dialog_select_selection, itemLayoutId = R.layout.dialog_item)
         }
 
         delete.setOnClickListener{

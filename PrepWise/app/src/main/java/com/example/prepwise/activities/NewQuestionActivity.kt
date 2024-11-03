@@ -40,7 +40,7 @@ class NewQuestionActivity : AppCompatActivity() {
         val visibilityLayout: LinearLayout = findViewById(R.id.set)
         visibilityLayout.setOnClickListener {
             // Інфлейт кастомного макету діалогу
-            val dialogView = layoutInflater.inflate(R.layout.dialog_level_selection, null)
+            val dialogView = layoutInflater.inflate(R.layout.dialog_select_selection, null)
             val listView: ListView = dialogView.findViewById(R.id.levels_list)
             val dialogTitle: TextView = dialogView.findViewById(R.id.dialog_title)
             dialogTitle.text = getString(R.string.select_set)

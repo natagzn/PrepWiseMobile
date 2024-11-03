@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.ResourceListProvider
 import com.example.prepwise.SpaceItemDecoration
@@ -69,6 +70,21 @@ class ResourcesFragment : Fragment() {
             val scale = requireContext().resources.displayMetrics.density
             val spacingInPx = (spacingInDp * scale).toInt()
             recyclerViewResoure.addItemDecoration(SpaceItemDecoration(spacingInPx))
+
+            val sortButton: LinearLayout = view.findViewById(R.id.sort_btn)
+            sortButton.setOnClickListener {
+                val adapter = adapterResource
+                if (adapter != null) {
+                    DialogUtils.showSortPopupMenu(
+                        requireContext(),
+                        anchorView = sortButton,
+                        list = resourceList,
+                        adapter = adapter,
+                        getDate = { it.date },
+                        getName = { it.articleBook }
+                    )
+                }
+            }
         }
 
         return view

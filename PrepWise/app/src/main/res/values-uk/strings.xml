@@ -109,8 +109,8 @@
     <string name="accept">Прийняти</string>
     <string name="follow_back">Follow back</string>
 
-    <string name="private_str">приватний</string>
-    <string name="public_str">публічний</string>
+    <string name="private_str">private</string>
+    <string name="public_str">public</string>
 
     <string name="view_profile">Переглянути профіль</string>
     <string name="sharing">поширено</string>
@@ -262,4 +262,15 @@
     <string name="no_shared_set_created_yet">Ще немає поширених модулів</string>
     <string name="no_folder_created_yet">Ще немає створених папок</string>
     <string name="no_users_found">Користувачів не знайдено</string>
+
+
+
+    <string name="created_old_new">Створення (старе -> нове)</string>
+    <string name="created_new_old">Створення (нове -> старе)</string>
+    <string name="name_a_z">Назва (А -> Я)</string>
+    <string name="name_z_a">Назва (Я -> А)</string>
+    <string name="Default">За замовчуванням</string>
+    <string name="alphabetical">За алфавітом</string>
+    <string name="by_status">За статусом</string>
+
 </resources>

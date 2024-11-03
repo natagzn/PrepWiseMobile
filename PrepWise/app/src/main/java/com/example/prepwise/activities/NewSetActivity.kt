@@ -1,8 +1,9 @@
 package com.example.prepwise.activities
 
-import android.content.Intent
+import android.app.Activity
 import android.os.Bundle
 import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -10,17 +11,20 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddQuestion
@@ -73,21 +77,25 @@ class NewSetActivity : AppCompatActivity() {
         }
 
         levelLayout.setOnClickListener {
-            showSelectionDialog(
+            DialogUtils.showSelectionPopup(
+                context = this,
+                anchorView = levelLayout,
                 title = getString(R.string.select_level),
                 items = levels,
                 selectedItemTextViewId = R.id.level_type,
-                dialogLayoutId = R.layout.dialog_level_selection,
+                dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
             )
         }
 
         accessLayout.setOnClickListener {
-            showSelectionDialog(
+            DialogUtils.showSelectionPopup(
+                context = this,
+                anchorView = accessLayout,
                 title = getString(R.string.select_visibility),
                 items = visibility,
                 selectedItemTextViewId = R.id.access_type,
-                dialogLayoutId = R.layout.dialog_level_selection,
+                dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
             )
         }
@@ -110,7 +118,8 @@ class NewSetActivity : AppCompatActivity() {
         recyclerView.addItemDecoration(SpaceItemDecoration(spacingInPx))
     }
 
-    fun showSelectionDialog(
+    fun showSelectionPopup(
+        anchorView: View,
         title: String,
         items: Array<String>,
         selectedItemTextViewId: Int,
@@ -118,38 +127,42 @@ class NewSetActivity : AppCompatActivity() {
         itemLayoutId: Int
     ) {
         // Інфлейт кастомного макету діалогу
-        val dialogView = layoutInflater.inflate(dialogLayoutId, null)
-        val listView: ListView = dialogView.findViewById(R.id.levels_list)
-        val dialogTitle: TextView = dialogView.findViewById(R.id.dialog_title)
+        val popupView = LayoutInflater.from(anchorView.context).inflate(dialogLayoutId, null)
+        val listView: ListView = popupView.findViewById(R.id.levels_list)
+        val dialogTitle: TextView = popupView.findViewById(R.id.dialog_title)
         dialogTitle.text = title
 
         // Створюємо адаптер для елементів
-        val adapter = object : ArrayAdapter<String>(this, itemLayoutId, items) {
+        val adapter = object : ArrayAdapter<String>(anchorView.context, itemLayoutId, items) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: layoutInflater.inflate(itemLayoutId, parent, false)
+                val view = convertView ?: LayoutInflater.from(parent.context).inflate(itemLayoutId, parent, false)
                 val textView: TextView = view.findViewById(R.id.level_item)
                 textView.text = getItem(position)
-
                 return view
             }
         }
         listView.adapter = adapter
 
-        // Створюємо AlertDialog з кастомним макетом
-        val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
-            .setView(dialogView)
-
-        val dialog = builder.create()
+        // Створюємо PopupWindow
+        val popupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(anchorView.context, R.drawable.white_green_rounded_background)) // Додайте фон, якщо потрібно
+        popupWindow.elevation = 8f
 
         // Обробка вибору елемента
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = items[position]
-            val selectedTextView: TextView = findViewById(selectedItemTextViewId)
+            val selectedTextView: TextView = (anchorView.context as Activity).findViewById(selectedItemTextViewId)
             selectedTextView.text = selectedItem
-            dialog.dismiss()
+            popupWindow.dismiss()
         }
 
-        dialog.show()
+        // Відображення PopupWindow біля anchorView
+        popupWindow.showAsDropDown(anchorView, 0, 0)
     }
 
     private fun loadDataForEditing(setId: Int) {

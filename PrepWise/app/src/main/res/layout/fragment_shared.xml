@@ -33,6 +33,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:imeOptions="actionSearch"
                 android:hint="@string/search_shared_sets"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -46,7 +49,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/sort"
+                android:id="@+id/sort_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:background="@drawable/gray_rounded_stroke"
@@ -122,4 +125,11 @@
         android:visibility="gone"
         android:textColor="@color/gray"
         android:text="@string/no_shared_set_created_yet" />
+
+    <View
+        android:id="@+id/dim_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7C000000"
+        android:visibility="gone" />
 </FrameLayout>

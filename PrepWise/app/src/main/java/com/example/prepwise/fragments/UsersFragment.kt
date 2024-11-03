@@ -48,6 +48,7 @@ class UsersFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_users, container, false)
         val emptyListTxt: TextView = view.findViewById(R.id.empty)
+        recyclerViewUser = view.findViewById(R.id.user_list)
 
         if (userList.isEmpty()) {
             emptyListTxt.visibility = View.VISIBLE
@@ -56,7 +57,6 @@ class UsersFragment : Fragment() {
             emptyListTxt.visibility = View.GONE
             recyclerViewUser.visibility = View.VISIBLE
 
-            recyclerViewUser = view.findViewById(R.id.user_list)
             recyclerViewUser.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapterUser = AdapterPeople(userList, requireContext(), parentFragmentManager)

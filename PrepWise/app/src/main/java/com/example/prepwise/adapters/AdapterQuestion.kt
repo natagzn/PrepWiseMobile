@@ -27,6 +27,9 @@ class AdapterQuestion(
         val setQuestion: TextView = itemView.findViewById(R.id.question)
         val setAnswer: TextView = itemView.findViewById(R.id.answer)
         val help: ImageView = itemView.findViewById(R.id.help)
+
+        val knowStatus: TextView = itemView.findViewById(R.id.status_know)
+        val stillLearningStatus: TextView = itemView.findViewById(R.id.status_still_learning)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SetViewHolder {
@@ -42,6 +45,15 @@ class AdapterQuestion(
         holder.help.setOnClickListener { view ->
             showPopupMenu(view)
         }
+
+        if(question.learned){
+            holder.knowStatus.visibility = View.VISIBLE
+            holder.stillLearningStatus.visibility = View.GONE
+        }
+        else{
+            holder.knowStatus.visibility = View.GONE
+            holder.stillLearningStatus.visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int {
@@ -51,7 +63,6 @@ class AdapterQuestion(
     private fun showPopupMenu(view: View) {
         val popup = PopupMenu(ContextThemeWrapper(context, R.style.CustomPopupMenu), view)
         popup.menuInflater.inflate(R.menu.popup_set_menu, popup.menu)
-
 
         // для відображення іконок в меню
         try {

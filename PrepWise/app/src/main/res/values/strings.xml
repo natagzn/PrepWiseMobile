@@ -260,4 +260,16 @@ get back to you as soon as possible.</string>
     <string name="no_folder_created_yet">No folder created yet</string>
     <string name="no_users_found">No users found</string>
 
+    <string name="no_results_for_sets">No results for sets</string>
+    <string name="no_results_for_resources">No results for resources</string>
+    <string name="no_results_for_users">No results for users</string>
+
+    <string name="created_old_new">Created (old -> new)</string>
+    <string name="created_new_old">Created (new -> old)</string>
+    <string name="name_a_z">Name (A -> Z)</string>
+    <string name="name_z_a">Name (Z -> A)</string>
+    <string name="Default">Default</string>
+    <string name="alphabetical">Alphabetical</string>
+    <string name="by_status">By status</string>
+
 </resources>

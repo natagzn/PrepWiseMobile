@@ -14,9 +14,9 @@ object SetListProvider {
             access = "public",
             date = LocalDate.of(2023, 10, 1),
             questions = arrayListOf(
-                Question("What is Activity?", "A component in Android", false),
-                Question("What is Fragment?", "Part of a UI", true),
                 Question("What is overfitting?", "A modeling error due to excessive complexity.", false),
+                Question("What is Fragment?", "Part of a UI", true),
+                Question("What is Activity?", "A component in Android", false),
                 Question("What is a variable?", "A container for data", false)
             ),
             username = "dev_junior",

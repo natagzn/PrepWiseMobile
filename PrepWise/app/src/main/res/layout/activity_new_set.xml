@@ -188,7 +188,7 @@
         app:layout_constraintBottom_toTopOf="@+id/add_btn"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="-47dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -202,5 +202,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/add_btn"
         tools:layout_editor_absoluteX="15dp" />
+
+    <View
+        android:id="@+id/dim_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7C000000"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

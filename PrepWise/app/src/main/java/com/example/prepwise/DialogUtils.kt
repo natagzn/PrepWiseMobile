@@ -1,18 +1,27 @@
 package com.example.prepwise
 
+import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ListView
+import android.widget.PopupWindow
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
+import java.time.LocalDate
+import java.util.Date
 
 object DialogUtils {
     fun showConfirmationDialog(
@@ -150,5 +159,139 @@ object DialogUtils {
         dialog.show()
     }
 
+    fun showSelectionPopup(
+        context: Context,
+        anchorView: View,
+        title: String,
+        items: Array<String>,
+        selectedItemTextViewId: Int,
+        dialogLayoutId: Int,
+        itemLayoutId: Int
+    ) {
+        // Інфлейт кастомного макету діалогу
+        val popupView = LayoutInflater.from(context).inflate(dialogLayoutId, null)
+        val listView: ListView = popupView.findViewById(R.id.levels_list)
+        val dialogTitle: TextView = popupView.findViewById(R.id.dialog_title)
+        dialogTitle.text = title
+
+        // Створюємо адаптер для елементів
+        val adapter = object : ArrayAdapter<String>(context, itemLayoutId, items) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = convertView ?: LayoutInflater.from(parent.context).inflate(itemLayoutId, parent, false)
+                val textView: TextView = view.findViewById(R.id.level_item)
+                textView.text = getItem(position)
+                return view
+            }
+        }
+        listView.adapter = adapter
+
+        // Створюємо PopupWindow
+        val popupWindow = PopupWindow(
+            popupView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_green_rounded_background))
+        popupWindow.elevation = 8f
+
+        val dimBackground = (context as Activity).findViewById<View>(R.id.dim_background)
+        dimBackground.visibility = View.VISIBLE
+
+        popupWindow.setOnDismissListener {
+            dimBackground.visibility = View.GONE
+        }
+
+        // Обробка вибору елемента
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val selectedItem = items[position]
+            val selectedTextView: TextView = (context as Activity).findViewById(selectedItemTextViewId)
+            selectedTextView.text = selectedItem
+            popupWindow.dismiss()
+        }
+
+        // Відображення PopupWindow біля anchorView
+        popupWindow.showAsDropDown(anchorView, 0, 10)
+    }
+
+    fun <T> showSortPopupMenu(
+        context: Context,
+        anchorView: View,
+        list: MutableList<T>,
+        adapter: RecyclerView.Adapter<*>,
+        getDate: ((T) -> LocalDate)? = null,
+        getName: ((T) -> String)? = null
+    ) {
+        // Інфлюємо макет для PopupWindow
+        val popupView = LayoutInflater.from(context).inflate(R.layout.dialog_sort_menu, null)
+        val popupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_green_rounded_background))
+        popupWindow.elevation = 8f
+
+        val dimBackground = (context as Activity).findViewById<View>(R.id.dim_background)
+        dimBackground.visibility = View.VISIBLE
+
+        popupWindow.setOnDismissListener {
+            dimBackground.visibility = View.GONE
+        }
+
+        // Отримуємо посилання на елементи сортування
+        val sortCreatedOldNew = popupView.findViewById<TextView>(R.id.sort_created_old_new)
+        val sortCreatedNewOld = popupView.findViewById<TextView>(R.id.sort_created_new_old)
+        val sortNameAZ = popupView.findViewById<TextView>(R.id.sort_name_a_z)
+        val sortNameZA = popupView.findViewById<TextView>(R.id.sort_name_z_a)
+
+        // Додаємо обробники кліків
+        sortCreatedOldNew.setOnClickListener {
+            if (getDate != null) sortListByDate(list, adapter, ascending = true, getDate)
+            popupWindow.dismiss()
+        }
+
+        sortCreatedNewOld.setOnClickListener {
+            if (getDate != null) sortListByDate(list, adapter, ascending = false, getDate)
+            popupWindow.dismiss()
+        }
+
+        sortNameAZ.setOnClickListener {
+            if (getName != null) sortListByName(list, adapter, ascending = true, getName)
+            popupWindow.dismiss()
+        }
+
+        sortNameZA.setOnClickListener {
+            if (getName != null) sortListByName(list, adapter, ascending = false, getName)
+            popupWindow.dismiss()
+        }
+
+        popupWindow.showAsDropDown(anchorView, 0, 10)
+    }
+
+    private fun <T> sortListByDate(
+        list: MutableList<T>,
+        adapter: RecyclerView.Adapter<*>,
+        ascending: Boolean,
+        getDate: (T) -> LocalDate
+    ) {
+        if (ascending) {
+            list.sortBy { getDate(it) }
+        } else {
+            list.sortByDescending { getDate(it) }
+        }
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun <T> sortListByName(
+        list: MutableList<T>,
+        adapter: RecyclerView.Adapter<*>,
+        ascending: Boolean,
+        getName: (T) -> String
+    ) {
+        if (ascending) {
+            list.sortBy { getName(it) }
+        } else {
+            list.sortByDescending { getName(it) }
+        }
+        adapter.notifyDataSetChanged()
+    }
 }
 
