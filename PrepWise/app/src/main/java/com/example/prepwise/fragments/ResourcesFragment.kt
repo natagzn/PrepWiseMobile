@@ -21,6 +21,7 @@ import com.example.prepwise.models.Resourse
 class ResourcesFragment : Fragment() {
 
     private lateinit var resourceList: ArrayList<Resourse>
+    private var selectedCategories = mutableListOf<String>()
 
     companion object {
         private const val ARG_PESOURCE_LIST = "resource_list"
@@ -85,9 +86,28 @@ class ResourcesFragment : Fragment() {
                     )
                 }
             }
+
+            val filterBtn: LinearLayout = view.findViewById(R.id.filter_btn)
+            filterBtn.setOnClickListener{
+                DialogUtils.showFilterResourcePopup(
+                    context = requireContext(),
+                    anchorView = filterBtn,
+                    onApplyFilters = { selectedCategories ->
+                        this.selectedCategories = selectedCategories.toMutableList()
+                        applyFilters(selectedCategories)
+                    },
+                    currentCategories = selectedCategories
+                )
+            }
         }
 
         return view
     }
 
+    private fun applyFilters(
+        selectedCategories: List<String>
+    ) {
+        val filteredList = resourceList.filter { resource -> selectedCategories.isEmpty() || resource.category in selectedCategories }
+        adapterResource?.updateData(filteredList)
+    }
 }

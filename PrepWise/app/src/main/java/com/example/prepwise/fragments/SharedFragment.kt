@@ -12,22 +12,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
-import com.example.prepwise.adapters.AdapterResource
-import com.example.prepwise.adapters.AdapterSet
 import com.example.prepwise.adapters.AdapterSharedSet
-import com.example.prepwise.models.Set
 import com.example.prepwise.models.SharedSet
 
 class SharedFragment : Fragment() {
 
     private lateinit var sharedList: ArrayList<SharedSet>
+    private var selectedCategories = mutableListOf<String>()
+    private var selectedLevels = mutableListOf<String>()
+    private var selectedAccesses = mutableListOf<String>()
+    private var paramPage: String = "Library"
+
     companion object {
         private const val ARG_SHARED_LIST = "shared_list"
+        private const val ARG_PARAM_PAGE = "param_page"
 
-        fun newInstance(sharedList: ArrayList<SharedSet>): SharedFragment {
+        fun newInstance(sharedList: ArrayList<SharedSet>, paramPage: String): SharedFragment {
             val fragment = SharedFragment()
             val args = Bundle()
             args.putSerializable(ARG_SHARED_LIST, sharedList)
+            args.putString(ARG_PARAM_PAGE, paramPage)
             fragment.arguments = args
             return fragment
         }
@@ -38,6 +42,7 @@ class SharedFragment : Fragment() {
         arguments?.let {
             @Suppress("UNCHECKED_CAST")
             sharedList = it.getSerializable(ARG_SHARED_LIST) as? ArrayList<SharedSet> ?: arrayListOf()
+            paramPage = it.getSerializable(ARG_PARAM_PAGE) as? String ?: "Library"
         }
     }
 
@@ -88,7 +93,41 @@ class SharedFragment : Fragment() {
             }
         }
 
+        val filterBtn: LinearLayout = view.findViewById(R.id.filter_btn)
+        var showAccess = false
+        if(paramPage == "Library" || paramPage == "Liked") showAccess = true
+        filterBtn.setOnClickListener{
+            DialogUtils.showFilterPopup(
+                context = requireContext(),
+                anchorView = filterBtn,
+                onApplyFilters = { selectedCategories, selectedLevels, selectedAccesses ->
+                    this.selectedCategories = selectedCategories.toMutableList()
+                    this.selectedLevels = selectedLevels.toMutableList()
+                    this.selectedAccesses = selectedAccesses.toMutableList()
+                    applyFilters(selectedCategories, selectedLevels, selectedAccesses)
+                },
+                accessOptions = listOf("sharing", "view", "edit"),
+                currentCategories = selectedCategories,
+                currentLevels = selectedLevels,
+                currentAccesses = selectedAccesses,
+                showAccess
+            )
+        }
         return view
     }
 
+    // Функція для застосування фільтрів
+    private fun applyFilters(
+        selectedCategories: List<String>,
+        selectedLevels: List<String>,
+        selectedAccesses: List<String>
+    ) {
+        val filteredList = sharedList.filter { set ->
+            (selectedCategories.isEmpty() || set.categories.any { it in selectedCategories }) &&
+                    (selectedLevels.isEmpty() || set.level in selectedLevels) &&
+                    (selectedAccesses.isEmpty() || set.type in selectedAccesses)
+        }
+
+        adapterSharedSet?.updateData(filteredList)
+    }
 }

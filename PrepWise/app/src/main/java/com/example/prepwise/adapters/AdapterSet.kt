@@ -16,7 +16,7 @@ import com.example.prepwise.models.Set
 import java.time.format.DateTimeFormatter
 
 class AdapterSet(
-    private val setList: ArrayList<Set>,
+    private var setList: ArrayList<Set>,
     private val context: Context,
     private val fragmentManager: FragmentManager,
     val param: String
@@ -125,6 +125,11 @@ class AdapterSet(
     // Повертаємо кількість елементів у списку
     override fun getItemCount(): Int {
         return setList.size
+    }
+
+    fun updateData(newList: List<Set>) {
+        setList = newList as ArrayList<Set>
+        notifyDataSetChanged() // Оновлення адаптера з новими даними
     }
 
     // Функція для конвертації dp в пікселі

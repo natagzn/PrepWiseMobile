@@ -25,11 +25,11 @@ class ViewPagerLibratyAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> SetsFragment.newInstance(setsList)
+            0 -> SetsFragment.newInstance(setsList, "Library")
             1 -> FoldersFragment.newInstance(foldersList)
-            2 -> SharedFragment.newInstance(sharedList)
+            2 -> SharedFragment.newInstance(sharedList, "Library")
             3 -> ResourcesFragment.newInstance(resourcesList)
-            else -> SetsFragment.newInstance(setsList)
+            else -> SetsFragment.newInstance(setsList, "Library")
         }
     }
 }

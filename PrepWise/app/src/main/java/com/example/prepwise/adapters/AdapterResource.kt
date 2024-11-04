@@ -12,9 +12,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
+import com.example.prepwise.models.Set
 import java.time.format.DateTimeFormatter
 
-class AdapterResource(private val resourceList: ArrayList<Resourse>, private val context: Context) :
+class AdapterResource(private var resourceList: ArrayList<Resourse>, private val context: Context) :
     RecyclerView.Adapter<AdapterResource.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
@@ -118,6 +119,11 @@ class AdapterResource(private val resourceList: ArrayList<Resourse>, private val
             }
             true
         }
+    }
+
+    fun updateData(newList: List<Resourse>) {
+        resourceList = newList as ArrayList<Resourse>
+        notifyDataSetChanged() // Оновлення адаптера з новими даними
     }
 
     // Повертаємо кількість елементів у списку

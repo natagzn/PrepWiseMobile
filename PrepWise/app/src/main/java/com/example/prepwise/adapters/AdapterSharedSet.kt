@@ -10,10 +10,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
+import com.example.prepwise.models.Set
 import com.example.prepwise.models.SharedSet
 import java.time.format.DateTimeFormatter
 
-class AdapterSharedSet(private val sharingSetList: ArrayList<SharedSet>, private val context: Context) :
+class AdapterSharedSet(private var sharingSetList: ArrayList<SharedSet>, private val context: Context) :
     RecyclerView.Adapter<AdapterSharedSet.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
@@ -96,6 +97,11 @@ class AdapterSharedSet(private val sharingSetList: ArrayList<SharedSet>, private
                 holder.setLike.setTag(R.id.set_like_tag, R.drawable.not_save)
             }
         }
+    }
+
+    fun updateData(newList: List<Set>) {
+        sharingSetList = newList as ArrayList<SharedSet>
+        notifyDataSetChanged() // Оновлення адаптера з новими даними
     }
 
     // Повертаємо кількість елементів у списку

@@ -23,10 +23,10 @@ class ViewPagerLikedAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> SetsFragment.newInstance(setsList)
+            0 -> SetsFragment.newInstance(setsList, "Liked")
             1 -> FoldersFragment.newInstance(foldersList)
             2 -> ResourcesFragment.newInstance(resourcesList)
-            else -> SetsFragment.newInstance(setsList)
+            else -> SetsFragment.newInstance(setsList, "Liked")
         }
     }
 }

@@ -265,12 +265,15 @@
 
 
 
-    <string name="created_old_new">Створення (старе -> нове)</string>
-    <string name="created_new_old">Створення (нове -> старе)</string>
+    <string name="created_old_new">Дата (старі -> нові)</string>
+    <string name="created_new_old">Дата (нові -> старі)</string>
     <string name="name_a_z">Назва (А -> Я)</string>
     <string name="name_z_a">Назва (Я -> А)</string>
     <string name="Default">За замовчуванням</string>
     <string name="alphabetical">За алфавітом</string>
     <string name="by_status">За статусом</string>
+
+    <string name="reset">Скинути</string>
+    <string name="type">Тип</string>
 
 </resources>

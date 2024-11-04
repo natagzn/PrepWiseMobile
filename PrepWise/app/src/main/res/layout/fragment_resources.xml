@@ -88,7 +88,7 @@
                 android:layout_weight="1" />
 
             <LinearLayout
-                android:id="@+id/filter"
+                android:id="@+id/filter_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
                 android:background="@drawable/gray_rounded_stroke"
