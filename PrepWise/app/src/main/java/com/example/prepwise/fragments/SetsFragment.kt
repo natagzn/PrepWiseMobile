@@ -24,6 +24,10 @@ class SetsFragment : Fragment() {
     private var selectedAccesses = mutableListOf<String>()
     private var paramPage: String = "Library"
 
+    private lateinit var contentLayout: LinearLayout
+    private lateinit var emptyListTxt: TextView
+    private lateinit var emptyFilteredListTxt: TextView
+
     companion object {
         private const val ARG_SET_LIST = "set_list"
         private const val ARG_PARAM_PAGE = "param_page"
@@ -56,8 +60,9 @@ class SetsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sets, container, false)
 
-        val contentLayout:LinearLayout = view.findViewById(R.id.content)
-        val emptyListTxt: TextView = view.findViewById(R.id.empty)
+        contentLayout = view.findViewById(R.id.content)
+        emptyListTxt = view.findViewById(R.id.empty)
+        emptyFilteredListTxt = view.findViewById(R.id.empty_filter)
 
         if (setList.isEmpty()) {
             emptyListTxt.visibility = View.VISIBLE
@@ -128,8 +133,15 @@ class SetsFragment : Fragment() {
                     (selectedLevels.isEmpty() || set.level in selectedLevels) &&
                     (selectedAccesses.isEmpty() || set.access in selectedAccesses)
         }
-
         adapterSet?.updateData(filteredList)
+
+        if (filteredList.isEmpty()) {
+            emptyFilteredListTxt.visibility = View.VISIBLE
+            recyclerViewSet.visibility = View.GONE
+        } else {
+            emptyFilteredListTxt.visibility = View.GONE
+            recyclerViewSet.visibility = View.VISIBLE
+        }
     }
 }
 

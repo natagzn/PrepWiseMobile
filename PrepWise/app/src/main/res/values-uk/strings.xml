@@ -275,5 +275,6 @@
 
     <string name="reset">Скинути</string>
     <string name="type">Тип</string>
+    <string name="no_results">Немає результатів</string>
 
 </resources>

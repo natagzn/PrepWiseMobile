@@ -23,6 +23,10 @@ class SharedFragment : Fragment() {
     private var selectedAccesses = mutableListOf<String>()
     private var paramPage: String = "Library"
 
+    private lateinit var contentLayout: LinearLayout
+    private lateinit var emptyListTxt: TextView
+    private lateinit var emptyFilteredListTxt: TextView
+
     companion object {
         private const val ARG_SHARED_LIST = "shared_list"
         private const val ARG_PARAM_PAGE = "param_page"
@@ -55,8 +59,9 @@ class SharedFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_shared, container, false)
 
-        val contentLayout: LinearLayout = view.findViewById(R.id.content)
-        val emptyListTxt: TextView = view.findViewById(R.id.empty)
+        contentLayout = view.findViewById(R.id.content)
+        emptyListTxt = view.findViewById(R.id.empty)
+        emptyFilteredListTxt = view.findViewById(R.id.empty_filter)
 
         if (sharedList.isEmpty()) {
             emptyListTxt.visibility = View.VISIBLE
@@ -129,5 +134,13 @@ class SharedFragment : Fragment() {
         }
 
         adapterSharedSet?.updateData(filteredList)
+
+        if (filteredList.isEmpty()) {
+            emptyFilteredListTxt.visibility = View.VISIBLE
+            recyclerViewSharedSet.visibility = View.GONE
+        } else {
+            emptyFilteredListTxt.visibility = View.GONE
+            recyclerViewSharedSet.visibility = View.VISIBLE
+        }
     }
 }

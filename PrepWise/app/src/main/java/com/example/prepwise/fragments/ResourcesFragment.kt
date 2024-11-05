@@ -23,6 +23,10 @@ class ResourcesFragment : Fragment() {
     private lateinit var resourceList: ArrayList<Resourse>
     private var selectedCategories = mutableListOf<String>()
 
+    private lateinit var contentLayout: LinearLayout
+    private lateinit var emptyListTxt: TextView
+    private lateinit var emptyFilteredListTxt: TextView
+
     companion object {
         private const val ARG_PESOURCE_LIST = "resource_list"
 
@@ -52,8 +56,9 @@ class ResourcesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_resources, container, false)
 
-        val contentLayout: LinearLayout = view.findViewById(R.id.content)
-        val emptyListTxt: TextView = view.findViewById(R.id.empty)
+        contentLayout = view.findViewById(R.id.content)
+        emptyListTxt = view.findViewById(R.id.empty)
+        emptyFilteredListTxt = view.findViewById(R.id.empty_filter)
 
         if (resourceList.isEmpty()) {
             emptyListTxt.visibility = View.VISIBLE
@@ -109,5 +114,13 @@ class ResourcesFragment : Fragment() {
     ) {
         val filteredList = resourceList.filter { resource -> selectedCategories.isEmpty() || resource.category in selectedCategories }
         adapterResource?.updateData(filteredList)
+
+        if (filteredList.isEmpty()) {
+            emptyFilteredListTxt.visibility = View.VISIBLE
+            recyclerViewResoure.visibility = View.GONE
+        } else {
+            emptyFilteredListTxt.visibility = View.GONE
+            recyclerViewResoure.visibility = View.VISIBLE
+        }
     }
 }
