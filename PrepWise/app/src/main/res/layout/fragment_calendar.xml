@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/monthTitle"
+        android:id="@+id/monthTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="S"
+            android:text="@string/sunday"
             style="@style/regular_16"
             android:textColor="@android:color/darker_gray" />
 
@@ -38,7 +38,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="M"
+            android:text="@string/monday"
             style="@style/regular_16"
             android:textColor="@android:color/darker_gray" />
 
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="T"
+            android:text="@string/tuestay"
             style="@style/regular_16"
             android:textColor="@android:color/darker_gray" />
 
@@ -56,7 +56,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="W"
+            android:text="@string/wednesday"
             style="@style/regular_16"
             android:textColor="@android:color/darker_gray" />
 
@@ -65,7 +65,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="T"
+            android:text="@string/thursday"
             style="@style/regular_16"
             android:textColor="@android:color/darker_gray" />
 
@@ -74,7 +74,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="F"
+            android:text="@string/friday"
             style="@style/regular_16"
             android:textColor="@android:color/darker_gray" />
 
@@ -83,7 +83,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="S"
+            android:text="@string/saturday"
             style="@style/regular_16"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>

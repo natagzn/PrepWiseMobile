@@ -274,4 +274,13 @@ get back to you as soon as possible.</string>
     <string name="reset">Reset</string>
     <string name="type">Type</string>
     <string name="no_results">No results</string>
+
+    <string name="monday">M</string>
+    <string name="tuestay">T</string>
+    <string name="wednesday">W</string>
+    <string name="thursday">T</string>
+    <string name="friday">F</string>
+    <string name="saturday">S</string>
+    <string name="sunday">S</string>
+
 </resources>

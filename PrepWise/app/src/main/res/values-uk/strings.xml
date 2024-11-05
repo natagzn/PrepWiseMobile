@@ -277,4 +277,12 @@
     <string name="type">Тип</string>
     <string name="no_results">Немає результатів</string>
 
+    <string name="monday">Пн</string>
+    <string name="tuestay">Вт</string>
+    <string name="wednesday">Ср</string>
+    <string name="thursday">Чт</string>
+    <string name="friday">Пт</string>
+    <string name="saturday">Сб</string>
+    <string name="sunday">Нд</string>
+
 </resources>

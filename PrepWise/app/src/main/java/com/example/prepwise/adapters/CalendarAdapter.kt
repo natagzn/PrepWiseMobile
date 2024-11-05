@@ -20,17 +20,18 @@ class CalendarAdapter(
         private val activityIcon: ImageView = itemView.findViewById(R.id.activityIcon)
 
         fun bind(day: Day) {
-            dayNumber.text = day.date.toString()
-
-            // Показати вогник для активних днів
-            if (day.isActive) {
-                itemView.setBackgroundResource(R.drawable.fire) // Встановлюємо фон "вогник"
+            if (day.date == 0) {
+                dayNumber.text = ""
+                itemView.setBackgroundResource(0)
             } else {
-                itemView.setBackgroundResource(0) // Знімаємо фон для неактивних днів
-            }
+                dayNumber.text = day.date.toString()
 
-            // Показати точку для поточного дня
-            activityIcon.visibility = if (day.isToday) View.VISIBLE else View.GONE
+                // Показуємо вогник для активних днів
+                itemView.setBackgroundResource(if (day.isActive) R.drawable.fire else 0)
+
+                // Показуємо точку для поточного дня
+                activityIcon.visibility = if (day.isToday) View.VISIBLE else View.GONE
+            }
 
             // Обробка кліку на день
             itemView.setOnClickListener { onDayClick(day) }
