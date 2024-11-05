@@ -22,6 +22,7 @@ class ResourcesFragment : Fragment() {
 
     private lateinit var resourceList: ArrayList<Resourse>
     private var selectedCategories = mutableListOf<String>()
+    private var selectedLevels = mutableListOf<String>()
 
     private lateinit var contentLayout: LinearLayout
     private lateinit var emptyListTxt: TextView
@@ -94,14 +95,20 @@ class ResourcesFragment : Fragment() {
 
             val filterBtn: LinearLayout = view.findViewById(R.id.filter_btn)
             filterBtn.setOnClickListener{
-                DialogUtils.showFilterResourcePopup(
+                var showAccess = false
+                DialogUtils.showFilterPopup(
                     context = requireContext(),
                     anchorView = filterBtn,
-                    onApplyFilters = { selectedCategories ->
+                    onApplyFilters = { selectedCategories, selectedLevels, selectedAccesses ->
                         this.selectedCategories = selectedCategories.toMutableList()
-                        applyFilters(selectedCategories)
+                        this.selectedLevels = selectedLevels.toMutableList()
+                        applyFilters(selectedCategories, selectedLevels)
                     },
-                    currentCategories = selectedCategories
+                    accessOptions = listOf("public", "private"),
+                    currentCategories = selectedCategories,
+                    currentLevels = selectedLevels,
+                    currentAccesses = mutableListOf<String>(),
+                    showAccess
                 )
             }
         }
@@ -110,7 +117,8 @@ class ResourcesFragment : Fragment() {
     }
 
     private fun applyFilters(
-        selectedCategories: List<String>
+        selectedCategories: List<String>,
+        selectedLevels: List<String>
     ) {
         val filteredList = resourceList.filter { resource -> selectedCategories.isEmpty() || resource.category in selectedCategories }
         adapterResource?.updateData(filteredList)

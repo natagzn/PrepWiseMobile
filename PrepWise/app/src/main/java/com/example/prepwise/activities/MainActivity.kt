@@ -32,6 +32,7 @@ import com.example.prepwise.models.People
 import com.example.prepwise.models.Resourse
 import com.example.prepwise.models.Set
 import com.example.prepwise.models.SharedSet
+import com.example.prepwise.models.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -59,6 +60,105 @@ class MainActivity : AppCompatActivity() {
         fun dpToPx(dp: Int, context: Context): Int {
             return (dp * context.resources.displayMetrics.density).toInt()
         }
+
+        val CurrentUser: User = User(
+            id = 1,
+            userImg = "https://example.com/image.jpg",
+            username = "john_doe",
+            description = "This is a sample description for the user.",
+            email = "john.doe@example.com",
+            location = "Ukraine",
+            sets = SetListProvider.setList,
+            sharedSets = SharedSetListProvider.sharedSetList,
+            resouces = ResourceListProvider.resourceList,
+            folders = FolderListProvider.folderList,
+            friends = arrayListOf(
+                People(
+                    id = 1,
+                    userImg = "img_anna",
+                    username = "AnnaNahalkaaaaaaaa",
+                    status = "Friends",
+                    numberOfFollowing = 150,
+                    numberOfFollowers = 300,
+                    description = "Loves teaching math",
+                    email = "anna@example.com",
+                    location = "Kyiv, Ukraine",
+                    sets = arrayListOf(MainActivity.getSetById(1)),
+                    resouces = arrayListOf()
+                ),
+                People(
+                    id = 2,
+                    userImg = "img_john",
+                    username = "John",
+                    status = "Follower",
+                    numberOfFollowing = 200,
+                    numberOfFollowers = 500,
+                    description = "History enthusiast",
+                    email = "john@example.com",
+                    location = "Lviv, Ukraine",
+                    sets = arrayListOf(),
+                    resouces = arrayListOf()
+                )
+            ),
+            followers = arrayListOf(
+                People(
+                    id = 3,
+                    userImg = "img_anna",
+                    username = "AnnaNahalkaaaaaaaa",
+                    status = "Friends",
+                    numberOfFollowing = 150,
+                    numberOfFollowers = 300,
+                    description = "Loves teaching math",
+                    email = "anna@example.com",
+                    location = "Kyiv, Ukraine",
+                    sets = arrayListOf(MainActivity.getSetById(1)),
+                    resouces = arrayListOf()
+                ),
+                People(
+                    id = 4,
+                    userImg = "img_paul",
+                    username = "Paul",
+                    status = "Follower",
+                    numberOfFollowing = 220,
+                    numberOfFollowers = 430,
+                    description = "Physics enthusiast",
+                    email = "paul@example.com",
+                    location = "Kharkiv, Ukraine",
+                    sets = arrayListOf(),
+                    resouces = arrayListOf()
+                )
+            ),
+            following = arrayListOf(
+                People(
+                    id = 5,
+                    userImg = "img_john",
+                    username = "John",
+                    status = "Follower",
+                    numberOfFollowing = 200,
+                    numberOfFollowers = 500,
+                    description = "History enthusiast",
+                    email = "john@example.com",
+                    location = "Lviv, Ukraine",
+                    sets = arrayListOf(),
+                    resouces = arrayListOf()
+                ),
+                People(
+                    id = 6,
+                    userImg = "img_nina",
+                    username = "Nina",
+                    status = "Following",
+                    numberOfFollowing = 180,
+                    numberOfFollowers = 320,
+                    description = "Biology lover",
+                    email = "nina@example.com",
+                    location = "Odesa, Ukraine",
+                    sets = arrayListOf(),
+                    resouces = arrayListOf()
+                )
+            ),
+            premium = true
+        )
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

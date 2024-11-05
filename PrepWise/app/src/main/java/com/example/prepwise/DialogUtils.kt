@@ -310,7 +310,7 @@ object DialogUtils {
         val popupWindow = PopupWindow(
             popupView,
             LinearLayout.LayoutParams.WRAP_CONTENT,
-            1300
+            1400
         )
 
         popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_rounded_background))
@@ -328,6 +328,7 @@ object DialogUtils {
 
         accessContainer.visibility = if (showAccessFilter) View.VISIBLE else View.GONE
         popupView.findViewById<TextView>(R.id.access_txt).visibility = if (showAccessFilter) View.VISIBLE else View.GONE
+        popupView.findViewById<TextView>(R.id.access_txt1).visibility = if (showAccessFilter) View.VISIBLE else View.GONE
 
         val categories = listOf("Java", "Kotlin", "Python", "JavaScript", "Swift", "React")
         val levels = listOf("Trainee", "Junior", "Senior")
@@ -385,64 +386,6 @@ object DialogUtils {
             }
             for (i in 0 until accessContainer.childCount) {
                 (accessContainer.getChildAt(i) as CheckBox).isChecked = false
-            }
-        }
-
-        //popupWindow.showAsDropDown(anchorView, 0, 10)
-        popupWindow.showAtLocation(anchorView, Gravity.END, 40, 150)
-    }
-
-    fun showFilterResourcePopup(
-        context: Context,
-        anchorView: View,
-        onApplyFilters: (selectedCategories: List<String>) -> Unit,
-        currentCategories: List<String>,
-    ) {
-        val popupView = LayoutInflater.from(context).inflate(R.layout.dialog_filter_resource_menu, null)
-        val popupWindow = PopupWindow(
-            popupView,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            1000
-        )
-
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_rounded_background))
-        popupWindow.elevation = 8f
-        popupWindow.isOutsideTouchable = true
-        popupWindow.isFocusable = true
-
-        val dimBackground = (context as Activity).findViewById<View>(R.id.dim_background)
-        dimBackground.visibility = View.VISIBLE
-        popupWindow.setOnDismissListener { dimBackground.visibility = View.GONE }
-
-        val categoryContainer = popupView.findViewById<LinearLayout>(R.id.categoryContainer)
-
-        val categories = listOf("Java", "Kotlin", "Python", "JavaScript", "Swift", "React", "C#", "Software Development")
-
-        categories.forEach { category ->
-            val checkBox = CheckBox(context).apply {
-                text = category
-                isChecked = currentCategories.contains(category)
-            }
-            categoryContainer.addView(checkBox)
-        }
-
-        popupView.findViewById<TextView>(R.id.apply_button).setOnClickListener {
-            val selectedCategories = categories.filterIndexed { index, _ ->
-                (categoryContainer.getChildAt(index) as CheckBox).isChecked
-            }
-
-            onApplyFilters(selectedCategories)
-            popupWindow.dismiss()
-        }
-
-        popupView.findViewById<TextView>(R.id.cancel_button).setOnClickListener {
-            popupWindow.dismiss()
-        }
-
-        popupView.findViewById<TextView>(R.id.reset_button).setOnClickListener {
-            // Reset checkboxes
-            for (i in 0 until categoryContainer.childCount) {
-                (categoryContainer.getChildAt(i) as CheckBox).isChecked = false
             }
         }
 
