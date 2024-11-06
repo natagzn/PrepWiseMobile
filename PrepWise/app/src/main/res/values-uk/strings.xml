@@ -24,13 +24,12 @@
     <string name="forgot_password">Забули пароль?</string>
     <string name="or">або</string>
     <string name="continue_with_Google">Продовжити з Google</string>
-    <string name="username_email">Username/Email</string>
     <string name="password">Пароль</string>
 
     <string name="sign_up">Реєстрація</string>
     <string name="create_your_account">Створіть новий акаунт</string>
     <string name="username">Username</string>
-    <string name="email">Email</string>
+    <string name="email">Електронна пошта</string>
     <string name="confirm_password">Підтверження пароля</string>
 
     <string name="location">Розташування</string>
@@ -247,10 +246,10 @@
     <string name="View">Перегляд</string>
     <string name="Edit">Редагування</string>
 
-    <string name="all_results">All results</string>
-    <string name="users">Users</string>
-    <string name="Sets">Sets</string>
-    <string name="view_all">View all</string>
+    <string name="all_results">Всі</string>
+    <string name="users">Користувачі</string>
+    <string name="Sets">Модулі</string>
+    <string name="view_all">Переглянути всі</string>
 
     <string name="are_you_sure_you_want_to_unsubscribe">Ви справді хочете відписатись?</string>
     <string name="unfollow">Відписатись</string>
@@ -285,6 +284,22 @@
     <string name="saturday">Сб</string>
     <string name="sunday">Нд</string>
 
-    <string name="premium_feature">Premium Feature</string>
     <string name="want_to_get_more_">Хочете отримати більше? Розширений пошук та інші функції доступні лише у PrepWise Premium. Натисніть `Переглянути`, щоб дізнатися більше про наші преміум-пропозиції.</string>
+
+    <string name="incorrect_email_or_password">Неправильний імейл або пароль</string>
+    <string name="server_error_try_again_later">Помилка на сервері, спробуйте пізніше</string>
+    <string name="connection_error_check_your_internet_connection">Помилка підключення, перевірте з`єднання з інтернетом</string>
+    <string name="enter_email">Введіть електронну пошту</string>
+    <string name="enter_password">Введіть пароль</string>
+
+    <string name="invalid_email">Недійсна електронна адреса</string>
+    <string name="username_no_spaces">Ім`я користувача має бути без пробілів</string>
+    <string name="password_no_spaces">Пароль має бути без пробілів</string>
+    <string name="registration_failed">Реєстрація не вдалась</string>
+    <string name="error_occurred">Сталася помилка</string>
+    <string name="all_fields_required">All fields required</string>
+    <string name="username_invalid">Username invalid</string>
+    <string name="password_invalid">Password invalid</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="email_validation_failed">Помилка перевірки електронної пошти</string>
 </resources>

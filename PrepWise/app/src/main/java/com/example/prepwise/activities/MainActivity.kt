@@ -76,6 +76,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Перевірка авторизації
+        val sharedPref = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val authToken = sharedPref.getString("auth_token", null)
+
+        if (authToken == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        } else {
+            setContentView(R.layout.activity_main)
+        }
+
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

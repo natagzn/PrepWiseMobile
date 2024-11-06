@@ -1,6 +1,7 @@
 package com.example.prepwise.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Typeface
@@ -59,6 +60,9 @@ class ProfileFragment : Fragment() {
                 negativeButtonText = getString(R.string.cancel)
             ) { confirmed ->
                 if (confirmed) {
+                    val sharedPref = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                    sharedPref.edit().remove("auth_token").apply()
+
                     val intent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
