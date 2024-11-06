@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
-import com.example.prepwise.LikedFolderListProvider
-import com.example.prepwise.LikedResourceListProvider
-import com.example.prepwise.LikedSetListProvider
 import com.example.prepwise.R
 import com.example.prepwise.adapters.ViewPagerLikedAdapter
+import com.example.prepwise.models.Folder
+import com.example.prepwise.models.Resource
+import com.example.prepwise.models.Set
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -25,9 +25,9 @@ class LikedFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_liked, container, false)
 
-        val foldersList = LikedFolderListProvider.folderList
-        val setsList = LikedSetListProvider.setList
-        val resourcesList = LikedResourceListProvider.resourceList
+        val foldersList: ArrayList<Folder> = arrayListOf()
+        val setsList: ArrayList<Set> = arrayListOf()
+        val resourcesList: ArrayList<Resource> = arrayListOf()
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
@@ -45,6 +45,4 @@ class LikedFragment : Fragment() {
 
         return view
     }
-
-
 }

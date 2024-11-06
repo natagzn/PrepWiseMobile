@@ -47,7 +47,7 @@ class AdapterSet(
         val set = setList[position]
 
         holder.setName.text = set.name
-        holder.setLevel.text = set.level
+        holder.setLevel.text = set.level.name
         holder.setUsername.text = set.username
         holder.setNumberOfQuestions.text = set.questions.size.toString()
 
@@ -68,7 +68,7 @@ class AdapterSet(
         // Додаємо категорії в контейнер
         for (category in set.categories) {
             val categoryTextView = TextView(context)
-            categoryTextView.text = category
+            categoryTextView.text = category.name
             categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
             categoryTextView.setPadding(
                 dpToPx(10, context), dpToPx(2, context),

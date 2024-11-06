@@ -11,18 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
-import com.example.prepwise.ResourceListProvider
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterResource
-import com.example.prepwise.adapters.AdapterSet
-import com.example.prepwise.models.Folder
-import com.example.prepwise.models.Resourse
+import com.example.prepwise.models.Category
+import com.example.prepwise.models.Level
+import com.example.prepwise.models.Resource
 
 class ResourcesFragment : Fragment() {
 
-    private lateinit var resourceList: ArrayList<Resourse>
-    private var selectedCategories = mutableListOf<String>()
-    private var selectedLevels = mutableListOf<String>()
+    private lateinit var resourceList: ArrayList<Resource>
+    private var selectedCategories = mutableListOf<Category>()
+    private var selectedLevels = mutableListOf<Level>()
 
     private lateinit var contentLayout: LinearLayout
     private lateinit var emptyListTxt: TextView
@@ -31,7 +30,7 @@ class ResourcesFragment : Fragment() {
     companion object {
         private const val ARG_PESOURCE_LIST = "resource_list"
 
-        fun newInstance(resourceList: ArrayList<Resourse>): ResourcesFragment {
+        fun newInstance(resourceList: ArrayList<Resource>): ResourcesFragment {
             val fragment = ResourcesFragment()
             val args = Bundle()
             args.putSerializable(ARG_PESOURCE_LIST, resourceList)
@@ -44,7 +43,7 @@ class ResourcesFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             @Suppress("UNCHECKED_CAST")
-            resourceList = it.getSerializable(ARG_PESOURCE_LIST) as? ArrayList<Resourse> ?: arrayListOf()
+            resourceList = it.getSerializable(ARG_PESOURCE_LIST) as? ArrayList<Resource> ?: arrayListOf()
         }
     }
 
@@ -117,12 +116,20 @@ class ResourcesFragment : Fragment() {
     }
 
     private fun applyFilters(
-        selectedCategories: List<String>,
-        selectedLevels: List<String>
+        selectedCategories: List<Category>, // Обрані категорії з id та name
+        selectedLevels: List<Level>         // Обрані рівні
     ) {
-        val filteredList = resourceList.filter { resource -> selectedCategories.isEmpty() || resource.category in selectedCategories }
+        val filteredList = resourceList.filter { resource ->
+            // Перевірка на категорії
+            (selectedCategories.isEmpty() || selectedCategories.any { it.id == resource.category.id }) &&
+                    // Перевірка на рівні
+                    (selectedLevels.isEmpty() || selectedLevels.any { it.id == resource.level.id })
+        }
+
+        // Оновлення адаптера з фільтрованим списком
         adapterResource?.updateData(filteredList)
 
+        // Відображення або приховування тексту для порожнього списку
         if (filteredList.isEmpty()) {
             emptyFilteredListTxt.visibility = View.VISIBLE
             recyclerViewResoure.visibility = View.GONE
@@ -131,4 +138,5 @@ class ResourcesFragment : Fragment() {
             recyclerViewResoure.visibility = View.VISIBLE
         }
     }
+
 }

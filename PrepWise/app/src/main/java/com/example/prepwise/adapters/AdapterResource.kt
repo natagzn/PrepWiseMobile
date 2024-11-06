@@ -1,6 +1,6 @@
 package com.example.prepwise.adapters
 
-import com.example.prepwise.models.Resourse
+import com.example.prepwise.models.Resource
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -12,10 +12,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
-import com.example.prepwise.models.Set
 import java.time.format.DateTimeFormatter
 
-class AdapterResource(private var resourceList: ArrayList<Resourse>, private val context: Context) :
+class AdapterResource(private var resourceList: ArrayList<Resource>, private val context: Context) :
     RecyclerView.Adapter<AdapterResource.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
@@ -45,9 +44,9 @@ class AdapterResource(private var resourceList: ArrayList<Resourse>, private val
 
         holder.setArticleBook.text = resourse.articleBook
         holder.setDescription.text = resourse.description
-        holder.setLevel.text = resourse.level
+        holder.setLevel.text = resourse.level.name
         holder.setUsername.text = resourse.username
-        holder.setCategory.text = resourse.category
+        holder.setCategory.text = resourse.category.name
 
         // Форматуємо дату
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
@@ -121,8 +120,8 @@ class AdapterResource(private var resourceList: ArrayList<Resourse>, private val
         }
     }
 
-    fun updateData(newList: List<Resourse>) {
-        resourceList = newList as ArrayList<Resourse>
+    fun updateData(newList: List<Resource>) {
+        resourceList = newList as ArrayList<Resource>
         notifyDataSetChanged() // Оновлення адаптера з новими даними
     }
 

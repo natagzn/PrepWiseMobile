@@ -14,14 +14,14 @@ import com.example.prepwise.adapters.AdapterResource
 import com.example.prepwise.adapters.AdapterSet
 import com.example.prepwise.adapters.AdapterPeople
 import com.example.prepwise.models.People
-import com.example.prepwise.models.Resourse
+import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
 
 class AllResultFragment : Fragment() {
 
     private lateinit var userList: ArrayList<People>
     private lateinit var setList: ArrayList<Set>
-    private lateinit var resourceList: ArrayList<Resourse>
+    private lateinit var resourceList: ArrayList<Resource>
 
     companion object {
         private const val ARG_USER_LIST = "user_list"
@@ -31,7 +31,7 @@ class AllResultFragment : Fragment() {
         fun newInstance(
             userList: ArrayList<People>,
             setList: ArrayList<Set>,
-            resourceList: ArrayList<Resourse>
+            resourceList: ArrayList<Resource>
         ): AllResultFragment {
             val fragment = AllResultFragment()
             val args = Bundle()
@@ -55,7 +55,7 @@ class AllResultFragment : Fragment() {
         arguments?.let {
             userList = it.getSerializable(ARG_USER_LIST) as? ArrayList<People> ?: arrayListOf()
             setList = it.getSerializable(ARG_SET_LIST) as? ArrayList<Set> ?: arrayListOf()
-            resourceList = it.getSerializable(ARG_RESOURCE_LIST) as? ArrayList<Resourse> ?: arrayListOf()
+            resourceList = it.getSerializable(ARG_RESOURCE_LIST) as? ArrayList<Resource> ?: arrayListOf()
         }
     }
 

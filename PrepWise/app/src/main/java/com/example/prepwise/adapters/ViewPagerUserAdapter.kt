@@ -5,12 +5,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.prepwise.fragments.SetsFragment
 import com.example.prepwise.fragments.ResourcesFragment
-import com.example.prepwise.models.Resourse
+import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
 
 class ViewPagerUserAdapter(
     private val setsList: ArrayList<Set>,
-    private val resourcesList: ArrayList<Resourse>,
+    private val resourcesList: ArrayList<Resource>,
     activity: FragmentActivity
 ) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {

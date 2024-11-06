@@ -15,7 +15,7 @@ import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.adapters.ViewPagerUserAdapter
 import com.example.prepwise.models.People
-import com.example.prepwise.models.Resourse
+import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -23,7 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class UserProfileFragment : Fragment() {
     private var userId: Int? = null
     private var user: People? = null
-    private lateinit var userResources: ArrayList<Resourse>
+    private lateinit var userResources: ArrayList<Resource>
     private lateinit var userSets: ArrayList<Set>
 
     companion object {

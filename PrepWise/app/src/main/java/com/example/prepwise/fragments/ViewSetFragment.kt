@@ -124,7 +124,7 @@ class ViewSetFragment : Fragment() {
 
         set?.let {
             setName.text = it.name
-            setLevel.text = it.level
+            setLevel.text = it.level.name
             setUsername.text = it.username
             setNumberOfQuestions.text = it.questions.size.toString()
             setAccessType.text = it.access
@@ -144,7 +144,7 @@ class ViewSetFragment : Fragment() {
             // Додаємо категорії в контейнер
             for (category in it.categories) {
                 val categoryTextView = TextView(context)
-                categoryTextView.text = category
+                categoryTextView.text = category.name
                 categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
                 categoryTextView.setPadding(
                     dpToPx(10, requireContext()), dpToPx(2, requireContext()),

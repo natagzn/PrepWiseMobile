@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -17,32 +18,32 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.HomeFragment
 import com.example.prepwise.DialogUtils
-import com.example.prepwise.FolderListProvider
 import com.example.prepwise.LocaleHelper.loadLocale
 import com.example.prepwise.R
-import com.example.prepwise.ResourceListProvider
-import com.example.prepwise.SetListProvider
-import com.example.prepwise.SharedSetListProvider
+import com.example.prepwise.RetrofitInstance
 import com.example.prepwise.fragments.LibraryFragment
 import com.example.prepwise.fragments.LikedFragment
 import com.example.prepwise.fragments.ProfileFragment
+import com.example.prepwise.models.Category
 import com.example.prepwise.models.Folder
+import com.example.prepwise.models.Level
 import com.example.prepwise.models.People
-import com.example.prepwise.models.Resourse
 import com.example.prepwise.models.Set
-import com.example.prepwise.models.SharedSet
 import com.example.prepwise.models.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
         var currentUser: User? = null
-
-        val userList: ArrayList<People> = arrayListOf()
+        val categories: ArrayList<Category> = arrayListOf()
+        val levels: ArrayList<Level> = arrayListOf()
 
         fun getSetById(setId: Int): Set? {
             return currentUser?.sets?.find { it.id == setId }
@@ -53,9 +54,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun getUserById(userId: Int): People? {
-            // Спочатку шукаємо у загальному списку користувачів
-            userList.find { it.id == userId }?.let { return it }
-
             // Далі шукаємо серед друзів, підписників та підписок поточного користувача
             currentUser?.let { currentUser ->
                 currentUser.friends.find { it.id == userId }?.let { return it }
@@ -77,6 +75,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        RetrofitInstance.initRetrofit(this)
+
         // Перевірка авторизації
         val sharedPref = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val authToken = sharedPref.getString("auth_token", null)
@@ -97,7 +97,41 @@ class MainActivity : AppCompatActivity() {
 
         loadLocale(this)
 
-        userList.addAll(SharedSetListProvider.peopleList)
+        // Отримання категорій з бд
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitInstance.api.getCategories()
+                if (response.isSuccessful && response.body() != null) {
+                    categories.clear()
+                    categories.addAll(response.body()!!.categories)
+                } else {
+                    Log.e("LoginActivity", "Error fetching categories: ${response.message()}")
+                }
+            } catch (e: HttpException) {
+                Log.e("LoginActivity", "HttpException: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("LoginActivity", "Exception: ${e.message}")
+            }
+        }
+
+        // Отримання рівнів з БД
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitInstance.api.getLevels()
+                if (response.isSuccessful && response.body() != null) {
+                    levels.clear()
+                    levels.addAll(response.body()!!.map { Level(it.id, it.name) })
+                } else {
+                    Log.e("LoginActivity", "Error fetching levels: ${response.message()}")
+                }
+            } catch (e: HttpException) {
+                Log.e("LoginActivity", "HttpException: ${e.message()}")
+            } catch (e: Exception) {
+                Log.e("LoginActivity", "Exception: ${e.message}")
+            }
+        }
+
+
         currentUser = User(
             id = 1,
             userImg = "https://example.com/image.jpg",
@@ -105,10 +139,10 @@ class MainActivity : AppCompatActivity() {
             description = "This is a sample description for the user.",
             email = "john.doe@example.com",
             location = "Ukraine",
-            sets = SetListProvider.setList,
-            sharedSets = SharedSetListProvider.sharedSetList,
-            resouces = ResourceListProvider.resourceList,
-            folders = FolderListProvider.folderList,
+            sets = arrayListOf(),
+            sharedSets = arrayListOf(),
+            resouces = arrayListOf(),
+            folders = arrayListOf(),
             friends = arrayListOf(
                 People(
                     id = 1,

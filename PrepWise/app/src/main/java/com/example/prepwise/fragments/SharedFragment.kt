@@ -13,13 +13,15 @@ import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterSharedSet
+import com.example.prepwise.models.Category
+import com.example.prepwise.models.Level
 import com.example.prepwise.models.SharedSet
 
 class SharedFragment : Fragment() {
 
     private lateinit var sharedList: ArrayList<SharedSet>
-    private var selectedCategories = mutableListOf<String>()
-    private var selectedLevels = mutableListOf<String>()
+    private var selectedCategories = mutableListOf<Category>()
+    private var selectedLevels = mutableListOf<Level>()
     private var selectedAccesses = mutableListOf<String>()
     private var paramPage: String = "Library"
 
@@ -123,13 +125,15 @@ class SharedFragment : Fragment() {
 
     // Функція для застосування фільтрів
     private fun applyFilters(
-        selectedCategories: List<String>,
-        selectedLevels: List<String>,
+        selectedCategories: List<Category>,
+        selectedLevels: List<Level>,
         selectedAccesses: List<String>
     ) {
         val filteredList = sharedList.filter { set ->
-            (selectedCategories.isEmpty() || set.categories.any { it in selectedCategories }) &&
-                    (selectedLevels.isEmpty() || set.level in selectedLevels) &&
+            (selectedCategories.isEmpty() || set.categories.any { category ->
+                selectedCategories.any { it.id == category.id }
+            }) &&
+                    (selectedLevels.isEmpty() || selectedLevels.any { it.id == set.level.id }) &&
                     (selectedAccesses.isEmpty() || set.type in selectedAccesses)
         }
 

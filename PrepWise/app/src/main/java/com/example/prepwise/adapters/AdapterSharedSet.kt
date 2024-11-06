@@ -41,7 +41,7 @@ class AdapterSharedSet(private var sharingSetList: ArrayList<SharedSet>, private
         val sharedSet = sharingSetList[position]
 
         holder.setName.text = sharedSet.name
-        holder.setLevel.text = sharedSet.level
+        holder.setLevel.text = sharedSet.level.name
         holder.setAuthorUsername.text = sharedSet.username
         holder.setNumberOfQuestions.text = sharedSet.questions.size.toString()
         holder.setType.text = sharedSet.type
@@ -57,7 +57,7 @@ class AdapterSharedSet(private var sharingSetList: ArrayList<SharedSet>, private
         // Додаємо категорії в контейнер
         for (category in sharedSet.categories) {
             val categoryTextView = TextView(context)
-            categoryTextView.text = category
+            categoryTextView.text = category.name
             categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
             categoryTextView.setPadding(
                 dpToPx(10, context), dpToPx(2, context),

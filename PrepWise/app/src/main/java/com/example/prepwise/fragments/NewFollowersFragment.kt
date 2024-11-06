@@ -13,13 +13,13 @@ import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterNewFriend
 import com.example.prepwise.models.People
-import com.example.prepwise.models.Resourse
+import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
 
 class NewFollowersFragment : DialogFragment() {
 
     val emptySetList = arrayListOf<Set>()
-    val emptyResourcesList = arrayListOf<Resourse>()
+    val emptyResourcesList = arrayListOf<Resource>()
 
     val newFriendList = arrayListOf(
         People(

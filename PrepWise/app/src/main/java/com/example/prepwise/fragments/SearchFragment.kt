@@ -13,6 +13,9 @@ import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.adapters.ViewPagerLibratyAdapter
 import com.example.prepwise.adapters.ViewPagerSearchAdapter
+import com.example.prepwise.models.People
+import com.example.prepwise.models.Resource
+import com.example.prepwise.models.Set
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -56,9 +59,9 @@ class SearchFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        val setsList = MainActivity.currentUser!!.sets
-        val userList = MainActivity.userList
-        val resourcesList = MainActivity.currentUser!!.resouces
+        val setsList: ArrayList<Set> = arrayListOf()
+        val userList: ArrayList<People> = arrayListOf()
+        val resourcesList: ArrayList<Resource> = arrayListOf()
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)

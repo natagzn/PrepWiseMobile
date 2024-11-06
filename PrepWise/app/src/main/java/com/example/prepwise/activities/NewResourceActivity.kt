@@ -14,12 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.prepwise.DialogUtils
+import com.example.prepwise.DialogUtils.showSelectionPopup
 import com.example.prepwise.R
 
 class NewResourceActivity : AppCompatActivity() {
 
-    private var categories = arrayOf("Category 1", "Category 2", "Category 3", "Category 4", "Category 5")
-    private val levels = arrayOf("Trainee", "Junior", "Middle", "Senior", "Team lead")
+    private var categories = MainActivity.categories
+    private val levels = MainActivity.levels
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,7 @@ class NewResourceActivity : AppCompatActivity() {
 
         val levelLayout: LinearLayout = findViewById(R.id.level)
         levelLayout.setOnClickListener {
-            DialogUtils.showSelectionPopup(
+            showSelectionPopup(
                 context = this,
                 anchorView = levelLayout,
                 title = getString(R.string.select_level),
@@ -50,19 +51,29 @@ class NewResourceActivity : AppCompatActivity() {
                 selectedItemTextViewId = R.id.level_type,
                 dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
-            )
+            ) { selectedLevel ->
+                // Використати обраний елемент
+                val selectedLevelId = selectedLevel.id
+                // Далі обробляти обраний ID або name
+            }
         }
+
 
         val categoryLayout: LinearLayout = findViewById(R.id.category)
         categoryLayout.setOnClickListener {
-            showSelectionDialog(
+            showSelectionPopup(
+                context = this,
+                anchorView = levelLayout,
                 title = getString(R.string.select_category),
                 items = categories,
                 selectedItemTextViewId = R.id.category_type,
                 dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
-            )
+            ) { selectedCategory ->
+                val selectedCategoryId = selectedCategory.id
+            }
         }
+
     }
 
     fun showSelectionDialog(

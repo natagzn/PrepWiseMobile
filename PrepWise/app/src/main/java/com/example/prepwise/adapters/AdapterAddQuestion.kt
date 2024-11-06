@@ -66,7 +66,7 @@ class AdapterAddQuestion(
             DialogUtils.showPremiumDialog(context)
             return
         }
-        questions.add(Question("", "", false))
+        questions.add(Question(-1,"", "", false))
         notifyItemInserted(questions.size - 1)
     }
 

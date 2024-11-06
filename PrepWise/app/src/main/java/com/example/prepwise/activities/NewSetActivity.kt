@@ -1,6 +1,7 @@
 package com.example.prepwise.activities
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -25,15 +26,19 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.DialogUtils
+import com.example.prepwise.DialogUtils.showSelectionPopup
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddQuestion
+import com.example.prepwise.models.Category
+import com.example.prepwise.models.Set
+import java.time.LocalDate
 
 class NewSetActivity : AppCompatActivity() {
     private lateinit var categoryListContainer: LinearLayout
-    private var availableCategories = listOf("Android", "Kotlin", "Category 3", "Category 4", "Category 5")
-    private var selectedCategories = mutableListOf<String>()
-    private val levels = arrayOf("Trainee", "Junior", "Middle", "Senior", "Team lead")
+    private var availableCategories = MainActivity.categories
+    private var selectedCategories = mutableListOf<Category>()
+    private val levels = MainActivity.levels
     private val visibility = arrayOf("private", "public")
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterAddQuestion
@@ -77,7 +82,7 @@ class NewSetActivity : AppCompatActivity() {
         }
 
         levelLayout.setOnClickListener {
-            DialogUtils.showSelectionPopup(
+            showSelectionPopup(
                 context = this,
                 anchorView = levelLayout,
                 title = getString(R.string.select_level),
@@ -85,11 +90,13 @@ class NewSetActivity : AppCompatActivity() {
                 selectedItemTextViewId = R.id.level_type,
                 dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
-            )
+            ) { selectedLevel ->
+                val selectedLevelId = selectedLevel.id
+            }
         }
 
         accessLayout.setOnClickListener {
-            DialogUtils.showSelectionPopup(
+            showSelectionAccessPopup(
                 context = this,
                 anchorView = accessLayout,
                 title = getString(R.string.select_visibility),
@@ -116,9 +123,55 @@ class NewSetActivity : AppCompatActivity() {
         val scale = this.resources.displayMetrics.density
         val spacingInPx = (spacingInDp * scale).toInt()
         recyclerView.addItemDecoration(SpaceItemDecoration(spacingInPx))
+
+        // Обробка натискання кнопки "Зберегти"
+        findViewById<TextView>(R.id.save).setOnClickListener {
+            //saveNewSet()
+        }
     }
 
-    fun showSelectionPopup(
+    /*private fun saveNewSet() {
+        // Отримати назву
+        val title = titleTxt.text.toString()
+
+        // Отримати рівень
+        val level = levels.find { it.name == levelTxt.text.toString() }
+
+        // Отримати доступ
+        val access = accessTxt.text.toString()
+
+        // Отримати список питань
+        val questions = adapter.getQuestions()
+
+        // Перевірка, що всі обов'язкові поля заповнені
+        if (title.isBlank() || level == null || access.isBlank()) {
+            Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Створення нового об'єкта Set
+        val newSet = Set(
+            id = 0,
+            name = title,
+            level = level,
+            categories = ArrayList(selectedCategories),
+            access = access,
+            date = LocalDate.now(),
+            questions = ArrayList(questions),
+            username = MainActivity.currentUser?.username ?: "Unknown",
+            isLiked = false
+        )
+
+        // Додавання нового сету до списку користувача або іншої колекції
+        MainActivity.currentUser?.sets?.add(newSet)
+
+        // Повернення до попереднього екрану
+        Toast.makeText(this, "Set saved successfully", Toast.LENGTH_SHORT).show()
+        finish()
+    }*/
+
+    fun showSelectionAccessPopup(
+        context: Context,
         anchorView: View,
         title: String,
         items: Array<String>,
@@ -127,13 +180,13 @@ class NewSetActivity : AppCompatActivity() {
         itemLayoutId: Int
     ) {
         // Інфлейт кастомного макету діалогу
-        val popupView = LayoutInflater.from(anchorView.context).inflate(dialogLayoutId, null)
+        val popupView = LayoutInflater.from(context).inflate(dialogLayoutId, null)
         val listView: ListView = popupView.findViewById(R.id.levels_list)
         val dialogTitle: TextView = popupView.findViewById(R.id.dialog_title)
         dialogTitle.text = title
 
         // Створюємо адаптер для елементів
-        val adapter = object : ArrayAdapter<String>(anchorView.context, itemLayoutId, items) {
+        val adapter = object : ArrayAdapter<String>(context, itemLayoutId, items) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = convertView ?: LayoutInflater.from(parent.context).inflate(itemLayoutId, parent, false)
                 val textView: TextView = view.findViewById(R.id.level_item)
@@ -146,23 +199,30 @@ class NewSetActivity : AppCompatActivity() {
         // Створюємо PopupWindow
         val popupWindow = PopupWindow(
             popupView,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
             true
         )
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(anchorView.context, R.drawable.white_green_rounded_background)) // Додайте фон, якщо потрібно
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_green_rounded_background))
         popupWindow.elevation = 8f
+
+        val dimBackground = (context as Activity).findViewById<View>(R.id.dim_background)
+        dimBackground.visibility = View.VISIBLE
+
+        popupWindow.setOnDismissListener {
+            dimBackground.visibility = View.GONE
+        }
 
         // Обробка вибору елемента
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = items[position]
-            val selectedTextView: TextView = (anchorView.context as Activity).findViewById(selectedItemTextViewId)
+            val selectedTextView: TextView = (context as Activity).findViewById(selectedItemTextViewId)
             selectedTextView.text = selectedItem
             popupWindow.dismiss()
         }
 
         // Відображення PopupWindow біля anchorView
-        popupWindow.showAsDropDown(anchorView, 0, 0)
+        popupWindow.showAsDropDown(anchorView, 0, 10)
     }
 
     private fun loadDataForEditing(setId: Int) {
@@ -170,7 +230,7 @@ class NewSetActivity : AppCompatActivity() {
 
         if (setData != null) {
             titleTxt.text = setData.name
-            levelTxt.text = setData.level
+            levelTxt.text = setData.level.name
             accessTxt.text = setData.access
             selectedCategories = setData.categories
             updateCategoryList(setData.categories)
@@ -187,7 +247,7 @@ class NewSetActivity : AppCompatActivity() {
         val checkBoxes = mutableListOf<CheckBox>()
         for (category in availableCategories) {
             val checkBox = CheckBox(ContextThemeWrapper(this, R.style.CustomCheckBoxStyle)).apply {
-                text = category
+                text = category.name
                 isChecked = selectedCategories.contains(category)
             }
             categoryLayout.addView(checkBox)
@@ -207,9 +267,9 @@ class NewSetActivity : AppCompatActivity() {
             .setView(dialogView)
             .setPositiveButton(getString(R.string.apply)) { dialog, _ ->
                 selectedCategories.clear()
-                for (checkBox in checkBoxes) {
+                for ((index, checkBox) in checkBoxes.withIndex()) {
                     if (checkBox.isChecked) {
-                        selectedCategories.add(checkBox.text.toString())
+                        selectedCategories.add(availableCategories[index])
                     }
                 }
 
@@ -244,11 +304,11 @@ class NewSetActivity : AppCompatActivity() {
     }
 
     // Оновлення списку вибраних категорій
-    fun updateCategoryList(categories: List<String>) {
+    fun updateCategoryList(categories: List<Category>) {
         categoryListContainer.removeAllViews()
 
         for (category in categories) {
-            addCategoryTextView(category)
+            addCategoryTextView(category.name)
         }
         addCategoryTextView("+")
     }

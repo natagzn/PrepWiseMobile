@@ -7,8 +7,8 @@ import java.util.ArrayList
 open class Set(
     val id: Int,
     var name: String,
-    var level: String,
-    var categories: ArrayList<String>,
+    var level: Level,
+    var categories: ArrayList<Category>,
     var access: String,
     var date: LocalDate,
     var questions: ArrayList<Question>,

@@ -23,7 +23,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.PremiumActivity
+import com.example.prepwise.models.Category
+import com.example.prepwise.models.Level
 import java.time.LocalDate
 import java.util.Date
 
@@ -165,33 +168,31 @@ object DialogUtils {
         dialog.show()
     }
 
-    fun showSelectionPopup(
+    fun <T : SelectableItem> showSelectionPopup(
         context: Context,
         anchorView: View,
         title: String,
-        items: Array<String>,
+        items: List<T>,
         selectedItemTextViewId: Int,
         dialogLayoutId: Int,
-        itemLayoutId: Int
+        itemLayoutId: Int,
+        onItemSelected: (T) -> Unit
     ) {
-        // Інфлейт кастомного макету діалогу
         val popupView = LayoutInflater.from(context).inflate(dialogLayoutId, null)
         val listView: ListView = popupView.findViewById(R.id.levels_list)
         val dialogTitle: TextView = popupView.findViewById(R.id.dialog_title)
         dialogTitle.text = title
 
-        // Створюємо адаптер для елементів
-        val adapter = object : ArrayAdapter<String>(context, itemLayoutId, items) {
+        val adapter = object : ArrayAdapter<T>(context, itemLayoutId, items) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = convertView ?: LayoutInflater.from(parent.context).inflate(itemLayoutId, parent, false)
                 val textView: TextView = view.findViewById(R.id.level_item)
-                textView.text = getItem(position)
+                textView.text = getItem(position)?.name
                 return view
             }
         }
         listView.adapter = adapter
 
-        // Створюємо PopupWindow
         val popupWindow = PopupWindow(
             popupView,
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -208,17 +209,17 @@ object DialogUtils {
             dimBackground.visibility = View.GONE
         }
 
-        // Обробка вибору елемента
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedItem = items[position]
             val selectedTextView: TextView = (context as Activity).findViewById(selectedItemTextViewId)
-            selectedTextView.text = selectedItem
+            selectedTextView.text = selectedItem.name
+            onItemSelected(selectedItem)
             popupWindow.dismiss()
         }
 
-        // Відображення PopupWindow біля anchorView
         popupWindow.showAsDropDown(anchorView, 0, 10)
     }
+
 
     fun <T> showSortPopupMenu(
         context: Context,
@@ -303,10 +304,10 @@ object DialogUtils {
     fun showFilterPopup(
         context: Context,
         anchorView: View,
-        onApplyFilters: (selectedCategories: List<String>, selectedLevels: List<String>, selectedAccesses: List<String>) -> Unit,
+        onApplyFilters: (selectedCategories: List<Category>, selectedLevels: List<Level>, selectedAccesses: List<String>) -> Unit,
         accessOptions: List<String>,
-        currentCategories: List<String>,
-        currentLevels: List<String>,
+        currentCategories: List<Category>,
+        currentLevels: List<Level>,
         currentAccesses: List<String>,
         showAccessFilter: Boolean
     ) {
@@ -334,21 +335,21 @@ object DialogUtils {
         popupView.findViewById<TextView>(R.id.access_txt).visibility = if (showAccessFilter) View.VISIBLE else View.GONE
         popupView.findViewById<TextView>(R.id.access_txt1).visibility = if (showAccessFilter) View.VISIBLE else View.GONE
 
-        val categories = listOf("Java", "Kotlin", "Python", "JavaScript", "Swift", "React")
-        val levels = listOf("Trainee", "Junior", "Senior")
+        val categories: List<Category> = MainActivity.categories
+        val levels: List<Level> = MainActivity.levels
 
         categories.forEach { category ->
             val checkBox = CheckBox(context).apply {
-                text = category
-                isChecked = currentCategories.contains(category)
+                text = category.name // Відображаємо назву категорії
+                isChecked = currentCategories.any { it.id == category.id } // Перевірка наявності в вибраних категоріях
             }
             categoryContainer.addView(checkBox)
         }
 
         levels.forEach { level ->
             val checkBox = CheckBox(context).apply {
-                text = level
-                isChecked = currentLevels.contains(level)
+                text = level.name
+                isChecked = currentLevels.any { it.id == level.id }
             }
             levelContainer.addView(checkBox)
         }

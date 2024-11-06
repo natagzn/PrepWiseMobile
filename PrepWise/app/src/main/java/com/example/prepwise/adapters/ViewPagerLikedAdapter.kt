@@ -7,13 +7,13 @@ import com.example.prepwise.fragments.FoldersFragment
 import com.example.prepwise.fragments.SetsFragment
 import com.example.prepwise.fragments.ResourcesFragment
 import com.example.prepwise.models.Folder
-import com.example.prepwise.models.Resourse
+import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
 
 class ViewPagerLikedAdapter(
     private val foldersList: ArrayList<Folder>,
     private val setsList: ArrayList<Set>,
-    private val resourcesList: ArrayList<Resourse>,
+    private val resourcesList: ArrayList<Resource>,
     activity: FragmentActivity
 ) : FragmentStateAdapter(activity) {
 
