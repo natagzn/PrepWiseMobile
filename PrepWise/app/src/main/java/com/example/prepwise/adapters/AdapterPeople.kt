@@ -11,7 +11,7 @@ import com.example.prepwise.R
 import com.example.prepwise.fragments.UserProfileFragment
 import com.example.prepwise.models.People
 
-class AdapterPeople(private val userList: ArrayList<People>, private val context: Context, private val fragmentManager: FragmentManager,) :
+class AdapterPeople(private val userList: ArrayList<People>, private val context: Context, private val fragmentManager: FragmentManager) :
     RecyclerView.Adapter<AdapterPeople.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи

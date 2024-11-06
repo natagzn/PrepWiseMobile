@@ -176,7 +176,7 @@
     <string name="ask_for_help">попросити допомоги</string>
     <string name="look_answer">подивитися відповіді</string>
 
-    <string name="edit_set">Редагування модулів</string>
+    <string name="edit_set">Редагування модуля</string>
 
     <string name="view_flashcards">Переглянути картки</string>
     <string name="continue_studying_the_set">Продовжити вивчати картки</string>
@@ -285,4 +285,6 @@
     <string name="saturday">Сб</string>
     <string name="sunday">Нд</string>
 
+    <string name="premium_feature">Premium Feature</string>
+    <string name="want_to_get_more_">Хочете отримати більше? Розширений пошук та інші функції доступні лише у PrepWise Premium. Натисніть `Переглянути`, щоб дізнатися більше про наші преміум-пропозиції.</string>
 </resources>

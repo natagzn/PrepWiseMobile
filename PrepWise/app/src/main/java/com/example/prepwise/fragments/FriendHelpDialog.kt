@@ -1,5 +1,6 @@
 package com.example.prepwise.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,78 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
+import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.adapters.AdapterFriendHelp
 import com.example.prepwise.models.People
 
 class FriendHelpDialog : DialogFragment() {
 
-    val peopleList = arrayListOf(
-        People(
-            id = 1,
-            userImg = "img_anna",
-            username = "Anna",
-            status = "friend",
-            numberOfFollowing = 150,
-            numberOfFollowers = 300,
-            description = "Loves teaching math",
-            email = "anna@example.com",
-            location = "Kyiv, Ukraine",
-            sets = arrayListOf(),
-            resouces = arrayListOf()
-        ),
-        People(
-            id = 2,
-            userImg = "img_john",
-            username = "John",
-            status = "friend",
-            numberOfFollowing = 200,
-            numberOfFollowers = 500,
-            description = "History enthusiast",
-            email = "john@example.com",
-            location = "Lviv, Ukraine",
-            sets = arrayListOf(),
-            resouces = arrayListOf()
-        ),
-        People(
-            id = 3,
-            userImg = "img_nina",
-            username = "Nina",
-            status = "friend",
-            numberOfFollowing = 180,
-            numberOfFollowers = 320,
-            description = "Biology lover",
-            email = "nina@example.com",
-            location = "Odesa, Ukraine",
-            sets = arrayListOf(),
-            resouces = arrayListOf()
-        ),
-        People(
-            id = 4,
-            userImg = "img_paul",
-            username = "Paul",
-            status = "friend",
-            numberOfFollowing = 220,
-            numberOfFollowers = 430,
-            description = "Physics enthusiast",
-            email = "paul@example.com",
-            location = "Kharkiv, Ukraine",
-            sets = arrayListOf(),
-            resouces = arrayListOf()
-        ),
-        People(
-            id = 5,
-            userImg = "img_sara",
-            username = "Sara",
-            status = "friend",
-            numberOfFollowing = 170,
-            numberOfFollowers = 290,
-            description = "Chemistry teacher",
-            email = "sara@example.com",
-            location = "Dnipro, Ukraine",
-            sets = arrayListOf(),
-            resouces = arrayListOf()
-        )
-    )
+    val peopleList = MainActivity.currentUser!!.friends
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,9 +49,8 @@ class FriendHelpDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

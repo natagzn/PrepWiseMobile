@@ -11,7 +11,7 @@ object SharedSetListProvider {
     // Створюємо список людей (People)
     val peopleList = arrayListOf(
         People(
-            id = 1,
+            id = 7,
             userImg = "img_anna",
             username = "AnnaNahalkaaaaaaaa",
             status = "Friends",
@@ -20,11 +20,11 @@ object SharedSetListProvider {
             description = "Loves teaching math",
             email = "anna@example.com",
             location = "Kyiv, Ukraine",
-            sets = arrayListOf(MainActivity.getSetById(1)),
+            sets = SetListProvider.setList,
             resouces = arrayListOf()
         ),
         People(
-            id = 2,
+            id = 8,
             userImg = "img_john",
             username = "John",
             status = "Follower",
@@ -37,7 +37,7 @@ object SharedSetListProvider {
             resouces = arrayListOf()
         ),
         People(
-            id = 3,
+            id = 9,
             userImg = "img_nina",
             username = "Nina",
             status = "Following",
@@ -50,7 +50,7 @@ object SharedSetListProvider {
             resouces = arrayListOf()
         ),
         People(
-            id = 4,
+            id = 10,
             userImg = "img_paul",
             username = "Paul",
             status = "Follower",
@@ -63,7 +63,7 @@ object SharedSetListProvider {
             resouces = arrayListOf()
         ),
         People(
-            id = 4,
+            id = 11,
             userImg = "img_sara",
             username = "Sara",
             status = "Friends",

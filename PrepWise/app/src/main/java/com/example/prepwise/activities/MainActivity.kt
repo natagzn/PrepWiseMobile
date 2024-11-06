@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.HomeFragment
+import com.example.prepwise.DialogUtils
 import com.example.prepwise.FolderListProvider
 import com.example.prepwise.LocaleHelper.loadLocale
 import com.example.prepwise.R
@@ -39,29 +40,53 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        val setList: ArrayList<Set> = arrayListOf()
-        val sharedSetList: ArrayList<SharedSet> = arrayListOf()
-        val resourceList: ArrayList<Resourse> = arrayListOf()
-        val folderList: ArrayList<Folder> = arrayListOf()
+        var currentUser: User? = null
+
         val userList: ArrayList<People> = arrayListOf()
 
-        fun getSetById(setId: Int): Set {
-            return setList.find { it.id == setId }!!
+        fun getSetById(setId: Int): Set? {
+            return currentUser?.sets?.find { it.id == setId }
         }
 
         fun getFolderById(folderId: Int): Folder? {
-            return folderList.find { it.id == folderId }
+            return currentUser?.folders?.find { it.id == folderId }
         }
 
         fun getUserById(userId: Int): People? {
-            return userList.find { it.id == userId }
+            // Спочатку шукаємо у загальному списку користувачів
+            userList.find { it.id == userId }?.let { return it }
+
+            // Далі шукаємо серед друзів, підписників та підписок поточного користувача
+            currentUser?.let { currentUser ->
+                currentUser.friends.find { it.id == userId }?.let { return it }
+                currentUser.followers.find { it.id == userId }?.let { return it }
+                currentUser.following.find { it.id == userId }?.let { return it }
+            }
+
+            // Якщо користувача не знайдено
+            return null
         }
+
 
         fun dpToPx(dp: Int, context: Context): Int {
             return (dp * context.resources.displayMetrics.density).toInt()
         }
+    }
 
-        val CurrentUser: User = User(
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        loadLocale(this)
+
+        userList.addAll(SharedSetListProvider.peopleList)
+        currentUser = User(
             id = 1,
             userImg = "https://example.com/image.jpg",
             username = "john_doe",
@@ -83,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                     description = "Loves teaching math",
                     email = "anna@example.com",
                     location = "Kyiv, Ukraine",
-                    sets = arrayListOf(MainActivity.getSetById(1)),
+                    sets = arrayListOf(),
                     resouces = arrayListOf()
                 ),
                 People(
@@ -111,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                     description = "Loves teaching math",
                     email = "anna@example.com",
                     location = "Kyiv, Ukraine",
-                    sets = arrayListOf(MainActivity.getSetById(1)),
+                    sets = arrayListOf(),
                     resouces = arrayListOf()
                 ),
                 People(
@@ -156,28 +181,8 @@ class MainActivity : AppCompatActivity() {
                     resouces = arrayListOf()
                 )
             ),
-            premium = true
+            premium = false
         )
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        loadLocale(this)
-
-        setList.addAll(SetListProvider.setList)
-        folderList.addAll(FolderListProvider.folderList)
-        resourceList.addAll(ResourceListProvider.resourceList)
-        sharedSetList.addAll(SharedSetListProvider.sharedSetList)
-        userList.addAll(SharedSetListProvider.peopleList)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
@@ -251,8 +256,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         addSet.setOnClickListener{
-            val intent = Intent(this, NewSetActivity::class.java)
-            startActivity(intent)
+            if(!currentUser!!.premium && currentUser!!.folders.size > 19){
+                DialogUtils.showPremiumDialog(this)
+            }
+            else{
+                val intent = Intent(this, NewSetActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         addResource.setOnClickListener{
@@ -261,8 +271,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         addFolder.setOnClickListener{
-            val intent = Intent(this, NewFolderActivity::class.java)
-            startActivity(intent)
+            if(!currentUser!!.premium && currentUser!!.folders.size > 4){
+                DialogUtils.showPremiumDialog(this)
+            }
+            else{
+                val intent = Intent(this, NewFolderActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         close.setOnClickListener{

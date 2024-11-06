@@ -1,5 +1,6 @@
 package com.example.prepwise.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.view.LayoutInflater
@@ -14,6 +15,12 @@ import com.example.prepwise.adapters.AdapterAnswerHelp
 import com.example.prepwise.models.HelpAnswer
 
 class AnswersHelpDialog(private val answers: List<HelpAnswer>) : DialogFragment() {
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,9 +46,8 @@ class AnswersHelpDialog(private val answers: List<HelpAnswer>) : DialogFragment(
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

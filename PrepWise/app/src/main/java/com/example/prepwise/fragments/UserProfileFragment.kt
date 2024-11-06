@@ -154,6 +154,4 @@ class UserProfileFragment : Fragment() {
         }
         return view
     }
-
-
 }

@@ -23,10 +23,10 @@ class LibraryFragment : Fragment() {
     ): View1? {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
 
-        val foldersList = MainActivity.folderList
-        val setsList = MainActivity.setList
-        val sharedList = MainActivity.sharedSetList
-        val resourcesList = MainActivity.resourceList
+        val foldersList = MainActivity.currentUser!!.folders
+        val setsList = MainActivity.currentUser!!.sets
+        val sharedList = MainActivity.currentUser!!.sharedSets
+        val resourcesList = MainActivity.currentUser!!.resouces
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)

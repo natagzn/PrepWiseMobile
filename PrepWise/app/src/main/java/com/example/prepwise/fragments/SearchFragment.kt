@@ -56,9 +56,9 @@ class SearchFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        val setsList = MainActivity.setList
+        val setsList = MainActivity.currentUser!!.sets
         val userList = MainActivity.userList
-        val resourcesList = MainActivity.resourceList
+        val resourcesList = MainActivity.currentUser!!.resouces
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)

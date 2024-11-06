@@ -52,7 +52,7 @@ class NewFolderActivity : AppCompatActivity() {
 
         recyclerViewSet = findViewById(R.id.list_sets)
         recyclerViewSet.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        adapterAddSet = AdapterAddSet(MainActivity.setList, selectedSetId, this)
+        adapterAddSet = MainActivity.currentUser?.let { AdapterAddSet(it.sets, selectedSetId, this) }
         recyclerViewSet.adapter = adapterAddSet
 
         val spacingInDp = 10

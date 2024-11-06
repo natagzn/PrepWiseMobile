@@ -48,7 +48,7 @@ class FriendFragment : Fragment() {
 
         recyclerViewFriend = view.findViewById(R.id.people_list)
         recyclerViewFriend.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapterFriend = AdapterFriend(friendList, requireContext())
+        adapterFriend = AdapterFriend(friendList, requireContext(), requireActivity().supportFragmentManager)
         recyclerViewFriend.adapter = adapterFriend
 
         val spacingInDp = 8

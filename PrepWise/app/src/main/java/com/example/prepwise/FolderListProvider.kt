@@ -11,39 +11,28 @@ object FolderListProvider {
         Folder(
             id = 1,
             name = "Mobile Development",
-            sets = arrayListOf(
-                MainActivity.getSetById(1),
-                MainActivity.getSetById(3),
-            ),
+            sets = SetListProvider.setList,
             date = LocalDate.of(2023, 9, 25),
             isLiked = true
         ),
         Folder(
             id = 2,
             name = "Data Science",
-            sets = arrayListOf(
-                MainActivity.getSetById(6),
-                MainActivity.getSetById(2),
-            ),
+            sets = SetListProvider.setList,
             date = LocalDate.of(2023, 9, 30),
             isLiked = false
         ),
         Folder(
             id = 3,
             name = "Web Development",
-            sets = arrayListOf(
-                MainActivity.getSetById(5),
-                MainActivity.getSetById(4),
-            ),
+            sets = SetListProvider.setList,
             date = LocalDate.of(2023, 10, 1),
             isLiked = true
         ),
         Folder(
             id = 4,
             name = "Cybersecurity",
-            sets = arrayListOf(
-                MainActivity.getSetById(6)
-            ),
+            sets = SetListProvider.setList,
             date = LocalDate.of(2023, 2, 1),
             isLiked = true
         ),

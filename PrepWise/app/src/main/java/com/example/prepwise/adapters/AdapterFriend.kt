@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
+import com.example.prepwise.fragments.UserProfileFragment
 import com.example.prepwise.models.People
 import java.time.format.DateTimeFormatter
 
-class AdapterFriend(private val friendList: ArrayList<People>, private val context: Context) :
+class AdapterFriend(private val friendList: ArrayList<People>, private val context: Context, private val fragmentManager: FragmentManager) :
     RecyclerView.Adapter<AdapterFriend.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
@@ -40,6 +42,16 @@ class AdapterFriend(private val friendList: ArrayList<People>, private val conte
             "following" -> holder.setStatus.text = context.getString(R.string.following)
             "followers" -> holder.setStatus.text = context.getString(R.string.followers)
             else -> holder.setStatus.text = friend.status
+        }
+
+        // Додаємо клік на елемент
+        holder.itemView.setOnClickListener {
+            // Передаємо дані через Bundle у фрагмент
+            val fragment = UserProfileFragment.newInstance(friend.id)
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 

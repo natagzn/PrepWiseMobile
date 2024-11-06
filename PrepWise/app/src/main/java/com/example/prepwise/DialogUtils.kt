@@ -2,6 +2,7 @@ package com.example.prepwise
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.Gravity
 import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.activities.PremiumActivity
 import java.time.LocalDate
 import java.util.Date
 
@@ -57,14 +59,16 @@ object DialogUtils {
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.apply {
-                textSize = 16f
+                textSize = 17f
                 setTextColor(ContextCompat.getColor(context, R.color.red))
                 typeface = ResourcesCompat.getFont(context, R.font.regular)
+                isAllCaps = false
             }
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.apply {
-                textSize = 16f
+                textSize = 17f
                 setTextColor(ContextCompat.getColor(context, R.color.black))
                 typeface = ResourcesCompat.getFont(context, R.font.regular)
+                isAllCaps = false
             }
         }
 
@@ -391,6 +395,56 @@ object DialogUtils {
 
         //popupWindow.showAsDropDown(anchorView, 0, 10)
         popupWindow.showAtLocation(anchorView, Gravity.END, 40, 150)
+    }
+
+    fun showPremiumDialog(context: Context) {
+        val builder = AlertDialog.Builder(context, R.style.RoundedDialogTheme)
+
+        val titleView = TextView(context).apply {
+            text = context.getString(R.string.prepWise_premium)
+            textSize = 21f
+            typeface = ResourcesCompat.getFont(context, R.font.bold)
+            setTextColor(ContextCompat.getColor(context, R.color.black))
+            setPadding(50, 40, 50, 0)
+        }
+        builder.setCustomTitle(titleView)
+
+        val messageView = TextView(context).apply {
+            text = context.getString(R.string.want_to_get_more_)
+            textSize = 17f
+            typeface = ResourcesCompat.getFont(context, R.font.regular)
+            setTextColor(ContextCompat.getColor(context, R.color.black))
+            setPadding(50, 40, 50, 0)
+        }
+        builder.setView(messageView)
+
+        builder.setPositiveButton(context.getString(R.string.View)) { dialog, _ ->
+            val intent = Intent(context, PremiumActivity::class.java)
+            context.startActivity(intent)
+            dialog.dismiss()
+        }
+        builder.setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.apply {
+                textSize = 17f
+                setTextColor(ContextCompat.getColor(context, R.color.green))
+                typeface = ResourcesCompat.getFont(context, R.font.medium)
+                isAllCaps = false
+            }
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.apply {
+                textSize = 17f
+                setTextColor(ContextCompat.getColor(context, R.color.black))
+                typeface = ResourcesCompat.getFont(context, R.font.medium)
+                isAllCaps = false
+            }
+        }
+
+        dialog.show()
     }
 }
 

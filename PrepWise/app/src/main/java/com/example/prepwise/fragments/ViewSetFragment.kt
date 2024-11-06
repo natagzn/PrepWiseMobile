@@ -361,7 +361,7 @@ class ViewSetFragment : Fragment() {
 
         addToFolder.setOnClickListener {
             dialog.dismiss()
-            showSelectionDialog(getString(R.string.select_folder), MainActivity.folderList, dialogLayoutId = R.layout.dialog_select_selection, itemLayoutId = R.layout.dialog_item)
+            showSelectionDialog(getString(R.string.select_folder), MainActivity.currentUser!!.folders, dialogLayoutId = R.layout.dialog_select_selection, itemLayoutId = R.layout.dialog_item)
         }
 
         delete.setOnClickListener{
@@ -382,7 +382,8 @@ class ViewSetFragment : Fragment() {
         }
 
         share.setOnClickListener{
-            showAccessDialog()
+            if(MainActivity.currentUser!!.premium) showAccessDialog()
+            else DialogUtils.showPremiumDialog(requireContext())
         }
 
         close.setOnClickListener {
@@ -402,47 +403,7 @@ class ViewSetFragment : Fragment() {
         val confirmButton: TextView = dialogView.findViewById(R.id.confirm_button)
         val cancelButton: TextView = dialogView.findViewById(R.id.cancel_button)
 
-        val users = arrayListOf(
-            People(
-                id = 1,
-                userImg = "img_anna",
-                username = "Anna",
-                status = "active",
-                numberOfFollowing = 150,
-                numberOfFollowers = 300,
-                description = "Loves teaching math",
-                email = "anna@example.com",
-                location = "Kyiv, Ukraine",
-                sets = arrayListOf(),
-                resouces = arrayListOf()
-            ),
-            People(
-                id = 1,
-                userImg = "img_john",
-                username = "John",
-                status = "active",
-                numberOfFollowing = 200,
-                numberOfFollowers = 500,
-                description = "History enthusiast",
-                email = "john@example.com",
-                location = "Lviv, Ukraine",
-                sets = arrayListOf(),
-                resouces = arrayListOf()
-            ),
-            People(
-                id = 1,
-                userImg = "img_nina",
-                username = "Nina",
-                status = "active",
-                numberOfFollowing = 180,
-                numberOfFollowers = 320,
-                description = "Biology lover",
-                email = "nina@example.com",
-                location = "Odesa, Ukraine",
-                sets = arrayListOf(),
-                resouces = arrayListOf()
-            )
-        )
+        val users = MainActivity.currentUser!!.friends
 
         val accessMap = mutableMapOf<String, String>()
 
