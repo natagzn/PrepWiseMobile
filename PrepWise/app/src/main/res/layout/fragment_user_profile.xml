@@ -51,13 +51,16 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/r7kwqvyvs2ex"
+            <TextView
+                android:id="@+id/user_initials"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:src="@mipmap/ic_launcher"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/CircleImageView" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:visibility="visible" />
 
             <View
                 android:layout_width="0dp"

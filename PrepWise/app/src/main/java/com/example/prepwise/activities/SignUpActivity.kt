@@ -99,7 +99,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun performSignUp(username: String, email: String, password: String, confirmPassword: String) {
         lifecycleScope.launch {
             try {
-                val response = RetrofitInstance.api.signUp(
+                val response = RetrofitInstance.api().signUp(
                     SignUpRequest(username, email, password, confirmPassword)
                 )
                 if (response.status == 0) {

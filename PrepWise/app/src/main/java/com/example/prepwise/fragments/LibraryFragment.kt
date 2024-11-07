@@ -26,7 +26,7 @@ class LibraryFragment : Fragment() {
         val foldersList = MainActivity.currentUser!!.folders
         val setsList = MainActivity.currentUser!!.sets
         val sharedList = MainActivity.currentUser!!.sharedSets
-        val resourcesList = MainActivity.currentUser!!.resouces
+        val resourcesList = MainActivity.currentUser!!.resources
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)

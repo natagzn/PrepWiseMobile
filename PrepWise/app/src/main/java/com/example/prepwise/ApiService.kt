@@ -1,12 +1,12 @@
 package com.example.prepwise
 
 import com.example.prepwise.dataClass.CategoryResponse
-import com.example.prepwise.dataClass.LevelData
 import com.example.prepwise.dataClass.LoginRequest
 import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.SignUpRequest
 import com.example.prepwise.dataClass.SignUpResponse
 import com.example.prepwise.models.Level
+import com.example.prepwise.models.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,4 +26,6 @@ interface ApiService {
     @GET("/api/levels")
     suspend fun getLevels(): Response<List<Level>>
 
+    @GET("/api/profile")
+    suspend fun getUserProfile(): Response<User>
 }

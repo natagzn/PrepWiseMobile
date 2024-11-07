@@ -41,7 +41,7 @@ import retrofit2.HttpException
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var currentUser: User? = null
+        var currentUser: User = User()
         val categories: ArrayList<Category> = arrayListOf()
         val levels: ArrayList<Level> = arrayListOf()
 
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
-            setContentView(R.layout.activity_main)
+            loadData()
         }
 
         setContentView(R.layout.activity_main)
@@ -96,139 +96,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         loadLocale(this)
-
-        // Отримання категорій з бд
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitInstance.api.getCategories()
-                if (response.isSuccessful && response.body() != null) {
-                    categories.clear()
-                    categories.addAll(response.body()!!.categories)
-                } else {
-                    Log.e("LoginActivity", "Error fetching categories: ${response.message()}")
-                }
-            } catch (e: HttpException) {
-                Log.e("LoginActivity", "HttpException: ${e.message}")
-            } catch (e: Exception) {
-                Log.e("LoginActivity", "Exception: ${e.message}")
-            }
-        }
-
-        // Отримання рівнів з БД
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitInstance.api.getLevels()
-                if (response.isSuccessful && response.body() != null) {
-                    levels.clear()
-                    levels.addAll(response.body()!!.map { Level(it.id, it.name) })
-                } else {
-                    Log.e("LoginActivity", "Error fetching levels: ${response.message()}")
-                }
-            } catch (e: HttpException) {
-                Log.e("LoginActivity", "HttpException: ${e.message()}")
-            } catch (e: Exception) {
-                Log.e("LoginActivity", "Exception: ${e.message}")
-            }
-        }
-
-
-        currentUser = User(
-            id = 1,
-            userImg = "https://example.com/image.jpg",
-            username = "john_doe",
-            description = "This is a sample description for the user.",
-            email = "john.doe@example.com",
-            location = "Ukraine",
-            sets = arrayListOf(),
-            sharedSets = arrayListOf(),
-            resouces = arrayListOf(),
-            folders = arrayListOf(),
-            friends = arrayListOf(
-                People(
-                    id = 1,
-                    userImg = "img_anna",
-                    username = "AnnaNahalkaaaaaaaa",
-                    status = "Friends",
-                    numberOfFollowing = 150,
-                    numberOfFollowers = 300,
-                    description = "Loves teaching math",
-                    email = "anna@example.com",
-                    location = "Kyiv, Ukraine",
-                    sets = arrayListOf(),
-                    resouces = arrayListOf()
-                ),
-                People(
-                    id = 2,
-                    userImg = "img_john",
-                    username = "John",
-                    status = "Follower",
-                    numberOfFollowing = 200,
-                    numberOfFollowers = 500,
-                    description = "History enthusiast",
-                    email = "john@example.com",
-                    location = "Lviv, Ukraine",
-                    sets = arrayListOf(),
-                    resouces = arrayListOf()
-                )
-            ),
-            followers = arrayListOf(
-                People(
-                    id = 3,
-                    userImg = "img_anna",
-                    username = "AnnaNahalkaaaaaaaa",
-                    status = "Friends",
-                    numberOfFollowing = 150,
-                    numberOfFollowers = 300,
-                    description = "Loves teaching math",
-                    email = "anna@example.com",
-                    location = "Kyiv, Ukraine",
-                    sets = arrayListOf(),
-                    resouces = arrayListOf()
-                ),
-                People(
-                    id = 4,
-                    userImg = "img_paul",
-                    username = "Paul",
-                    status = "Follower",
-                    numberOfFollowing = 220,
-                    numberOfFollowers = 430,
-                    description = "Physics enthusiast",
-                    email = "paul@example.com",
-                    location = "Kharkiv, Ukraine",
-                    sets = arrayListOf(),
-                    resouces = arrayListOf()
-                )
-            ),
-            following = arrayListOf(
-                People(
-                    id = 5,
-                    userImg = "img_john",
-                    username = "John",
-                    status = "Follower",
-                    numberOfFollowing = 200,
-                    numberOfFollowers = 500,
-                    description = "History enthusiast",
-                    email = "john@example.com",
-                    location = "Lviv, Ukraine",
-                    sets = arrayListOf(),
-                    resouces = arrayListOf()
-                ),
-                People(
-                    id = 6,
-                    userImg = "img_nina",
-                    username = "Nina",
-                    status = "Following",
-                    numberOfFollowing = 180,
-                    numberOfFollowers = 320,
-                    description = "Biology lover",
-                    email = "nina@example.com",
-                    location = "Odesa, Ukraine",
-                    sets = arrayListOf(),
-                    resouces = arrayListOf()
-                )
-            ),
-            premium = false
-        )
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
@@ -277,6 +144,70 @@ class MainActivity : AppCompatActivity() {
             showBottomDialog()
         }
 
+    }
+
+    private fun loadData() {
+        lifecycleScope.launch {
+            fetchCategories()
+            fetchLevels()
+            fetchUserProfile()
+        }
+    }
+
+    private suspend fun fetchCategories() {
+        try {
+            val response = RetrofitInstance.api().getCategories()
+            if (response.isSuccessful && response.body() != null) {
+                categories.clear()
+                categories.addAll(response.body()!!.categories)
+            } else {
+                Log.e("MainActivity", "Error fetching categories: ${response.message()}")
+            }
+        } catch (e: HttpException) {
+            Log.e("MainActivity", "HttpException: ${e.message}")
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Exception: ${e.message}")
+        }
+    }
+
+    private suspend fun fetchLevels() {
+        try {
+            val response = RetrofitInstance.api().getLevels()
+            if (response.isSuccessful && response.body() != null) {
+                levels.clear()
+                levels.addAll(response.body()!!)
+            } else {
+                Log.e("MainActivity", "Error fetching levels: ${response.message()}")
+            }
+        } catch (e: HttpException) {
+            Log.e("MainActivity", "HttpException: ${e.message}")
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Exception: ${e.message}")
+        }
+    }
+
+    private suspend fun fetchUserProfile() {
+        try {
+            val response = RetrofitInstance.api().getUserProfile()
+            if (response.isSuccessful && response.body() != null) {
+                val userProfile = response.body()!!
+                currentUser.apply {
+                    id = userProfile.id
+                    userImg = userProfile.userImg
+                    username = userProfile.username
+                    email = userProfile.email
+                    bio = userProfile.bio
+                    location = userProfile.location
+                }
+                Log.d("MainActivity", "User profile fetched successfully - " + userProfile.username)
+            } else {
+                Log.e("MainActivity", "Error fetching user profile: ${response.message()}")
+            }
+        } catch (e: HttpException) {
+            Log.e("MainActivity", "HttpException: ${e.message}")
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Exception: ${e.message}")
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {

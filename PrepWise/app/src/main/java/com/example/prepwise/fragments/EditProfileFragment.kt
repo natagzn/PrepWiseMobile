@@ -1,5 +1,8 @@
 package com.example.prepwise.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.prepwise.R
+import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,6 +58,17 @@ class EditProfileFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
+        // Встановлення фото профілю
+        val (initials, backgroundColor) = generateAvatar(currentUser.username)
+        val userInitialsView:TextView = view.findViewById(R.id.user_initials)
+        userInitialsView.text = initials
+
+        val drawable = GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            color = ColorStateList.valueOf(backgroundColor)
+        }
+        userInitialsView.background = drawable
+
         return view
     }
 
@@ -83,6 +98,17 @@ class EditProfileFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to load countries", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun generateAvatar(username: String): Pair<String, Int> {
+        val initials = if (username.isNotEmpty()) username.take(2).uppercase() else "N/A"
+
+        // Генерація кольору на основі хешу імені
+        val hash = username.fold(0) { acc, char -> acc + char.code }
+        val hue = hash % 360
+        val color = Color.HSVToColor(floatArrayOf(hue.toFloat(), 0.3f, 0.7f)) // Колір у форматі HSL
+
+        return Pair(initials, color)
     }
 
     private fun saveUserData() {

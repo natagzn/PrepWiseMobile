@@ -1,5 +1,8 @@
 package com.example.prepwise.fragments
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.prepwise.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
+import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import com.example.prepwise.adapters.ViewPagerUserAdapter
 import com.example.prepwise.models.People
 import com.example.prepwise.models.Resource
@@ -152,6 +156,29 @@ class UserProfileFragment : Fragment() {
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        // Встановлення фото профілю
+        val (initials, backgroundColor) = generateAvatar(currentUser.username)
+        val userInitialsView:TextView = view.findViewById(R.id.user_initials)
+        userInitialsView.text = initials
+
+        val drawable = GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            color = ColorStateList.valueOf(backgroundColor)
+        }
+        userInitialsView.background = drawable
+
         return view
+    }
+
+    fun generateAvatar(username: String): Pair<String, Int> {
+        val initials = if (username.isNotEmpty()) username.take(2).uppercase() else "N/A"
+
+        // Генерація кольору на основі хешу імені
+        val hash = username.fold(0) { acc, char -> acc + char.code }
+        val hue = hash % 360
+        val color = Color.HSVToColor(floatArrayOf(hue.toFloat(), 0.3f, 0.7f)) // Колір у форматі HSL
+
+        return Pair(initials, color)
     }
 }

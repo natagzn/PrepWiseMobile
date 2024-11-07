@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response = RetrofitInstance.api.login(LoginRequest(email, password))
+                val response = RetrofitInstance.api().login(LoginRequest(email, password))
                 if (response.status == 200) {
                     val token = response.tokenData.token
                     saveAuthToken(token)

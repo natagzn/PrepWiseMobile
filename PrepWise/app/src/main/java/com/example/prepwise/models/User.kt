@@ -2,9 +2,19 @@ package com.example.prepwise.models
 
 import java.io.Serializable
 
-class User(val id: Int, var userImg:String, var username: String, var description: String, var email: String,
-           var location: String, var sets: ArrayList<Set>, var sharedSets: ArrayList<SharedSet>,
-           var resouces: ArrayList<Resource>, var folders: ArrayList<Folder>,
-           var friends: ArrayList<People>, var followers: ArrayList<People>,
-           var following: ArrayList<People>, var premium: Boolean): Serializable {
-}
+class User(
+    var id: Int = 0,
+    var userImg: String = "",
+    var username: String = "",
+    var bio: String = "",
+    var email: String = "",
+    var location: String = "",
+    var sets: ArrayList<Set> = arrayListOf(),
+    var sharedSets: ArrayList<SharedSet> = arrayListOf(),
+    var resources: ArrayList<Resource> = arrayListOf(),
+    var folders: ArrayList<Folder> = arrayListOf(),
+    var friends: ArrayList<People> = arrayListOf(),
+    var followers: ArrayList<People> = arrayListOf(),
+    var following: ArrayList<People> = arrayListOf(),
+    var premium: Boolean = false
+) : Serializable

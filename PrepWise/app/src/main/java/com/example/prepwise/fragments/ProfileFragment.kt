@@ -4,8 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -25,6 +26,8 @@ import com.example.prepwise.LocaleHelper.loadLocale
 import com.example.prepwise.LocaleHelper.setLocale
 import com.example.prepwise.R
 import com.example.prepwise.activities.LoginActivity
+import com.example.prepwise.activities.MainActivity
+import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import com.example.prepwise.activities.PeopleActivity
 import com.example.prepwise.activities.PremiumActivity
 
@@ -34,6 +37,11 @@ class ProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    private lateinit var setUsername: TextView
+    private lateinit var setEmail: TextView
+    private lateinit var setDescription: TextView
+    private lateinit var setLocation: TextView
+
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
     }
@@ -41,6 +49,26 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        setUsername = view.findViewById(R.id.username)
+        setEmail = view.findViewById(R.id.email)
+        setDescription = view.findViewById(R.id.description)
+        setLocation = view.findViewById(R.id.location)
+
+        setUsername.text = currentUser!!.username
+        setEmail.text = currentUser!!.email
+
+        if (currentUser!!.location != "")  setLocation.text = currentUser!!.location
+        else{
+            setLocation.text = "Додайте локацію"
+            setLocation.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+        }
+
+        if (currentUser!!.bio != "")  setDescription.text = currentUser!!.bio
+        else{
+            setDescription.text = "Додайте опис"
+            setDescription.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+        }
 
         loadLocale(requireContext())
 
@@ -62,6 +90,8 @@ class ProfileFragment : Fragment() {
                 if (confirmed) {
                     val sharedPref = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
                     sharedPref.edit().remove("auth_token").apply()
+
+                    currentUser.username = ""
 
                     val intent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(intent)
@@ -113,53 +143,29 @@ class ProfileFragment : Fragment() {
         }
 
         // Встановлення фото профілю
-        val userPicture: ImageView = view.findViewById(R.id.user_picture)
-        userPicture.setOnLongClickListener {
-            showProfilePictureOptions()
-            true
+        val (initials, backgroundColor) = generateAvatar(currentUser.username)
+        val userInitialsView:TextView = view.findViewById(R.id.user_initials)
+        userInitialsView.text = initials
+
+        val drawable = GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            color = ColorStateList.valueOf(backgroundColor)
         }
+        userInitialsView.background = drawable
 
         return view
     }
 
-    // Вікно для вибору дії при кліку на фото профілю
-    private fun showProfilePictureOptions() {
-        val options = arrayOf(getString(R.string.set_image), getString(R.string.delete_image))
+    fun generateAvatar(username: String): Pair<String, Int> {
+        val initials = if (username.isNotEmpty()) username.take(2).uppercase() else "N/A"
 
-        val builder = AlertDialog.Builder(requireContext(), R.style.RoundedDialogTheme)
-        builder.setTitle(getString(R.string.choose_an_action))
-        builder.setItems(options) { _, which ->
-            when (which) {
-                0 -> openGallery()
-                1 -> removeProfilePicture()
-            }
-        }
+        // Генерація кольору на основі хешу імені
+        val hash = username.fold(0) { acc, char -> acc + char.code }
+        val hue = hash % 360
+        val color = Color.HSVToColor(floatArrayOf(hue.toFloat(), 0.3f, 0.7f)) // Колір у форматі HSL
 
-        // Створення діалогу та кастомізація
-        val dialog = builder.create()
-        dialog.setOnShowListener {
-            val titleTextView = dialog.findViewById<TextView>(android.R.id.title)
-            titleTextView?.apply {
-                setTextSize(20f)
-                typeface = ResourcesCompat.getFont(context, R.font.bold)
-                setTextColor(ContextCompat.getColor(context, R.color.black))
-            }
-
-            dialog.listView?.adapter?.let { adapter ->
-                for (i in 0 until adapter.count) {
-                    val item = dialog.listView.getChildAt(i) as? TextView
-                    item?.apply {
-                        setTextSize(18f) // Розмір тексту пунктів
-                        typeface = ResourcesCompat.getFont(context, R.font.regular)
-                        setTextColor(ContextCompat.getColor(context, R.color.black))
-                    }
-                }
-            }
-        }
-
-        dialog.show()
+        return Pair(initials, color)
     }
-
 
     // видалення фото
     private fun removeProfilePicture() {

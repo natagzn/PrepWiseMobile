@@ -13,20 +13,20 @@
         android:orientation="vertical"
         android:paddingTop="40dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/user_picture"
+        <TextView
+            android:id="@+id/user_initials"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginBottom="12dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/user_default_avatar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/CircleImageView" />
+            android:gravity="center"
+            android:background="@color/gray"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:visibility="visible" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="22dp"
@@ -38,19 +38,25 @@
                 style="@style/bold_20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
                 android:text="nahalkaanna"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/edit"
                 android:layout_width="wrap_content"
-                android:padding="5dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:padding="6dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/edit" />
-        </LinearLayout>
+                android:src="@drawable/edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/username"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,24 +68,6 @@
             android:orientation="vertical"
             android:paddingHorizontal="17dp"
             android:paddingVertical="19dp">
-
-            <TextView
-                android:id="@+id/txt"
-                style="@style/light_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/description"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/description"
-                style="@style/regular_16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="I am student of HPK"
-                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txt2"
@@ -97,6 +85,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="nahalkaanna06@gmail.com"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/txt"
+                style="@style/light_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/description"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/regular_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="I am student of HPK"
                 android:textColor="@color/black" />
 
             <TextView
@@ -309,6 +315,7 @@
                 android:text="@string/delete_account"
                 android:textColor="#CD0000" />
         </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>

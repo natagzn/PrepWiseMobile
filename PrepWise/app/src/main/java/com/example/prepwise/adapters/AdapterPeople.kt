@@ -1,6 +1,9 @@
 package com.example.prepwise.adapters
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
+import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import com.example.prepwise.fragments.UserProfileFragment
 import com.example.prepwise.models.People
 
@@ -20,6 +24,7 @@ class AdapterPeople(private val userList: ArrayList<People>, private val context
         val setNumberOfSets: TextView = itemView.findViewById(R.id.number_of_sets)
         val setNumberOfResource: TextView = itemView.findViewById(R.id.number_of_resources)
         val setPeopleStatus: TextView = itemView.findViewById(R.id.people_status)
+        val userInitialsView:TextView = itemView.findViewById(R.id.user_initials)
     }
 
     // Створюємо новий ViewHolder
@@ -46,6 +51,27 @@ class AdapterPeople(private val userList: ArrayList<People>, private val context
                 .addToBackStack(null)
                 .commit()
         }
+
+        // Встановлення фото профілю
+        val (initials, backgroundColor) = generateAvatar(currentUser.username)
+        holder.userInitialsView.text = initials
+
+        val drawable = GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            color = ColorStateList.valueOf(backgroundColor)
+        }
+        holder.userInitialsView.background = drawable
+    }
+
+    fun generateAvatar(username: String): Pair<String, Int> {
+        val initials = if (username.isNotEmpty()) username.take(2).uppercase() else "N/A"
+
+        // Генерація кольору на основі хешу імені
+        val hash = username.fold(0) { acc, char -> acc + char.code }
+        val hue = hash % 360
+        val color = Color.HSVToColor(floatArrayOf(hue.toFloat(), 0.3f, 0.7f)) // Колір у форматі HSL
+
+        return Pair(initials, color)
     }
 
     // Повертаємо кількість елементів у списку
