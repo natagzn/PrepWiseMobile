@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.DialogUtils
+import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
 import java.time.format.DateTimeFormatter
 

@@ -13,8 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.prepwise.DialogUtils
-import com.example.prepwise.DialogUtils.showSelectionPopup
+import com.example.prepwise.objects.DialogUtils.showSelectionPopup
 import com.example.prepwise.R
 
 class NewResourceActivity : AppCompatActivity() {

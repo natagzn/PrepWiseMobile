@@ -12,9 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.prepwise.LocaleHelper.loadLocale
+import com.example.prepwise.objects.LocaleHelper.loadLocale
 import com.example.prepwise.R
-import com.example.prepwise.RetrofitInstance
+import com.example.prepwise.objects.RetrofitInstance
 import com.example.prepwise.dataClass.LoginRequest
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch

@@ -6,16 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.DialogUtils
+import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
-import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Question
-import com.google.android.material.textfield.TextInputEditText
-import java.time.format.DateTimeFormatter
 
 class AdapterAddQuestion(
     private val questions: MutableList<Question>,

@@ -1,4 +1,4 @@
-package com.example.prepwise
+package com.example.prepwise.objects
 
 import android.app.Activity
 import android.content.Context
@@ -23,12 +23,13 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.R
+import com.example.prepwise.SelectableItem
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.PremiumActivity
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import java.time.LocalDate
-import java.util.Date
 
 object DialogUtils {
     fun showConfirmationDialog(
@@ -199,7 +200,9 @@ object DialogUtils {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true
         )
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_green_rounded_background))
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context,
+            R.drawable.white_green_rounded_background
+        ))
         popupWindow.elevation = 8f
 
         val dimBackground = (context as Activity).findViewById<View>(R.id.dim_background)
@@ -233,7 +236,9 @@ object DialogUtils {
         val popupView = LayoutInflater.from(context).inflate(R.layout.dialog_sort_menu, null)
         val popupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
 
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_green_rounded_background))
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context,
+            R.drawable.white_green_rounded_background
+        ))
         popupWindow.elevation = 8f
 
         val dimBackground = (context as Activity).findViewById<View>(R.id.dim_background)
@@ -318,7 +323,9 @@ object DialogUtils {
             1400
         )
 
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_rounded_background))
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context,
+            R.drawable.white_rounded_background
+        ))
         popupWindow.elevation = 8f
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true

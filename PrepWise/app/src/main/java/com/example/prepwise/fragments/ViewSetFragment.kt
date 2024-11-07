@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,16 +18,16 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.PopupMenu
 import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.DialogUtils
+import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
@@ -37,9 +38,10 @@ import com.example.prepwise.activities.ViewFlashcardActivity
 import com.example.prepwise.adapters.AccessAdapter
 import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Folder
-import com.example.prepwise.models.People
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
+import com.example.prepwise.objects.SetRepository
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 class ViewSetFragment : Fragment() {
@@ -63,6 +65,9 @@ class ViewSetFragment : Fragment() {
     private lateinit var setKnow: TextView
     private lateinit var setStillLearning: TextView
 
+    private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var contentPage: LinearLayout
+
     companion object {
         private const val ARG_SET_ID = "set_id"
 
@@ -81,12 +86,6 @@ class ViewSetFragment : Fragment() {
         arguments?.let {
             setId = it.getInt(ARG_SET_ID)
         }
-
-        setId?.let {
-            set = MainActivity.getSetById(it)
-            questionList = set?.questions ?: arrayListOf()
-            originalQuestionList = ArrayList(questionList) // Зберігаємо початковий порядок
-        }
     }
 
     private var adapterQuestion: AdapterQuestion? = null
@@ -98,6 +97,15 @@ class ViewSetFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_view_set, container, false)
 
+        // Ініціалізація елементів макета
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar) // Ініціалізація прогрес-бару
+        contentPage = view.findViewById(R.id.content)
+
+        // Робимо прогрес-бар видимим перед завантаженням
+        loadingProgressBar.visibility = View.VISIBLE
+        contentPage.visibility = View.GONE
+
+        questionList = arrayListOf()
         recyclerViewQuestion = view.findViewById(R.id.recyclerView)
         recyclerViewQuestion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapterQuestion = AdapterQuestion(questionList, requireContext(), childFragmentManager)
@@ -122,58 +130,81 @@ class ViewSetFragment : Fragment() {
         setDate = view.findViewById(R.id.date)
         setStillLearning = view.findViewById(R.id.number_of_still_learning)
 
-        set?.let {
-            setName.text = it.name
-            setLevel.text = it.level.name
-            setUsername.text = it.username
-            setNumberOfQuestions.text = it.questions.size.toString()
-            setAccessType.text = it.access
+        setId?.let { id ->
+            lifecycleScope.launch {
+                // Виконуємо запит getSetById асинхронно
+                set = SetRepository.getSetById(id)
 
-            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-            setDate.text = it.date.format(formatter)
+                // Після отримання даних приховуємо прогрес-бар
+                loadingProgressBar.visibility = View.GONE
+                contentPage.visibility = View.VISIBLE
 
-            if (it.access == "private") {
-                setAccessImg.setImageResource(R.drawable.resource_private)
-            } else if (it.access == "public") {
-                setAccessImg.setImageResource(R.drawable.resource_public)
+                // Після того, як запит завершився, перевіряємо, чи значення set не null
+                set?.let { loadedSet ->
+                    questionList.clear()
+                    questionList.addAll(loadedSet.questions) // Додаємо питання до списку
+                    originalQuestionList = ArrayList(questionList)
+
+                    adapterQuestion?.notifyDataSetChanged()
+
+                    setName.text = loadedSet.name
+                    setLevel.text = loadedSet.level.name
+                    setUsername.text = loadedSet.username
+                    setNumberOfQuestions.text = loadedSet.questions.size.toString()
+                    setAccessType.text = loadedSet.access
+
+                    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                    setDate.text = loadedSet.date.format(formatter)
+
+                    if (loadedSet.access == "private") {
+                        setAccessImg.setImageResource(R.drawable.resource_private)
+                    } else if (loadedSet.access == "public") {
+                        setAccessImg.setImageResource(R.drawable.resource_public)
+                    }
+
+                    // Очищуємо контейнер категорій перед додаванням нових категорій
+                    categoriesContainer.removeAllViews()
+
+                    // Додаємо категорії в контейнер
+                    for (category in loadedSet.categories) {
+                        val categoryTextView = TextView(context)
+                        categoryTextView.text = category.name
+                        categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
+                        categoryTextView.setPadding(
+                            dpToPx(10, requireContext()), dpToPx(2, requireContext()),
+                            dpToPx(10, requireContext()), dpToPx(2, requireContext())
+                        )
+                        categoryTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                        categoryTextView.setTextAppearance(R.style.medium_11)
+
+                        val layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        layoutParams.setMargins(dpToPx(10, requireContext()), 0, 0, 0)
+                        categoryTextView.layoutParams = layoutParams
+
+                        categoriesContainer.addView(categoryTextView)
+                    }
+
+                    if (loadedSet.isLiked) setLike.setImageResource(R.drawable.save)
+                    else setLike.setImageResource(R.drawable.not_save)
+
+                    // Прогрес
+                    val progress = loadedSet.calculateProgress()
+                    progressBar.progress = progress
+                    setProgressPersent.text = progress.toString() +"%"
+                    setKnow.text = loadedSet.getCountLearned().toString()
+                    var stillLearning: Int = loadedSet.questions.size - loadedSet.getCountLearned()
+                    setStillLearning.text = stillLearning.toString()
+
+                } ?: run {
+                    Log.e("ViewSetFragment", "Set not found with id: $id")
+                }
             }
-
-            // Очищуємо контейнер категорій перед додаванням нових категорій
-            categoriesContainer.removeAllViews()
-
-            // Додаємо категорії в контейнер
-            for (category in it.categories) {
-                val categoryTextView = TextView(context)
-                categoryTextView.text = category.name
-                categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
-                categoryTextView.setPadding(
-                    dpToPx(10, requireContext()), dpToPx(2, requireContext()),
-                    dpToPx(10, requireContext()), dpToPx(2, requireContext())
-                )
-                categoryTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                categoryTextView.setTextAppearance(R.style.medium_11)
-
-                val layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                layoutParams.setMargins(dpToPx(10, requireContext()), 0, 0, 0)
-                categoryTextView.layoutParams = layoutParams
-
-                categoriesContainer.addView(categoryTextView)
-            }
-
-            if (it.isLiked) setLike.setImageResource(R.drawable.save)
-            else setLike.setImageResource(R.drawable.not_save)
-
-            // Прогрес
-            val progress = it.calculateProgress()
-            progressBar.progress = progress
-            setProgressPersent.text = progress.toString() +"%"
-            setKnow.text = it.getCountLearned().toString()
-            var stillLearning: Int = it.questions.size - it.getCountLearned()
-            setStillLearning.text = stillLearning.toString()
         }
+
+
 
         val backButton: ImageView = view.findViewById(R.id.back)
         backButton.setOnClickListener {

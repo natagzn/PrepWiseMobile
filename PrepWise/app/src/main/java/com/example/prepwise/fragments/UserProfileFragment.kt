@@ -13,7 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
-import com.example.prepwise.DialogUtils
+import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.currentUser

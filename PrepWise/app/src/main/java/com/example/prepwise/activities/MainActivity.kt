@@ -20,10 +20,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.HomeFragment
-import com.example.prepwise.DialogUtils
-import com.example.prepwise.LocaleHelper.loadLocale
+import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.objects.LocaleHelper.loadLocale
 import com.example.prepwise.R
-import com.example.prepwise.RetrofitInstance
+import com.example.prepwise.objects.RetrofitInstance
 import com.example.prepwise.fragments.LibraryFragment
 import com.example.prepwise.fragments.LikedFragment
 import com.example.prepwise.fragments.ProfileFragment
@@ -31,12 +31,16 @@ import com.example.prepwise.models.Category
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.People
+import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
 import com.example.prepwise.models.User
+import com.example.prepwise.objects.SetRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
 
@@ -143,7 +147,6 @@ class MainActivity : AppCompatActivity() {
         addBtn.setOnClickListener {
             showBottomDialog()
         }
-
     }
 
     private fun loadData() {
@@ -151,6 +154,57 @@ class MainActivity : AppCompatActivity() {
             fetchCategories()
             fetchLevels()
             fetchUserProfile()
+            SetRepository.fetchAllSets()
+        }
+    }
+
+    private suspend fun fetchAllSets() {
+        try {
+            // Отримуємо список всіх сетів (тільки ID та мінімальні дані)
+            val response = RetrofitInstance.api().getAllSets()
+            if (response.isSuccessful && response.body() != null) {
+                val apiSets = response.body()!!
+
+                currentUser?.sets?.clear()
+
+                // Створюємо порожній список для збереження повних даних сетів
+                val sets = mutableListOf<Set>()
+
+                // Для кожного ID виконуємо запит getSetById для отримання повної інформації
+                for (apiSet in apiSets) {
+                    val setResponse = RetrofitInstance.api().getSetById(apiSet.question_set_id)
+                    Log.d("IIIIIDDDDDDD", " fetching set details: ${apiSet.question_set_id}")
+                    if (setResponse.isSuccessful && setResponse.body() != null) {
+                        val setData = setResponse.body()!!
+                        Log.d("NAMMMMEEEEEE", " fetching set details: ${setData.name}")
+                        // Додаємо інформацію про сет в наш список sets
+                        sets.add(
+                            Set(
+                                id = apiSet.question_set_id,
+                                name = setData.name,
+                                level = Level(setData.level.levelId, setData.level.name),
+                                categories = ArrayList(setData.categories.map { Category(it.id, it.name) }),
+                                access = setData.access,
+                                date = LocalDateTime.parse(setData.createdAt, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDate(),
+                                questions = ArrayList(setData.questions.map { Question(it.id, it.content, it.answer, it.learned) }),
+                                username = setData.author.username,
+                                isLiked = setData.isFavourite
+                            )
+                        )
+                    } else {
+                        Log.e("MainActivity", "Error fetching set details: ${setResponse.message()}")
+                    }
+                }
+
+                // Додаємо завантажені сети до currentUser
+                currentUser?.sets?.addAll(sets)
+            } else {
+                Log.e("MainActivity", "Error fetching sets: ${response.message()}")
+            }
+        } catch (e: HttpException) {
+            Log.e("MainActivity", "HttpException: ${e.message}")
+        } catch (e: Exception) {
+            Log.e("MainActivity", "Exception: ${e.message}")
         }
     }
 

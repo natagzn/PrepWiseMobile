@@ -20,13 +20,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import com.example.prepwise.DialogUtils
-import com.example.prepwise.LocaleHelper.loadLocale
-import com.example.prepwise.LocaleHelper.setLocale
+import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.objects.LocaleHelper.loadLocale
+import com.example.prepwise.objects.LocaleHelper.setLocale
 import com.example.prepwise.R
 import com.example.prepwise.activities.LoginActivity
-import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import com.example.prepwise.activities.PeopleActivity
 import com.example.prepwise.activities.PremiumActivity

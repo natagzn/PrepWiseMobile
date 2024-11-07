@@ -1,10 +1,10 @@
-package com.example.prepwise
+package com.example.prepwise.objects
 
 import android.content.Context
 import android.util.Log
-import okhttp3.Interceptor
+import com.example.prepwise.ApiService
+import com.example.prepwise.AuthInterceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -33,7 +33,7 @@ object RetrofitInstance {
             .build()
 
     }
-    fun api():ApiService{
+    fun api(): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 }

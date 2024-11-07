@@ -14,16 +14,13 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.DialogUtils
+import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
-import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewFolderActivity
-import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.adapters.AdapterSetInFolder
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Set

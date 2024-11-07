@@ -18,21 +18,17 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.DialogUtils
-import com.example.prepwise.DialogUtils.showSelectionPopup
+import com.example.prepwise.objects.DialogUtils.showSelectionPopup
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddQuestion
 import com.example.prepwise.models.Category
-import com.example.prepwise.models.Set
-import java.time.LocalDate
 
 class NewSetActivity : AppCompatActivity() {
     private lateinit var categoryListContainer: LinearLayout
