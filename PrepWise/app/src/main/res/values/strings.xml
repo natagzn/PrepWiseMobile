@@ -297,4 +297,10 @@ get back to you as soon as possible.</string>
     <string name="password_invalid">Password invalid</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="email_validation_failed">Email validation failed</string>
+
+    <string name="no_selected">no selected</string>
+    <string name="please_enter_a_title">Please enter a name article/book</string>
+    <string name="please_enter_a_description">Please enter a description</string>
+    <string name="please_select_a_level">Please select a level</string>
+    <string name="please_select_a_category">Please select a category</string>
 </resources>

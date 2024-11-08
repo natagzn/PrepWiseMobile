@@ -8,6 +8,11 @@ import java.util.Date
 
 data class CategoryResponse(
     val message: String,
-    val categories: List<Category>
+    val categories: List<Category1>
+)
+
+data class Category1(
+    val category_id: Int,
+    val name: String
 )
 

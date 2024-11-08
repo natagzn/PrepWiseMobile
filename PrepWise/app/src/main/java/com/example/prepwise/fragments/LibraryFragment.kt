@@ -3,25 +3,45 @@ package com.example.prepwise.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.adapters.ViewPagerLibratyAdapter
+import com.example.prepwise.objects.ResourceRepository
+import com.example.prepwise.objects.SetRepository
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import android.view.View as View1
+import kotlinx.coroutines.launch
 
 class LibraryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
+    private lateinit var progressBarLoading: ProgressBar
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View1? {
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
+
+        progressBarLoading = view.findViewById(R.id.progressBarLoading)
+        val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
+
+        lifecycleScope.launch {
+            progressBarLoading.visibility = View.VISIBLE
+            viewPager.visibility = View.GONE
+
+            SetRepository.fetchAllSets()
+            ResourceRepository.fetchAllResources()
+
+            progressBarLoading.visibility = View.GONE
+            viewPager.visibility = View.VISIBLE
+        }
 
         val foldersList = MainActivity.currentUser!!.folders
         val setsList = MainActivity.currentUser!!.sets
@@ -29,7 +49,6 @@ class LibraryFragment : Fragment() {
         val resourcesList = MainActivity.currentUser!!.resources
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
-        val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
 
         val adapter = ViewPagerLibratyAdapter(foldersList, setsList, sharedList, resourcesList, requireActivity())
         viewPager.adapter = adapter

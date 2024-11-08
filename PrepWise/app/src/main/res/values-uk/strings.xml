@@ -302,4 +302,10 @@
     <string name="password_invalid">Password invalid</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="email_validation_failed">Помилка перевірки електронної пошти</string>
+
+    <string name="no_selected">не обрано</string>
+    <string name="please_enter_a_title">Введіть назву статті/книги</string>
+    <string name="please_enter_a_description">Введіть опис</string>
+    <string name="please_select_a_level">Будь ласка, обріть рівень</string>
+    <string name="please_select_a_category">Будь ласка, обріть категорію</string>
 </resources>

@@ -39,6 +39,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/report" />
+        <ImageView
+            android:id="@+id/delete"
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/dump" />
 
     </LinearLayout>
 
@@ -143,7 +149,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
@@ -156,6 +162,7 @@
             <TextView
                 android:id="@+id/number_of_likes"
                 style="@style/semi_bold_15"
+                android:layout_marginVertical="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10" />
@@ -164,13 +171,15 @@
                 android:id="@+id/like"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingHorizontal="4dp"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="5dp"
                 android:layout_marginEnd="8dp"
                 app:srcCompat="@drawable/like" />
 
             <TextView
                 android:id="@+id/number_of_dislikes"
                 style="@style/semi_bold_15"
+                android:layout_marginVertical="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5" />
@@ -179,7 +188,8 @@
                 android:id="@+id/dislike"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingHorizontal="4dp"
+                android:paddingVertical="4dp"
+                android:paddingHorizontal="5dp"
                 app:srcCompat="@drawable/dislike" />
 
         </LinearLayout>

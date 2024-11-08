@@ -1,17 +1,21 @@
 package com.example.prepwise
 
+import com.example.prepwise.dataClass.AllResourceIdResponse
 import com.example.prepwise.dataClass.CategoryResponse
 import com.example.prepwise.dataClass.LoginRequest
 import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.AllSetIdResponse
+import com.example.prepwise.dataClass.FavoriteRequestBody
+import com.example.prepwise.dataClass.LevelResponse1
+import com.example.prepwise.dataClass.ResourceDetailsResponse
+import com.example.prepwise.dataClass.ResourceRequestBody
 import com.example.prepwise.dataClass.SetDetailsResponse
 import com.example.prepwise.dataClass.SignUpRequest
 import com.example.prepwise.dataClass.SignUpResponse
-import com.example.prepwise.models.Level
-import com.example.prepwise.models.Set
 import com.example.prepwise.models.User
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -28,7 +32,7 @@ interface ApiService {
     suspend fun getCategories(): Response<CategoryResponse>
 
     @GET("/api/levels")
-    suspend fun getLevels(): Response<List<Level>>
+    suspend fun getLevels(): Response<List<LevelResponse1>>
 
     @GET("/api/profile")
     suspend fun getUserProfile(): Response<User>
@@ -39,4 +43,29 @@ interface ApiService {
     @GET("/api/sets/{id}")
     suspend fun getSetById(@Path("id") id: Int): Response<SetDetailsResponse>
 
+    @GET("/api/resources")
+    suspend fun getAllResource(): Response<List<AllResourceIdResponse>>
+
+    @GET("/api/resources/{id}")
+    suspend fun getResourceById(@Path("id") id: Int): Response<ResourceDetailsResponse>
+
+    @POST("/api/resources-likes")
+    suspend fun addFavoriteResource(
+        @Body requestBody: FavoriteRequestBody
+    ): Response<Unit>
+
+    @DELETE("/api/resources-likes/{resourceId}")
+    suspend fun removeFavoriteResource(
+        @Path("resourceId") resourceId: Int
+    ): Response<Unit>
+
+    @POST("/api/resources")
+    suspend fun createResource(
+        @Body requestBody: ResourceRequestBody
+    ): Response<Unit>
+
+    @DELETE("/api/resources/{id}")
+    suspend fun deleteResource(
+        @Path("resourceId") resourceId: Int
+    ): Response<Unit>
 }

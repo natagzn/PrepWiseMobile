@@ -100,6 +100,7 @@ class HomeFragment : Fragment() {
     // Створення трьох тестових об'єктів Resource
     val resources = arrayListOf(
         Resource(
+            id = 1,
             articleBook = "Java Programming Book",
             description = "A comprehensive guide to Java programming",
             level = level1,
@@ -109,9 +110,11 @@ class HomeFragment : Fragment() {
             isLiked = true,
             isDisLiked = false,
             numberOfLikes = 120,
-            numberOfDislikes = 5
+            numberOfDislikes = 5,
+            isAuthor = false
         ),
         Resource(
+            id = 2,
             articleBook = "Algebra Essentials",
             description = "An introduction to algebra concepts",
             level = level2,
@@ -121,9 +124,11 @@ class HomeFragment : Fragment() {
             isLiked = false,
             isDisLiked = true,
             numberOfLikes = 85,
-            numberOfDislikes = 10
+            numberOfDislikes = 10,
+            isAuthor = false
         ),
         Resource(
+            id = 3,
             articleBook = "Physics Fundamentals",
             description = "Basics of physics for beginners",
             level = level3,
@@ -133,10 +138,10 @@ class HomeFragment : Fragment() {
             isLiked = true,
             isDisLiked = false,
             numberOfLikes = 150,
-            numberOfDislikes = 3
+            numberOfDislikes = 3,
+            isAuthor = false
         )
     )
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

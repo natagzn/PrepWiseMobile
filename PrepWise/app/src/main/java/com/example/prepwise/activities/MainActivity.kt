@@ -34,6 +34,7 @@ import com.example.prepwise.models.People
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
 import com.example.prepwise.models.User
+import com.example.prepwise.objects.ResourceRepository
 import com.example.prepwise.objects.SetRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -154,57 +155,6 @@ class MainActivity : AppCompatActivity() {
             fetchCategories()
             fetchLevels()
             fetchUserProfile()
-            SetRepository.fetchAllSets()
-        }
-    }
-
-    private suspend fun fetchAllSets() {
-        try {
-            // Отримуємо список всіх сетів (тільки ID та мінімальні дані)
-            val response = RetrofitInstance.api().getAllSets()
-            if (response.isSuccessful && response.body() != null) {
-                val apiSets = response.body()!!
-
-                currentUser?.sets?.clear()
-
-                // Створюємо порожній список для збереження повних даних сетів
-                val sets = mutableListOf<Set>()
-
-                // Для кожного ID виконуємо запит getSetById для отримання повної інформації
-                for (apiSet in apiSets) {
-                    val setResponse = RetrofitInstance.api().getSetById(apiSet.question_set_id)
-                    Log.d("IIIIIDDDDDDD", " fetching set details: ${apiSet.question_set_id}")
-                    if (setResponse.isSuccessful && setResponse.body() != null) {
-                        val setData = setResponse.body()!!
-                        Log.d("NAMMMMEEEEEE", " fetching set details: ${setData.name}")
-                        // Додаємо інформацію про сет в наш список sets
-                        sets.add(
-                            Set(
-                                id = apiSet.question_set_id,
-                                name = setData.name,
-                                level = Level(setData.level.levelId, setData.level.name),
-                                categories = ArrayList(setData.categories.map { Category(it.id, it.name) }),
-                                access = setData.access,
-                                date = LocalDateTime.parse(setData.createdAt, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDate(),
-                                questions = ArrayList(setData.questions.map { Question(it.id, it.content, it.answer, it.learned) }),
-                                username = setData.author.username,
-                                isLiked = setData.isFavourite
-                            )
-                        )
-                    } else {
-                        Log.e("MainActivity", "Error fetching set details: ${setResponse.message()}")
-                    }
-                }
-
-                // Додаємо завантажені сети до currentUser
-                currentUser?.sets?.addAll(sets)
-            } else {
-                Log.e("MainActivity", "Error fetching sets: ${response.message()}")
-            }
-        } catch (e: HttpException) {
-            Log.e("MainActivity", "HttpException: ${e.message}")
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Exception: ${e.message}")
         }
     }
 
@@ -213,7 +163,7 @@ class MainActivity : AppCompatActivity() {
             val response = RetrofitInstance.api().getCategories()
             if (response.isSuccessful && response.body() != null) {
                 categories.clear()
-                categories.addAll(response.body()!!.categories)
+                categories.addAll(response.body()!!.categories.map { Category(it.category_id, it.name) })
             } else {
                 Log.e("MainActivity", "Error fetching categories: ${response.message()}")
             }
@@ -229,7 +179,7 @@ class MainActivity : AppCompatActivity() {
             val response = RetrofitInstance.api().getLevels()
             if (response.isSuccessful && response.body() != null) {
                 levels.clear()
-                levels.addAll(response.body()!!)
+                levels.addAll(response.body()!!.map { Level(it.level_id, it.name) })
             } else {
                 Log.e("MainActivity", "Error fetching levels: ${response.message()}")
             }

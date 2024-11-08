@@ -1,25 +1,34 @@
 package com.example.prepwise.activities
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.util.Log
 import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.prepwise.objects.DialogUtils.showSelectionPopup
 import com.example.prepwise.R
+import com.example.prepwise.dataClass.ResourceRequestBody
+import com.example.prepwise.models.Category
+import com.example.prepwise.models.Level
+import com.example.prepwise.objects.RetrofitInstance
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class NewResourceActivity : AppCompatActivity() {
 
     private var categories = MainActivity.categories
     private val levels = MainActivity.levels
+    private var category: Category? = null
+    private var level: Level? = null
+
+    private lateinit var titleTxt: TextInputEditText
+    private lateinit var descriptionTxt: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +41,52 @@ class NewResourceActivity : AppCompatActivity() {
             insets
         }
 
+        titleTxt = findViewById(R.id.name_article_book)
+        descriptionTxt = findViewById(R.id.description)
+
         val close: TextView = findViewById(R.id.cancel)
         close.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("openFragment", "HomeFragment")
-            startActivity(intent)
+            finish()
+        }
+
+        val save: TextView = findViewById(R.id.save)
+        save.setOnClickListener {
+            val title = titleTxt.text.toString().trim()
+            val description = descriptionTxt.text.toString().trim()
+
+            if (title.isEmpty()) {
+                titleTxt.error = getString(R.string.please_enter_a_title)
+                return@setOnClickListener
+            }
+            if (description.isEmpty()) {
+                descriptionTxt.error = getString(R.string.please_enter_a_description)
+                return@setOnClickListener
+            }
+            if (level == null) {
+                Toast.makeText(this, getString(R.string.please_select_a_level), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (category == null) {
+                Toast.makeText(this, getString(R.string.please_select_a_category), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch {
+                try {
+                    val requestBody = ResourceRequestBody(title, description, level!!.id, category!!.id)
+                    val response = RetrofitInstance.api().createResource(requestBody)
+                    if (response.isSuccessful && response.body() != null) {
+                        // Handle successful response if needed
+                    } else {
+                        Log.e("NewResourceActivity", "Error: ${response.message()}")
+                    }
+                } catch (e: HttpException) {
+                    Log.e("NewResourceActivity", "HttpException: ${e.message}")
+                } catch (e: Exception) {
+                    Log.e("NewResourceActivity", "Exception: ${e.message}")
+                }
+            }
+
             finish()
         }
 
@@ -51,9 +101,7 @@ class NewResourceActivity : AppCompatActivity() {
                 dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
             ) { selectedLevel ->
-                // Використати обраний елемент
-                val selectedLevelId = selectedLevel.id
-                // Далі обробляти обраний ID або name
+                level = selectedLevel
             }
         }
 
@@ -69,54 +117,10 @@ class NewResourceActivity : AppCompatActivity() {
                 dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
             ) { selectedCategory ->
-                val selectedCategoryId = selectedCategory.id
+                category = selectedCategory
             }
         }
 
-    }
-
-    fun showSelectionDialog(
-        title: String,
-        items: Array<String>,
-        selectedItemTextViewId: Int,
-        dialogLayoutId: Int,
-        itemLayoutId: Int
-    ) {
-        // Інфлейт кастомного макету діалогу
-        val dialogView = layoutInflater.inflate(dialogLayoutId, null)
-        val listView: ListView = dialogView.findViewById(R.id.levels_list)
-        val dialogTitle: TextView = dialogView.findViewById(R.id.dialog_title)
-        dialogTitle.text = title
-
-        // Створюємо кастомний адаптер для елементів
-        val adapter = object : ArrayAdapter<String>(this, itemLayoutId, items) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: layoutInflater.inflate(itemLayoutId, parent, false)
-                val textView: TextView = view.findViewById(R.id.level_item)
-
-                // Задаємо текст для кожного пункту
-                textView.text = getItem(position)
-
-                return view
-            }
-        }
-        listView.adapter = adapter
-
-        // Створюємо AlertDialog з кастомним макетом
-        val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
-            .setView(dialogView)
-
-        val dialog = builder.create()
-
-        // Обробка вибору елемента
-        listView.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = items[position]
-            val selectedTextView: TextView = findViewById(selectedItemTextViewId)
-            selectedTextView.text = selectedItem
-            dialog.dismiss()
-        }
-
-        dialog.show()
     }
 }
 

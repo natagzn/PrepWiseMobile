@@ -1,6 +1,7 @@
 package com.example.prepwise.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -110,6 +111,9 @@ class SetsFragment : Fragment() {
                         this.selectedCategories = selectedCategories.toMutableList()
                         this.selectedLevels = selectedLevels.toMutableList()
                         this.selectedAccesses = selectedAccesses.toMutableList()
+                        selectedCategories.forEach { category ->
+                            Log.d("CATEGORY", category.name)
+                        }
                         applyFilters(selectedCategories, selectedLevels, selectedAccesses)
                     },
                     accessOptions = listOf("public", "private"),
@@ -129,6 +133,7 @@ class SetsFragment : Fragment() {
         selectedLevels: List<Level>,
         selectedAccesses: List<String>
     ) {
+        // Фільтрація списку на основі обраних категорій, рівнів та доступів
         val filteredList = setList.filter { set ->
             (selectedCategories.isEmpty() || set.categories.any { category ->
                 selectedCategories.any { it.id == category.id }

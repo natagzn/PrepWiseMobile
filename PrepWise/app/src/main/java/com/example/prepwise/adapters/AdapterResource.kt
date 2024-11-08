@@ -3,15 +3,24 @@ package com.example.prepwise.adapters
 import com.example.prepwise.models.Resource
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
+import com.example.prepwise.objects.ResourceRepository
+import com.example.prepwise.objects.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Response
 import java.time.format.DateTimeFormatter
 
 class AdapterResource(private var resourceList: ArrayList<Resource>, private val context: Context) :
@@ -30,6 +39,7 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
         val numberOfLikes: TextView = itemView.findViewById(R.id.number_of_likes)
         val numberOfDislikes: TextView = itemView.findViewById(R.id.number_of_dislikes)
         val report: ImageView = itemView.findViewById(R.id.report)
+        val delete: ImageView = itemView.findViewById(R.id.delete)
     }
 
     // Створюємо новий ViewHolder
@@ -69,32 +79,57 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
             holder.setDisLike.setImageResource(R.drawable.dislike)
         }
 
-        // Обробляємо натискання лайків
+        if(resourse.isAuthor){
+            holder.report.visibility = View.GONE
+            holder.delete.visibility = View.VISIBLE
+        }
+        else{
+            holder.delete.visibility = View.GONE
+            holder.report.visibility = View.VISIBLE
+        }
+
         holder.setLike.setOnClickListener {
             if (!resourse.isLiked) {
                 resourse.isLiked = true
                 resourse.isDisLiked = false
-                resourse.numberOfLikes++
-                resourse.numberOfDislikes--
+                resourse.numberOfLikes += 1
+                if (resourse.numberOfDislikes > 0) resourse.numberOfDislikes -= 1
+                notifyItemChanged(position)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    ResourceRepository.addFavoriteResource(resourse.id, true)
+                }
             } else {
                 resourse.isLiked = false
-                resourse.numberOfLikes--
+                resourse.numberOfLikes -= 1
+                notifyItemChanged(position)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    ResourceRepository.removeFavoriteResource(resourse.id)
+                }
             }
-            notifyItemChanged(position)
         }
 
-        // Обробляємо натискання дизлайків
         holder.setDisLike.setOnClickListener {
             if (!resourse.isDisLiked) {
                 resourse.isDisLiked = true
                 resourse.isLiked = false
-                resourse.numberOfDislikes++
-                resourse.numberOfLikes--
+                resourse.numberOfDislikes += 1
+                if (resourse.numberOfLikes > 0) resourse.numberOfLikes -= 1
+                notifyItemChanged(position)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    ResourceRepository.addFavoriteResource(resourse.id, false)
+                }
             } else {
                 resourse.isDisLiked = false
-                resourse.numberOfDislikes--
+                resourse.numberOfDislikes -= 1
+                notifyItemChanged(position)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    ResourceRepository.removeFavoriteResource(resourse.id)
+                }
             }
-            notifyItemChanged(position)
         }
 
         holder.report.setOnClickListener{
@@ -103,7 +138,7 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
             }
         }
 
-        holder.itemView.setOnLongClickListener {
+        holder.delete.setOnClickListener {
             DialogUtils.showConfirmationDialog(
                 context = context,
                 message = context.getString(R.string.are_you_sure_you_want_to_delete_this_resource),
@@ -111,12 +146,28 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
                 negativeButtonText = context.getString(R.string.cancel)
             ) { confirmed ->
                 if (confirmed) {
-
+                    CoroutineScope(Dispatchers.IO).launch {
+                        delResource(resourceId = resourse.id)
+                    }
                 } else {
 
                 }
             }
-            true
+        }
+    }
+
+    suspend fun delResource(resourceId: Int): Response<Unit> {
+        return try {
+            val response = RetrofitInstance.api().deleteResource(resourceId)
+            if (response.isSuccessful) {
+                Log.d("ResourceRepository", "Ресурс успішно видлано")
+            } else {
+                Log.e("ResourceRepository", "Помилка при видалення ресурсу: ${response.message()}")
+            }
+            response
+        } catch (e: Exception) {
+            Log.e("ResourceRepository", "Exception: ${e.message}")
+            throw e
         }
     }
 
