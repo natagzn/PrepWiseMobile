@@ -5,6 +5,7 @@ import com.example.prepwise.dataClass.CategoryResponse
 import com.example.prepwise.dataClass.LoginRequest
 import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.AllSetIdResponse
+import com.example.prepwise.dataClass.DateOfVisitResponse
 import com.example.prepwise.dataClass.FavoriteRequestBody
 import com.example.prepwise.dataClass.LevelResponse1
 import com.example.prepwise.dataClass.QuestionRequestBody
@@ -119,4 +120,7 @@ interface ApiService {
     suspend fun updateProfile(
         @Body body: UpdateProfileRequest
     ): Response<Void>
+
+    @GET("/api/date-of-visits/days")
+    suspend fun getDayIfVisit(): Response<DateOfVisitResponse>
 }

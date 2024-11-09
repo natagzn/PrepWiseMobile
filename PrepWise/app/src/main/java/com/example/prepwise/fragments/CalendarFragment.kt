@@ -1,16 +1,21 @@
 package com.example.prepwise.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepwise.ApiService
 import com.example.prepwise.R
 import com.example.prepwise.adapters.CalendarAdapter
 import com.example.prepwise.adapters.Day
+import com.example.prepwise.objects.RetrofitInstance
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
@@ -32,13 +37,8 @@ class CalendarFragment : Fragment() {
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView)
         monthTextView = view.findViewById(R.id.monthTextView)
 
-        val days = generateDaysForMonth()
-        calendarAdapter = CalendarAdapter(days) { day ->
-            // клік на день
-        }
-
-        calendarRecyclerView.adapter = calendarAdapter
-        calendarRecyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+        // Викликаємо функцію для завантаження активних днів з API
+        loadActiveDays()
 
         // Встановлюємо назву поточного місяця з урахуванням мови
         val currentDate = LocalDate.now()
@@ -48,7 +48,29 @@ class CalendarFragment : Fragment() {
         return view
     }
 
-    private fun generateDaysForMonth(): List<Day> {
+    private fun loadActiveDays() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitInstance.api().getDayIfVisit()
+                if (response.isSuccessful) {
+                    val activeDays = response.body()?.data ?: emptyList()
+                    val days = generateDaysForMonth(activeDays)
+                    calendarAdapter = CalendarAdapter(days) { day ->
+                        // клік на день
+                    }
+                    calendarRecyclerView.adapter = calendarAdapter
+                    calendarRecyclerView.layoutManager = GridLayoutManager(requireContext(), 7)
+                } else {
+                    // Обробка помилки
+                    Log.e("CalendarFragment", "Не вдалося отримати дні відвідування")
+                }
+            } catch (e: Exception) {
+                Log.e("CalendarFragment", "Помилка: ${e.localizedMessage}")
+            }
+        }
+    }
+
+    private fun generateDaysForMonth(activeDays: List<Int>): List<Day> {
         val days = mutableListOf<Day>()
 
         // Отримуємо поточний рік і місяць
@@ -68,9 +90,9 @@ class CalendarFragment : Fragment() {
             days.add(Day(0, isActive = false, isToday = false)) // Порожній день
         }
 
-        // Додаємо реальні дні місяця
+        // Додаємо реальні дні місяця, позначаючи активні дні
         for (i in 1..daysInMonth) {
-            days.add(Day(i, i == 4 || i == 5, i == today))
+            days.add(Day(i, isActive = activeDays.contains(i), isToday = i == today))
         }
 
         return days
