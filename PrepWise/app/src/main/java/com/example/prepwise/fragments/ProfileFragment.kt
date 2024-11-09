@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,12 @@ import com.example.prepwise.activities.LoginActivity
 import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import com.example.prepwise.activities.PeopleActivity
 import com.example.prepwise.activities.PremiumActivity
+import com.example.prepwise.objects.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class ProfileFragment : Fragment() {
 
@@ -44,9 +51,46 @@ class ProfileFragment : Fragment() {
         private const val PICK_IMAGE_REQUEST = 1
     }
 
+    private fun loadProfileData() {
+        val customScopeProfile = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        customScopeProfile.launch {
+            try {
+                val response = RetrofitInstance.api().getUserProfile()
+                if (response.isSuccessful && response.body() != null) {
+                    val userProfile = response.body()!!
+                    currentUser.apply {
+                        id = userProfile.id
+                        userImg = userProfile.userImg
+                        username = userProfile.username
+                        email = userProfile.email
+                        bio = userProfile.bio
+                        location = userProfile.location
+                    }
+
+                    setLocation.text = currentUser!!.location
+                    setDescription.text = currentUser!!.bio
+                    Log.d("MainActivity", "User profile fetched successfully - " + userProfile.username)
+                } else {
+                    Log.e("MainActivity", "Error fetching user profile: ${response.message()}")
+                }
+            } catch (e: HttpException) {
+                Log.e("MainActivity", "HttpException: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Exception: ${e.message}")
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        parentFragmentManager.setFragmentResultListener("profileUpdate", this) { _, result ->
+            val isUpdated = result.getBoolean("isUpdated", false)
+            if (isUpdated) {
+                loadProfileData()  // Перезавантаження даних профілю
+            }
+        }
 
         setUsername = view.findViewById(R.id.username)
         setEmail = view.findViewById(R.id.email)

@@ -15,6 +15,7 @@ import com.example.prepwise.dataClass.SetRequestBody
 import com.example.prepwise.dataClass.SetResponse
 import com.example.prepwise.dataClass.SignUpRequest
 import com.example.prepwise.dataClass.SignUpResponse
+import com.example.prepwise.dataClass.UpdateProfileRequest
 import com.example.prepwise.dataClass.UpdateSetRequest
 import com.example.prepwise.models.Set
 import com.example.prepwise.models.User
@@ -112,5 +113,10 @@ interface ApiService {
     suspend fun addCategoryToSet(
         @Path("setId") setId: Int,
         @Path("categoryId") categoryId: Int
+    ): Response<Void>
+
+    @POST("/api/update")
+    suspend fun updateProfile(
+        @Body body: UpdateProfileRequest
     ): Response<Void>
 }

@@ -13,10 +13,10 @@ import com.example.prepwise.models.Set
 import com.example.prepwise.models.SharedSet
 
 class ViewPagerLibratyAdapter(
-    private val foldersList: ArrayList<Folder>,
-    private val setsList: ArrayList<Set>,
-    private val sharedList: ArrayList<SharedSet>,
-    private val resourcesList: ArrayList<Resource>,
+    private var foldersList: ArrayList<Folder>,
+    private var setsList: ArrayList<Set>,
+    private var sharedList: ArrayList<SharedSet>,
+    private var resourcesList: ArrayList<Resource>,
     activity: FragmentActivity
 ) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
@@ -31,5 +31,18 @@ class ViewPagerLibratyAdapter(
             3 -> ResourcesFragment.newInstance(resourcesList)
             else -> SetsFragment.newInstance(setsList, "Library")
         }
+    }
+
+    fun updateData(
+        newFolders: ArrayList<Folder>,
+        newSets: ArrayList<Set>,
+        newShared: ArrayList<SharedSet>,
+        newResources: ArrayList<Resource>
+    ) {
+        foldersList = newFolders
+        setsList = newSets
+        sharedList = newShared
+        resourcesList = newResources
+        notifyDataSetChanged()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.prepwise.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
@@ -10,8 +11,17 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.prepwise.R
 import com.example.prepwise.fragments.ProfileFragment
+import com.example.prepwise.objects.LocaleHelper.setLocale
 
 class PremiumActivity : AppCompatActivity() {
+    fun loadLocale(context: Context) {
+        val sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val language = sharedPref.getString("My_lang", "")
+        if (!language.isNullOrEmpty()) {
+            setLocale(language, context)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,6 +31,8 @@ class PremiumActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        loadLocale(this)
 
         // Закриття сторінки
         val close: ImageView = findViewById(R.id.close)

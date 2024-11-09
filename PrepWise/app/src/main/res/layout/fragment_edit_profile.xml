@@ -79,6 +79,23 @@
             android:paddingVertical="19dp">
 
             <TextView
+                android:id="@+id/txt2"
+                style="@style/light_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/email"
+                style="@style/regular_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="nahalkaanna06@gmail.com"
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/txt"
                 style="@style/light_12"
                 android:layout_width="wrap_content"
@@ -95,25 +112,7 @@
                 android:inputType="textMultiLine"
                 android:minLines="1"
                 android:singleLine="false"
-                android:text="I am student of HPK"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/txt2"
-                style="@style/light_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/email"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/email"
-                style="@style/regular_16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:inputType="textEmailAddress"
-                android:text="nahalkaanna06@gmail.com"
+                android:hint="@string/description"
                 android:textColor="@color/black" />
 
             <TextView
@@ -132,8 +131,7 @@
                 android:textColor="@color/black"
                 style="@style/regular_16"
                 android:inputType="text"
-                android:completionThreshold="1"
-                android:text="Ukraine" />
+                android:completionThreshold="1" />
 
         </LinearLayout>
 
@@ -309,7 +307,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="126dp"
             android:background="@drawable/white_80_background"
             android:elevation="4dp"
             android:gravity="center_horizontal"

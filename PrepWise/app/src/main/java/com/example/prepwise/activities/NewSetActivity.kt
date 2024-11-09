@@ -37,7 +37,9 @@ import com.example.prepwise.dataClass.UpdateSetRequest
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Question
+import com.example.prepwise.objects.LocaleHelper.setLocale
 import com.example.prepwise.objects.RetrofitInstance
+import com.example.prepwise.objects.SetRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -66,6 +68,14 @@ class NewSetActivity : AppCompatActivity() {
     private var originalCategories = mutableListOf<Category>()
     var originalQuestions = listOf<Question>()
 
+    fun loadLocale(context: Context) {
+        val sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val language = sharedPref.getString("My_lang", "")
+        if (!language.isNullOrEmpty()) {
+            setLocale(language, context)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -75,6 +85,8 @@ class NewSetActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        loadLocale(this)
 
         titleTxt = findViewById(R.id.title_set)
         accessLayout = findViewById(R.id.access)
@@ -89,7 +101,10 @@ class NewSetActivity : AppCompatActivity() {
         val setId = intent.getIntExtra("setId", -1)
 
         if (mode == "edit" && setId != -1) {
-            loadDataForEditing(setId)
+            val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+            customScope.launch {
+                loadDataForEditing(setId)
+            }
             findViewById<TextView>(R.id.mode).text = getString(R.string.edit_set)
         }else addCategoryTextView("+")
 
@@ -239,13 +254,13 @@ class NewSetActivity : AppCompatActivity() {
             }
             else if (mode == "edit" && setId != -1) {
                 val newTitle = titleTxt.text.toString()
-                val newAccess = accessTxt.text.toString() == "public"
+                val newAccess = accessStr == "public"
                 val newCategories = selectedCategories.map { it.id }
                 val originalCategoryIds = originalCategories.map { it.id }
 
                 val updateRequest = UpdateSetRequest(
                     name = if (newTitle != originalTitle) newTitle else null,
-                    access = if (newAccess != originalAccess) newAccess.toString() else null,
+                    access = if (newAccess != originalAccess) newAccess.toString() else originalAccess.toString(),
                     level_id = if (level != null && level != originalLevel) level!!.id else null,
                     categories = null // Категорії будемо оновлювати окремо
                 )
@@ -296,9 +311,6 @@ class NewSetActivity : AppCompatActivity() {
                                 }
                             }
 
-                            val intent = Intent()
-                            intent.putExtra("updatedSetId", setId)
-                            setResult(Activity.RESULT_OK, intent)
                             finish()
                         } else {
                             Log.e("NewSetActivity", "Error updating set: ${response.message()}")
@@ -364,9 +376,6 @@ class NewSetActivity : AppCompatActivity() {
                             }
                         }
 
-                        val intent = Intent()
-                        intent.putExtra("updatedSetId", setId)
-                        setResult(Activity.RESULT_OK, intent)
                         finish()
 
                     } catch (e: Exception) {
@@ -432,8 +441,8 @@ class NewSetActivity : AppCompatActivity() {
         popupWindow.showAsDropDown(anchorView, 0, 10)
     }
 
-    private fun loadDataForEditing(setId: Int) {
-        val setData = MainActivity.getSetById(setId)
+    private suspend fun loadDataForEditing(setId: Int) {
+        val setData = SetRepository.getSetById(setId)
 
         if (setData != null) {
             titleTxt.text = setData.name

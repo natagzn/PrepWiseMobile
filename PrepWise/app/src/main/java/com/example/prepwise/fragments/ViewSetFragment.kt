@@ -65,6 +65,7 @@ class ViewSetFragment : Fragment() {
     private lateinit var setKnow: TextView
     private lateinit var setStillLearning: TextView
     private lateinit var emptyListTxt: TextView
+    private lateinit var sortBtn: LinearLayout
 
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var contentPage: LinearLayout
@@ -99,24 +100,78 @@ class ViewSetFragment : Fragment() {
         if (requestCode == STUDY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             updateUI()
         }
-
-        if (requestCode == REQUEST_CODE_EDIT_SET && resultCode == Activity.RESULT_OK) {
-            val updatedSetId = data?.getIntExtra("updatedSetId", -1)
-            updatedSetId?.let {
-                loadSetData(it)
-            }
-        }
     }
 
-    private fun loadSetData(it: Int) {
-        it?.let { id ->
-            lifecycleScope.launch {
-                // Виконуємо запит getSetById асинхронно
-                set = SetRepository.getSetById(id)
+    override fun onResume() {
+        super.onResume()
+        setId?.let { loadSetData(it) }
+    }
 
-                // Після отримання даних приховуємо прогрес-бар
-                loadingProgressBar.visibility = View.GONE
-                contentPage.visibility = View.VISIBLE
+    private fun loadSetData(setId: Int) {
+        lifecycleScope.launch {
+            set = SetRepository.getSetById(setId)
+            loadingProgressBar.visibility = View.GONE
+            contentPage.visibility = View.VISIBLE
+
+            set?.let { loadedSet ->
+                // Оновлення списку питань
+                questionList.clear()
+                questionList.addAll(loadedSet.questions)
+                originalQuestionList = ArrayList(questionList)
+
+                setName.text = loadedSet.name
+                setLevel.text = loadedSet.level.name
+                setUsername.text = loadedSet.username
+                setNumberOfQuestions.text = loadedSet.questions.size.toString()
+                setAccessType.text = loadedSet.access
+
+                adapterQuestion?.notifyDataSetChanged()  // Оновлення адаптера
+                recyclerViewQuestion.adapter = adapterQuestion
+
+                // Перевірка на порожній список питань
+                if (questionList.isEmpty()) {
+                    emptyListTxt.visibility = View.VISIBLE
+                    recyclerViewQuestion.visibility = View.GONE
+                } else {
+                    emptyListTxt.visibility = View.GONE
+                    recyclerViewQuestion.visibility = View.VISIBLE
+                }
+
+                if (loadedSet.access == "private") {
+                    setAccessImg.setImageResource(R.drawable.resource_private)
+                } else if (loadedSet.access == "public") {
+                    setAccessImg.setImageResource(R.drawable.resource_public)
+                }
+
+                // Очищуємо контейнер категорій перед додаванням нових категорій
+                categoriesContainer.removeAllViews()
+
+                // Додаємо категорії в контейнер
+                for (category in loadedSet.categories) {
+                    val categoryTextView = TextView(context)
+                    categoryTextView.text = category.name
+                    categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
+                    categoryTextView.setPadding(
+                        dpToPx(10, requireContext()), dpToPx(2, requireContext()),
+                        dpToPx(10, requireContext()), dpToPx(2, requireContext())
+                    )
+                    categoryTextView.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.black
+                        )
+                    )
+                    categoryTextView.setTextAppearance(R.style.medium_11)
+
+                    val layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                    layoutParams.setMargins(dpToPx(10, requireContext()), 0, 0, 0)
+                    categoryTextView.layoutParams = layoutParams
+
+                    categoriesContainer.addView(categoryTextView)
+                }
             }
         }
     }
@@ -132,6 +187,7 @@ class ViewSetFragment : Fragment() {
             view.findViewById(R.id.loadingProgressBar) // Ініціалізація прогрес-бару
         contentPage = view.findViewById(R.id.content)
         emptyListTxt = view.findViewById(R.id.empty)
+        sortBtn = view.findViewById(R.id.sort)
 
         // Робимо прогрес-бар видимим перед завантаженням
         loadingProgressBar.visibility = View.VISIBLE
@@ -181,11 +237,11 @@ class ViewSetFragment : Fragment() {
                     if (questionList.isEmpty()) {
                         emptyListTxt.visibility = View.VISIBLE
                         recyclerViewQuestion.visibility = View.GONE
-                        view.findViewById<LinearLayout>(R.id.sort).visibility = View.GONE
+                        sortBtn.visibility = View.GONE
                     } else {
                         emptyListTxt.visibility = View.GONE
                         recyclerViewQuestion.visibility = View.VISIBLE
-                        view.findViewById<LinearLayout>(R.id.sort).visibility = View.VISIBLE
+                        sortBtn.visibility = View.VISIBLE
 
                         adapterQuestion?.notifyDataSetChanged()
 
@@ -205,7 +261,7 @@ class ViewSetFragment : Fragment() {
                         }
 
                         // Очищуємо контейнер категорій перед додаванням нових категорій
-                        categoriesContainer.removeAllViews()
+                        /*categoriesContainer.removeAllViews()
 
                         // Додаємо категорії в контейнер
                         for (category in loadedSet.categories) {
@@ -232,7 +288,7 @@ class ViewSetFragment : Fragment() {
                             categoryTextView.layoutParams = layoutParams
 
                             categoriesContainer.addView(categoryTextView)
-                        }
+                        }*/
 
                         if (loadedSet.isLiked) setLike.setImageResource(R.drawable.save)
                         else setLike.setImageResource(R.drawable.not_save)
@@ -297,7 +353,7 @@ class ViewSetFragment : Fragment() {
             }
 
             //сортування питань
-            view.findViewById<LinearLayout>(R.id.sort).setOnClickListener {
+            sortBtn.setOnClickListener {
                 showSortPopupMenu(requireContext(), it) { sortType ->
                     sortQuestions(sortType)
                 }
@@ -416,8 +472,7 @@ class ViewSetFragment : Fragment() {
             val intent = Intent(requireActivity(), NewSetActivity::class.java)
             intent.putExtra("mode", "edit")
             intent.putExtra("setId", setId)
-            startActivityForResult(intent, REQUEST_CODE_EDIT_SET)
-
+            startActivity(intent)
         }
 
         resetProgress.setOnClickListener {

@@ -57,6 +57,12 @@ class SetsFragment : Fragment() {
     private var adapterSet: AdapterSet? = null
     private lateinit var recyclerViewSet: RecyclerView
 
+    override fun onResume() {
+        super.onResume()
+        adapterSet?.notifyDataSetChanged()
+        recyclerViewSet.adapter=adapterSet
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

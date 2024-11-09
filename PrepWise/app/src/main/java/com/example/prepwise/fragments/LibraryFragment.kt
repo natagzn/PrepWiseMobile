@@ -23,6 +23,8 @@ class LibraryFragment : Fragment() {
     }
 
     private lateinit var progressBarLoading: ProgressBar
+    private lateinit var viewPager: ViewPager2
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,7 +32,7 @@ class LibraryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
 
         progressBarLoading = view.findViewById(R.id.progressBarLoading)
-        val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
+        viewPager = view.findViewById(R.id.viewPager)
 
         lifecycleScope.launch {
             progressBarLoading.visibility = View.VISIBLE

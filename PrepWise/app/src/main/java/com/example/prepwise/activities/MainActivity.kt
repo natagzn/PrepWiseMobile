@@ -20,10 +20,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.HomeFragment
-import com.example.prepwise.objects.DialogUtils
-import com.example.prepwise.objects.LocaleHelper.loadLocale
 import com.example.prepwise.R
-import com.example.prepwise.objects.RetrofitInstance
 import com.example.prepwise.fragments.LibraryFragment
 import com.example.prepwise.fragments.LikedFragment
 import com.example.prepwise.fragments.ProfileFragment
@@ -31,17 +28,15 @@ import com.example.prepwise.models.Category
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.People
-import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
 import com.example.prepwise.models.User
-import com.example.prepwise.objects.ResourceRepository
-import com.example.prepwise.objects.SetRepository
+import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.objects.LocaleHelper.loadLocale
+import com.example.prepwise.objects.RetrofitInstance
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
 
