@@ -2,7 +2,9 @@ package com.example.prepwise.activities
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
@@ -22,13 +24,25 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.objects.DialogUtils.showSelectionPopup
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddQuestion
+import com.example.prepwise.dataClass.QuestionRequestBody
+import com.example.prepwise.dataClass.SetRequestBody
+import com.example.prepwise.dataClass.UpdateSetRequest
 import com.example.prepwise.models.Category
+import com.example.prepwise.models.Level
+import com.example.prepwise.models.Question
+import com.example.prepwise.objects.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class NewSetActivity : AppCompatActivity() {
     private lateinit var categoryListContainer: LinearLayout
@@ -43,6 +57,14 @@ class NewSetActivity : AppCompatActivity() {
     private lateinit var accessTxt: TextView
     private lateinit var levelLayout: LinearLayout
     private lateinit var levelTxt: TextView
+
+    private var level: Level? = null
+
+    private lateinit var originalTitle:String
+    private var originalAccess:Boolean = false
+    private lateinit var originalLevel:Level
+    private var originalCategories = mutableListOf<Category>()
+    var originalQuestions = listOf<Question>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +109,7 @@ class NewSetActivity : AppCompatActivity() {
                 dialogLayoutId = R.layout.dialog_select_selection,
                 itemLayoutId = R.layout.dialog_item
             ) { selectedLevel ->
-                val selectedLevelId = selectedLevel.id
+                level = selectedLevel
             }
         }
 
@@ -122,49 +144,238 @@ class NewSetActivity : AppCompatActivity() {
 
         // Обробка натискання кнопки "Зберегти"
         findViewById<TextView>(R.id.save).setOnClickListener {
-            //saveNewSet()
+            val title = titleTxt.text.toString()
+            val accessStr = accessTxt.text.toString()
+            val access = accessStr == "public"
+            val categoriesId = selectedCategories.map { it.id }
+
+            // сворення нового сета
+            if (mode == "create") {
+                // Перевірка заповнення полів
+                if (title.isEmpty()) {
+                    titleTxt.error = getString(R.string.please_enter_a_title)
+                    return@setOnClickListener
+                }
+                if (level == null) {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.please_select_a_level),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                if (categoriesId.isEmpty()) {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.please_select_at_least_one_category),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                if (accessStr.isEmpty()) {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.please_select_access_type),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+
+                val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+                customScope.launch {
+                    try {
+                        val requestBody = SetRequestBody(title, access, level!!.id, categoriesId)
+                        val response = RetrofitInstance.api().createSet(requestBody)
+                        if (response.isSuccessful && response.body() != null) {
+                            val setId = response.body()!!.set.question_set_id
+                            Toast.makeText(
+                                this@NewSetActivity,
+                                "Set created successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            // Додаємо питання до новоствореного сету
+                            for (question in adapter.questions) {
+                                // Перевірка, щоб уникнути додавання пустих питань
+                                if (question.content.isEmpty() && question.answer.isEmpty()) {
+                                    continue // Пропустити це питання, якщо content і answer порожні
+                                }
+
+                                val questionRequestBody = QuestionRequestBody(
+                                    list_id = setId,
+                                    status = false.toString(),
+                                    content = question.content,
+                                    answer = question.answer
+                                )
+
+                                // Відправляємо запит для створення кожного питання
+                                lifecycleScope.launch {
+                                    try {
+                                        val questionResponse = RetrofitInstance.api()
+                                            .createQuestion(questionRequestBody)
+                                        if (!questionResponse.isSuccessful) {
+                                            Log.e(
+                                                "NewSetActivity",
+                                                "Error creating question: ${questionResponse.message()}"
+                                            )
+                                        }
+                                    } catch (e: HttpException) {
+                                        Log.e("NewSetActivity", "HttpException: ${e.message}")
+                                    } catch (e: Exception) {
+                                        Log.e("NewSetActivity", "Exception: ${e.message}")
+                                    }
+                                }
+                            }
+                            finish()
+                        } else {
+                            Log.e("NewSetActivity", "Error: ${response.message()}")
+                        }
+                    } catch (e: HttpException) {
+                        Log.e("NewSetActivity", "HttpException: ${e.message}")
+                    } catch (e: Exception) {
+                        Log.e("NewSetActivity", "Exception: ${e.message}")
+                    }
+                }
+            }
+            else if (mode == "edit" && setId != -1) {
+                val newTitle = titleTxt.text.toString()
+                val newAccess = accessTxt.text.toString() == "public"
+                val newCategories = selectedCategories.map { it.id }
+                val originalCategoryIds = originalCategories.map { it.id }
+
+                val updateRequest = UpdateSetRequest(
+                    name = if (newTitle != originalTitle) newTitle else null,
+                    access = if (newAccess != originalAccess) newAccess.toString() else null,
+                    level_id = if (level != null && level != originalLevel) level!!.id else null,
+                    categories = null // Категорії будемо оновлювати окремо
+                )
+
+                val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+                customScope.launch {
+                    try {
+                        val response = RetrofitInstance.api().updateSet(setId, updateRequest)
+
+                        if (response.isSuccessful) {
+
+                            for (categoryId in originalCategoryIds) {
+                                if (categoryId !in newCategories) {
+                                    val deleteResponse = RetrofitInstance.api()
+                                        .deleteCategoryFromSet(setId, categoryId)
+                                    if (!deleteResponse.isSuccessful) {
+                                        val errorBody = deleteResponse.errorBody()?.string()
+                                        when (deleteResponse.code()) {
+                                            404 -> Log.e(
+                                                "NewSetActivity",
+                                                "Category $categoryId not found. Error body: $errorBody"
+                                            )
+
+                                            403 -> Log.e(
+                                                "NewSetActivity",
+                                                "Access denied when deleting category $categoryId. Error body: $errorBody"
+                                            )
+
+                                            else -> Log.e(
+                                                "NewSetActivity",
+                                                "Failed to delete category $categoryId: ${deleteResponse.message()}, error body: $errorBody"
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (categoryId in newCategories) {
+                                if (categoryId !in originalCategoryIds) {
+                                    val addResponse =
+                                        RetrofitInstance.api().addCategoryToSet(setId, categoryId)
+                                    if (!addResponse.isSuccessful) {
+                                        Log.e(
+                                            "NewSetActivity",
+                                            "Failed to add category $categoryId: ${addResponse.message()}"
+                                        )
+                                    }
+                                }
+                            }
+
+                            val intent = Intent()
+                            intent.putExtra("updatedSetId", setId)
+                            setResult(Activity.RESULT_OK, intent)
+                            finish()
+                        } else {
+                            Log.e("NewSetActivity", "Error updating set: ${response.message()}")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("NewSetActivity", "Exception: ${e.message}")
+                    }
+                }
+
+                val updatedQuestions = adapter.questions
+                val questionsToCreate = updatedQuestions.filter { it.question_id == -1 && it.content.isNotEmpty() }
+                val questionsToUpdate = adapter.questionsToUpdate
+                val questionsToDelete = adapter.questionsToDelete
+
+                // Ініціювання корутини для роботи з питаннями
+                val customScopeQue = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+                customScopeQue.launch {
+                    try {
+                        // Видалення питань
+                        questionsToDelete.forEach { question ->
+                            val deleteResponse = RetrofitInstance.api().deleteQuestion(question.question_id)
+                            if (!deleteResponse.isSuccessful) {
+                                Log.e(
+                                    "NewSetActivity",
+                                    "Не вдалося видалити питання ${question.question_id}: ${deleteResponse.message()}"
+                                )
+                            }
+                        }
+
+                        // Оновлення питань
+                        questionsToUpdate.forEach { question ->
+                            val updateRequestBody = QuestionRequestBody(
+                                list_id = setId,
+                                status = question.learned.toString(),
+                                content = question.content,
+                                answer = question.answer
+                            )
+                            val updateResponse = RetrofitInstance.api()
+                                .updateQuestion(question.question_id, updateRequestBody)
+                            if (!updateResponse.isSuccessful) {
+                                Log.e(
+                                    "NewSetActivity",
+                                    "Не вдалося оновити питання ${question.question_id}: ${updateResponse.message()}"
+                                )
+                            }
+                        }
+
+                        // Створення нових питань
+                        questionsToCreate.forEach { question ->
+                            val createRequestBody = QuestionRequestBody(
+                                list_id = setId,
+                                status = question.learned.toString(),
+                                content = question.content,
+                                answer = question.answer
+                            )
+                            val createResponse =
+                                RetrofitInstance.api().createQuestion(createRequestBody)
+                            if (!createResponse.isSuccessful) {
+                                Log.e(
+                                    "NewSetActivity",
+                                    "Не вдалося створити питання: ${createResponse.message()}"
+                                )
+                            }
+                        }
+
+                        val intent = Intent()
+                        intent.putExtra("updatedSetId", setId)
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+
+                    } catch (e: Exception) {
+                        Log.e("NewSetActivity", "Виняток: ${e.message}")
+                    }
+                }
+            }
         }
     }
-
-    /*private fun saveNewSet() {
-        // Отримати назву
-        val title = titleTxt.text.toString()
-
-        // Отримати рівень
-        val level = levels.find { it.name == levelTxt.text.toString() }
-
-        // Отримати доступ
-        val access = accessTxt.text.toString()
-
-        // Отримати список питань
-        val questions = adapter.getQuestions()
-
-        // Перевірка, що всі обов'язкові поля заповнені
-        if (title.isBlank() || level == null || access.isBlank()) {
-            Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Створення нового об'єкта Set
-        val newSet = Set(
-            id = 0,
-            name = title,
-            level = level,
-            categories = ArrayList(selectedCategories),
-            access = access,
-            date = LocalDate.now(),
-            questions = ArrayList(questions),
-            username = MainActivity.currentUser?.username ?: "Unknown",
-            isLiked = false
-        )
-
-        // Додавання нового сету до списку користувача або іншої колекції
-        MainActivity.currentUser?.sets?.add(newSet)
-
-        // Повернення до попереднього екрану
-        Toast.makeText(this, "Set saved successfully", Toast.LENGTH_SHORT).show()
-        finish()
-    }*/
 
     fun showSelectionAccessPopup(
         context: Context,
@@ -228,8 +439,14 @@ class NewSetActivity : AppCompatActivity() {
             titleTxt.text = setData.name
             levelTxt.text = setData.level.name
             accessTxt.text = setData.access
-            selectedCategories = setData.categories
+            selectedCategories = setData.categories.toMutableList()
             updateCategoryList(setData.categories)
+
+            originalTitle = setData.name
+            originalLevel = setData.level
+            originalAccess = setData.access == "public"
+            originalCategories = setData.categories.toMutableList()
+            originalQuestions = setData.questions.toMutableList()
 
             adapter.updateQuestions(setData.questions)
         }
@@ -258,18 +475,21 @@ class NewSetActivity : AppCompatActivity() {
             setPadding(40, 40, 0, 0)
         }
 
+        var currCategories = mutableListOf<Category>()
+
         val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
             .setCustomTitle(titleView)
             .setView(dialogView)
             .setPositiveButton(getString(R.string.apply)) { dialog, _ ->
-                selectedCategories.clear()
                 for ((index, checkBox) in checkBoxes.withIndex()) {
                     if (checkBox.isChecked) {
-                        selectedCategories.add(availableCategories[index])
+                        currCategories.add(availableCategories[index])
                     }
                 }
 
-                if (selectedCategories.size <= 3) {
+                if (currCategories.size <= 3) {
+                    selectedCategories.clear()
+                    selectedCategories.addAll(currCategories)
                     updateCategoryList(selectedCategories)
                 } else {
                     Toast.makeText(this, getString(R.string.select_up_to_3_categories), Toast.LENGTH_SHORT).show()

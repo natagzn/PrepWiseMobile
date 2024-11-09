@@ -55,7 +55,7 @@ class NewResourceActivity : AppCompatActivity() {
             val description = descriptionTxt.text.toString().trim()
 
             if (title.isEmpty()) {
-                titleTxt.error = getString(R.string.please_enter_a_title)
+                titleTxt.error = getString(R.string.please_enter_a_name_article_book)
                 return@setOnClickListener
             }
             if (description.isEmpty()) {
@@ -104,7 +104,6 @@ class NewResourceActivity : AppCompatActivity() {
                 level = selectedLevel
             }
         }
-
 
         val categoryLayout: LinearLayout = findViewById(R.id.category)
         categoryLayout.setOnClickListener {

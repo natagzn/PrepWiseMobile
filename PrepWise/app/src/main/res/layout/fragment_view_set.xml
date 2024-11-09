@@ -396,7 +396,7 @@
                 android:layout_marginEnd="7dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/set"
-                android:tint="@color/green"/>
+                app:tint="@color/green" />
 
             <TextView
                 style="@style/regular_16"
@@ -440,6 +440,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingHorizontal="5dp" />
+
+        <TextView
+            android:id="@+id/empty"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/light_15"
+            android:visibility="gone"
+            android:layout_marginTop="70dp"
+            android:textColor="@color/gray"
+            android:text="@string/no_question_created_yet" />
 
     </LinearLayout>
 </FrameLayout>

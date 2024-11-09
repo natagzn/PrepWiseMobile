@@ -20,7 +20,6 @@ object ResourceRepository {
         val setResponse = RetrofitInstance.api().getResourceById(resourceId)
         return if (setResponse.isSuccessful && setResponse.body() != null) {
             val setData = setResponse.body()!!
-            Log.d("API Data", "${setData.title}, ${setData.author.username}, ${setData.userReaction}, ${setData.likes}, ${setData.dislikes},${setData.created_at}")
             Resource(
                 id = resourceId,
                 articleBook = setData.title,
@@ -49,13 +48,11 @@ object ResourceRepository {
             if (response.isSuccessful && response.body() != null) {
                 val apiResources = response.body()!!
                 currentUser.resources.clear()
-                Log.d("SIZE", "${apiResources.size}")
 
                 // Завантажуємо повні дані для кожного сета
                 val resources = mutableListOf<Resource>()
                 for (apiResource in apiResources) {
                     val resource = getResourceById(apiResource.resource_id)
-                    Log.d("IIIDDD", "${apiResource.resource_id}")
                     resource?.let { resources.add(it) }
                 }
 
@@ -73,7 +70,6 @@ object ResourceRepository {
 
     suspend fun addFavoriteResource(resourceId: Int, like: Boolean): Response<Unit> {
         return try {
-            // Створюємо об'єкт FavoriteRequestBody з resourceId та like
             val requestBody = FavoriteRequestBody(resourceId, like)
             val response = RetrofitInstance.api().addFavoriteResource(requestBody)
             if (response.isSuccessful) {

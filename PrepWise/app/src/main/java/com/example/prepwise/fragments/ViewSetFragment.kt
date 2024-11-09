@@ -64,6 +64,7 @@ class ViewSetFragment : Fragment() {
     private lateinit var setProgressPersent: TextView
     private lateinit var setKnow: TextView
     private lateinit var setStillLearning: TextView
+    private lateinit var emptyListTxt: TextView
 
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var contentPage: LinearLayout
@@ -78,7 +79,9 @@ class ViewSetFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+
         private const val STUDY_REQUEST_CODE = 1
+        private const val REQUEST_CODE_EDIT_SET = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,6 +94,33 @@ class ViewSetFragment : Fragment() {
     private var adapterQuestion: AdapterQuestion? = null
     private lateinit var recyclerViewQuestion: RecyclerView
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == STUDY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            updateUI()
+        }
+
+        if (requestCode == REQUEST_CODE_EDIT_SET && resultCode == Activity.RESULT_OK) {
+            val updatedSetId = data?.getIntExtra("updatedSetId", -1)
+            updatedSetId?.let {
+                loadSetData(it)
+            }
+        }
+    }
+
+    private fun loadSetData(it: Int) {
+        it?.let { id ->
+            lifecycleScope.launch {
+                // Виконуємо запит getSetById асинхронно
+                set = SetRepository.getSetById(id)
+
+                // Після отримання даних приховуємо прогрес-бар
+                loadingProgressBar.visibility = View.GONE
+                contentPage.visibility = View.VISIBLE
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -98,8 +128,10 @@ class ViewSetFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_view_set, container, false)
 
         // Ініціалізація елементів макета
-        loadingProgressBar = view.findViewById(R.id.loadingProgressBar) // Ініціалізація прогрес-бару
+        loadingProgressBar =
+            view.findViewById(R.id.loadingProgressBar) // Ініціалізація прогрес-бару
         contentPage = view.findViewById(R.id.content)
+        emptyListTxt = view.findViewById(R.id.empty)
 
         // Робимо прогрес-бар видимим перед завантаженням
         loadingProgressBar.visibility = View.VISIBLE
@@ -107,7 +139,8 @@ class ViewSetFragment : Fragment() {
 
         questionList = arrayListOf()
         recyclerViewQuestion = view.findViewById(R.id.recyclerView)
-        recyclerViewQuestion.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerViewQuestion.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         adapterQuestion = AdapterQuestion(questionList, requireContext(), childFragmentManager)
         recyclerViewQuestion.adapter = adapterQuestion
 
@@ -139,121 +172,135 @@ class ViewSetFragment : Fragment() {
                 loadingProgressBar.visibility = View.GONE
                 contentPage.visibility = View.VISIBLE
 
-                // Після того, як запит завершився, перевіряємо, чи значення set не null
+                // перевіряємо, чи значення set не null
                 set?.let { loadedSet ->
                     questionList.clear()
                     questionList.addAll(loadedSet.questions) // Додаємо питання до списку
                     originalQuestionList = ArrayList(questionList)
 
-                    adapterQuestion?.notifyDataSetChanged()
+                    if (questionList.isEmpty()) {
+                        emptyListTxt.visibility = View.VISIBLE
+                        recyclerViewQuestion.visibility = View.GONE
+                        view.findViewById<LinearLayout>(R.id.sort).visibility = View.GONE
+                    } else {
+                        emptyListTxt.visibility = View.GONE
+                        recyclerViewQuestion.visibility = View.VISIBLE
+                        view.findViewById<LinearLayout>(R.id.sort).visibility = View.VISIBLE
 
-                    setName.text = loadedSet.name
-                    setLevel.text = loadedSet.level.name
-                    setUsername.text = loadedSet.username
-                    setNumberOfQuestions.text = loadedSet.questions.size.toString()
-                    setAccessType.text = loadedSet.access
+                        adapterQuestion?.notifyDataSetChanged()
 
-                    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-                    setDate.text = loadedSet.date.format(formatter)
+                        setName.text = loadedSet.name
+                        setLevel.text = loadedSet.level.name
+                        setUsername.text = loadedSet.username
+                        setNumberOfQuestions.text = loadedSet.questions.size.toString()
+                        setAccessType.text = loadedSet.access
 
-                    if (loadedSet.access == "private") {
-                        setAccessImg.setImageResource(R.drawable.resource_private)
-                    } else if (loadedSet.access == "public") {
-                        setAccessImg.setImageResource(R.drawable.resource_public)
+                        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                        setDate.text = loadedSet.date.format(formatter)
+
+                        if (loadedSet.access == "private") {
+                            setAccessImg.setImageResource(R.drawable.resource_private)
+                        } else if (loadedSet.access == "public") {
+                            setAccessImg.setImageResource(R.drawable.resource_public)
+                        }
+
+                        // Очищуємо контейнер категорій перед додаванням нових категорій
+                        categoriesContainer.removeAllViews()
+
+                        // Додаємо категорії в контейнер
+                        for (category in loadedSet.categories) {
+                            val categoryTextView = TextView(context)
+                            categoryTextView.text = category.name
+                            categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
+                            categoryTextView.setPadding(
+                                dpToPx(10, requireContext()), dpToPx(2, requireContext()),
+                                dpToPx(10, requireContext()), dpToPx(2, requireContext())
+                            )
+                            categoryTextView.setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.black
+                                )
+                            )
+                            categoryTextView.setTextAppearance(R.style.medium_11)
+
+                            val layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                            layoutParams.setMargins(dpToPx(10, requireContext()), 0, 0, 0)
+                            categoryTextView.layoutParams = layoutParams
+
+                            categoriesContainer.addView(categoryTextView)
+                        }
+
+                        if (loadedSet.isLiked) setLike.setImageResource(R.drawable.save)
+                        else setLike.setImageResource(R.drawable.not_save)
+
+                        // Прогрес
+                        val progress = loadedSet.calculateProgress()
+                        progressBar.progress = progress
+                        setProgressPersent.text = progress.toString() + "%"
+                        setKnow.text = loadedSet.getCountLearned().toString()
+                        var stillLearning: Int =
+                            loadedSet.questions.size - loadedSet.getCountLearned()
+                        setStillLearning.text = stillLearning.toString()
+
+                    } ?: run {
+                        Log.e("ViewSetFragment", "Set not found with id: $id")
                     }
-
-                    // Очищуємо контейнер категорій перед додаванням нових категорій
-                    categoriesContainer.removeAllViews()
-
-                    // Додаємо категорії в контейнер
-                    for (category in loadedSet.categories) {
-                        val categoryTextView = TextView(context)
-                        categoryTextView.text = category.name
-                        categoryTextView.setBackgroundResource(R.drawable.blue_rounded_background)
-                        categoryTextView.setPadding(
-                            dpToPx(10, requireContext()), dpToPx(2, requireContext()),
-                            dpToPx(10, requireContext()), dpToPx(2, requireContext())
-                        )
-                        categoryTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                        categoryTextView.setTextAppearance(R.style.medium_11)
-
-                        val layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        )
-                        layoutParams.setMargins(dpToPx(10, requireContext()), 0, 0, 0)
-                        categoryTextView.layoutParams = layoutParams
-
-                        categoriesContainer.addView(categoryTextView)
-                    }
-
-                    if (loadedSet.isLiked) setLike.setImageResource(R.drawable.save)
-                    else setLike.setImageResource(R.drawable.not_save)
-
-                    // Прогрес
-                    val progress = loadedSet.calculateProgress()
-                    progressBar.progress = progress
-                    setProgressPersent.text = progress.toString() +"%"
-                    setKnow.text = loadedSet.getCountLearned().toString()
-                    var stillLearning: Int = loadedSet.questions.size - loadedSet.getCountLearned()
-                    setStillLearning.text = stillLearning.toString()
-
-                } ?: run {
-                    Log.e("ViewSetFragment", "Set not found with id: $id")
                 }
             }
-        }
 
-
-
-        val backButton: ImageView = view.findViewById(R.id.back)
-        backButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-
-        setLike.setOnClickListener {
-            set?.let { s ->
-                s.isLiked = !s.isLiked
-                setLike.setImageResource(if (s.isLiked) R.drawable.save else R.drawable.not_save)
+            val backButton: ImageView = view.findViewById(R.id.back)
+            backButton.setOnClickListener {
+                parentFragmentManager.popBackStack()
             }
-        }
 
-        // Меню роботи з сетом
-        val setMenu: ImageView = view.findViewById(R.id.more)
-        setMenu.setOnClickListener{
-            showBottomDialog()
-        }
+            setLike.setOnClickListener {
+                set?.let { s ->
+                    s.isLiked = !s.isLiked
+                    setLike.setImageResource(if (s.isLiked) R.drawable.save else R.drawable.not_save)
+                }
+            }
 
-        // Відкриття сторінки вчивчення сета
-        val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
-        studyFlashcards.setOnClickListener {
-            if (set != null && set!!.questions.any { !it.learned }) {
-                val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
+            // Меню роботи з сетом
+            val setMenu: ImageView = view.findViewById(R.id.more)
+            setMenu.setOnClickListener {
+                showBottomDialog()
+            }
+
+            // Відкриття сторінки вчивчення сета
+            val studyFlashcards: LinearLayout = view.findViewById(R.id.study_flashcards)
+            studyFlashcards.setOnClickListener {
+                if (set != null && set!!.questions.any { !it.learned }) {
+                    val intent = Intent(requireActivity(), StudyFlascardActivity::class.java)
+                    intent.putExtra("setId", setId)
+                    startActivityForResult(intent, STUDY_REQUEST_CODE)
+                } else {
+                    val dialog = AlertDialog.Builder(requireContext())
+                        .setTitle("Увага")
+                        .setMessage("Всі питання в цьому сеті вже вивчені!")
+                        .setPositiveButton("ОК") { dialog, _ -> dialog.dismiss() }
+                        .create()
+
+                    dialog.show()
+                }
+            }
+
+            // Відкриття сторінки перегляду питань сета
+            val viewFlashcards: LinearLayout = view.findViewById(R.id.view_flashcards)
+            viewFlashcards.setOnClickListener {
+                val intent = Intent(requireActivity(), ViewFlashcardActivity::class.java)
                 intent.putExtra("setId", setId)
-                startActivityForResult(intent, STUDY_REQUEST_CODE)
-            } else {
-                val dialog = AlertDialog.Builder(requireContext())
-                    .setTitle("Увага")
-                    .setMessage("Всі питання в цьому сеті вже вивчені!")
-                    .setPositiveButton("ОК") { dialog, _ -> dialog.dismiss() }
-                    .create()
-
-                dialog.show()
+                startActivity(intent)
             }
-        }
 
-        // Відкриття сторінки перегляду питань сета
-        val viewFlashcards: LinearLayout = view.findViewById(R.id.view_flashcards)
-        viewFlashcards.setOnClickListener{
-            val intent = Intent(requireActivity(), ViewFlashcardActivity::class.java)
-            intent.putExtra("setId", setId)
-            startActivity(intent)
-        }
-
-        //сортування питань
-        view.findViewById<LinearLayout>(R.id.sort).setOnClickListener {
-            showSortPopupMenu(requireContext(), it) { sortType ->
-                sortQuestions(sortType)
+            //сортування питань
+            view.findViewById<LinearLayout>(R.id.sort).setOnClickListener {
+                showSortPopupMenu(requireContext(), it) { sortType ->
+                    sortQuestions(sortType)
+                }
             }
         }
 
@@ -270,11 +317,22 @@ class ViewSetFragment : Fragment() {
         sortCallback: (SortType) -> Unit
     ) {
         // Інфлюємо макет для PopupWindow
-        val popupView = LayoutInflater.from(context).inflate(R.layout.dialog_sort_question_menu, null)
-        val popupWindow = PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        val popupView =
+            LayoutInflater.from(context).inflate(R.layout.dialog_sort_question_menu, null)
+        val popupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
 
         // Застосовуємо стиль для фону та тіні
-        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.white_green_rounded_background))
+        popupWindow.setBackgroundDrawable(
+            ContextCompat.getDrawable(
+                context,
+                R.drawable.white_green_rounded_background
+            )
+        )
         popupWindow.elevation = 8f
 
         // Отримуємо посилання на елементи сортування
@@ -309,10 +367,12 @@ class ViewSetFragment : Fragment() {
                 questionList.clear()
                 questionList.addAll(originalQuestionList)
             }
+
             SortType.ALPHABETICAL -> {
                 // Сортування за абеткою
                 questionList.sortBy { it.content }
             }
+
             SortType.BY_STATUS -> {
                 // Розділення на два списки за статусом "Still learning" та "Already know"
                 val stillLearning = questionList.filter { !it.learned }
@@ -322,13 +382,6 @@ class ViewSetFragment : Fragment() {
             }
         }
         adapterQuestion?.notifyDataSetChanged() // Оновлення адаптера після сортування
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == STUDY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            updateUI()
-        }
     }
 
     private fun updateUI() {
@@ -363,7 +416,8 @@ class ViewSetFragment : Fragment() {
             val intent = Intent(requireActivity(), NewSetActivity::class.java)
             intent.putExtra("mode", "edit")
             intent.putExtra("setId", setId)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_EDIT_SET)
+
         }
 
         resetProgress.setOnClickListener {
@@ -375,27 +429,39 @@ class ViewSetFragment : Fragment() {
                 negativeButtonText = getString(R.string.cancel)
             ) { confirmed ->
                 set?.let { s ->
-                    for(question in s.questions){
-                        question.learned=false
+                    for (question in s.questions) {
+                        question.learned = false
                     }
                     updateUI()
                 }
             }
         }
 
-        report.setOnClickListener{
+        report.setOnClickListener {
             dialog.dismiss()
-            DialogUtils.showReportDialog(requireContext(), getString(R.string.report_this_set)) { selectedReason ->
-                Toast.makeText(requireContext(), getString(R.string.report_sent_successfully_thank_you_for_your_help), Toast.LENGTH_SHORT).show()
+            DialogUtils.showReportDialog(
+                requireContext(),
+                getString(R.string.report_this_set)
+            ) { selectedReason ->
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.report_sent_successfully_thank_you_for_your_help),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         addToFolder.setOnClickListener {
             dialog.dismiss()
-            showSelectionDialog(getString(R.string.select_folder), MainActivity.currentUser!!.folders, dialogLayoutId = R.layout.dialog_select_selection, itemLayoutId = R.layout.dialog_item)
+            showSelectionDialog(
+                getString(R.string.select_folder),
+                MainActivity.currentUser!!.folders,
+                dialogLayoutId = R.layout.dialog_select_selection,
+                itemLayoutId = R.layout.dialog_item
+            )
         }
 
-        delete.setOnClickListener{
+        delete.setOnClickListener {
             dialog.dismiss()
             DialogUtils.showConfirmationDialog(
                 context = requireContext(),
@@ -412,8 +478,8 @@ class ViewSetFragment : Fragment() {
 
         }
 
-        share.setOnClickListener{
-            if(MainActivity.currentUser!!.premium) showAccessDialog()
+        share.setOnClickListener {
+            if (MainActivity.currentUser!!.premium) showAccessDialog()
             else DialogUtils.showPremiumDialog(requireContext())
         }
 
@@ -422,15 +488,21 @@ class ViewSetFragment : Fragment() {
         }
 
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.BOTTOM)
     }
 
     private fun showAccessDialog() {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_share_access, null)
-        val recyclerViewUsers: RecyclerView = dialogView.findViewById(R.id.recycler_view_users)
+        val dialogView =
+            LayoutInflater.from(requireContext())
+                .inflate(R.layout.dialog_share_access, null)
+        val recyclerViewUsers: RecyclerView =
+            dialogView.findViewById(R.id.recycler_view_users)
         val confirmButton: TextView = dialogView.findViewById(R.id.confirm_button)
         val cancelButton: TextView = dialogView.findViewById(R.id.cancel_button)
 
@@ -479,8 +551,13 @@ class ViewSetFragment : Fragment() {
 
         // Створюємо кастомний адаптер для елементів
         val adapter = object : ArrayAdapter<Folder>(requireContext(), itemLayoutId, items) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = convertView ?: layoutInflater.inflate(itemLayoutId, parent, false)
+            override fun getView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view =
+                    convertView ?: layoutInflater.inflate(itemLayoutId, parent, false)
                 val textView: TextView = view.findViewById(R.id.level_item)
                 textView.text = getItem(position)?.name  // Відображаємо назву папки
                 return view
@@ -510,6 +587,5 @@ class ViewSetFragment : Fragment() {
     private fun saveSelectedFolderId(folderId: Int) {
 
     }
-
 }
 

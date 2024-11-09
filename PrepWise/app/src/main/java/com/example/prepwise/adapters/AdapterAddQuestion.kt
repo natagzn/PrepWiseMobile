@@ -14,9 +14,12 @@ import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.models.Question
 
 class AdapterAddQuestion(
-    private val questions: MutableList<Question>,
+    val questions: MutableList<Question>,
     private val context: Context
 ) : RecyclerView.Adapter<AdapterAddQuestion.QuestionViewHolder>() {
+
+    var questionsToUpdate = mutableListOf<Question>()
+    var questionsToDelete = mutableListOf<Question>()
 
     // ViewHolder для утримання UI елементів
     class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,15 +42,26 @@ class AdapterAddQuestion(
         holder.answerEditText.setText(question.answer)
 
         holder.deleteButton.setOnClickListener {
+            questionsToDelete.add(question) // Додаємо до списку питань на видалення
             removeQuestion(position)
         }
 
         holder.questionEditText.addTextChangedListener {
-            question.content = it.toString()
+            if (question.content != it.toString()) {
+                question.content = it.toString()
+                if (question.question_id != -1 && !questionsToUpdate.contains(question)) {
+                    questionsToUpdate.add(question) // Додаємо до списку оновлень
+                }
+            }
         }
 
         holder.answerEditText.addTextChangedListener {
-            question.answer = it.toString()
+            if (question.answer != it.toString()) {
+                question.answer = it.toString()
+                if (question.question_id != -1 && !questionsToUpdate.contains(question)) {
+                    questionsToUpdate.add(question) // Додаємо до списку оновлень
+                }
+            }
         }
     }
 
@@ -62,7 +76,8 @@ class AdapterAddQuestion(
             DialogUtils.showPremiumDialog(context)
             return
         }
-        questions.add(Question(-1,"", "", false))
+        val newQuestion = Question(-1, "", "", false)
+        questions.add(newQuestion)
         notifyItemInserted(questions.size - 1)
     }
 
@@ -73,6 +88,10 @@ class AdapterAddQuestion(
     }
 
     private fun removeQuestion(position: Int) {
+        val question = questions[position]
+        /*if (question.question_id != -1) {
+            questionsToDelete.add(question)
+        }*/
         questions.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, questions.size)

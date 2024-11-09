@@ -27,7 +27,7 @@ object SetRepository {
                 categories = ArrayList(setData.categories.map { Category(it.id, it.name) }),
                 access = setData.access,
                 date = LocalDateTime.parse(setData.createdAt, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDate(),
-                questions = ArrayList(setData.questions.map { Question(it.id, it.content, it.answer, it.learned) }),
+                questions = ArrayList(setData.questions.map { Question(it.question_id, it.content, it.answer, it.learned) }),
                 username = setData.author.username,
                 isLiked = setData.isFavourite
             )

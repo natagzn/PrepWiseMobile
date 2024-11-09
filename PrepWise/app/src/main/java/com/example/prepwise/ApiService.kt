@@ -7,17 +7,23 @@ import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.AllSetIdResponse
 import com.example.prepwise.dataClass.FavoriteRequestBody
 import com.example.prepwise.dataClass.LevelResponse1
+import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.ResourceDetailsResponse
 import com.example.prepwise.dataClass.ResourceRequestBody
 import com.example.prepwise.dataClass.SetDetailsResponse
+import com.example.prepwise.dataClass.SetRequestBody
+import com.example.prepwise.dataClass.SetResponse
 import com.example.prepwise.dataClass.SignUpRequest
 import com.example.prepwise.dataClass.SignUpResponse
+import com.example.prepwise.dataClass.UpdateSetRequest
+import com.example.prepwise.models.Set
 import com.example.prepwise.models.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 // Інтерфейс для API
@@ -68,4 +74,43 @@ interface ApiService {
     suspend fun deleteResource(
         @Path("resourceId") resourceId: Int
     ): Response<Unit>
+
+    @POST("/api/sets")
+    suspend fun createSet(
+        @Body requestBody: SetRequestBody
+    ): Response<SetResponse>
+
+    @POST("/api/questions")
+    suspend fun createQuestion(
+        @Body requestBody: QuestionRequestBody
+    ): Response<Unit>
+
+    @PUT("/api/sets/{id}")
+    suspend fun updateSet(
+        @Path("id") id: Int,
+        @Body body: UpdateSetRequest
+    ): Response<Void>
+
+    @PUT("/api/questions/{id}")
+    suspend fun updateQuestion(
+        @Path("id") id: Int,
+        @Body body: QuestionRequestBody
+    ): Response<Void>
+
+    @DELETE("/api/questions/{id}")
+    suspend fun deleteQuestion(
+        @Path("id") id: Int
+    ): Response<Void>
+
+    @DELETE("/api/sets/{setId}/categories/{categoryId}")
+    suspend fun deleteCategoryFromSet(
+        @Path("setId") setId: Int,
+        @Path("categoryId") categoryId: Int
+    ): Response<Void>
+
+    @POST("/api/sets/{setId}/categories/{categoryId}")
+    suspend fun addCategoryToSet(
+        @Path("setId") setId: Int,
+        @Path("categoryId") categoryId: Int
+    ): Response<Void>
 }
