@@ -33,6 +33,7 @@ import com.example.prepwise.models.User
 import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.objects.LocaleHelper.loadLocale
 import com.example.prepwise.objects.RetrofitInstance
+import com.example.prepwise.objects.SetRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -150,6 +151,7 @@ class MainActivity : AppCompatActivity() {
             fetchCategories()
             fetchLevels()
             fetchUserProfile()
+            SetRepository.fetchAllSets()
         }
     }
 

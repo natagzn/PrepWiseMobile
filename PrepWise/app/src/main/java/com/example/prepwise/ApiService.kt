@@ -9,6 +9,8 @@ import com.example.prepwise.dataClass.AllSetIdResponse
 import com.example.prepwise.dataClass.DateOfVisitResponse
 import com.example.prepwise.dataClass.FavoriteRequestBody
 import com.example.prepwise.dataClass.FolderDetailsResponse
+import com.example.prepwise.dataClass.FolderRequestBody
+import com.example.prepwise.dataClass.FolderResponse
 import com.example.prepwise.dataClass.LevelResponse1
 import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.ResourceDetailsResponse
@@ -131,4 +133,15 @@ interface ApiService {
 
     @GET("/api/folders/{id}")
     suspend fun getFolderById(@Path("id") id: Int): Response<FolderDetailsResponse>
+
+    @POST("/api/folders")
+    suspend fun createFolder(
+        @Body requestBody: FolderRequestBody
+    ): Response<FolderResponse>
+
+    @PUT("/api/folders/{id}/add-set")
+    suspend fun AddSetToFolder(
+        @Path("id") id: Int,
+        @Path("setId") setId: Int,
+    ): Response<Void>
 }

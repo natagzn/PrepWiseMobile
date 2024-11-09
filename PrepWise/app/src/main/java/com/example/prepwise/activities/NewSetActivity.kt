@@ -216,7 +216,7 @@ class NewSetActivity : AppCompatActivity() {
                             val setId = response.body()!!.set.question_set_id
                             Toast.makeText(
                                 this@NewSetActivity,
-                                "Set created successfully",
+                                getString(R.string.set_created_successfully),
                                 Toast.LENGTH_SHORT
                             ).show()
 

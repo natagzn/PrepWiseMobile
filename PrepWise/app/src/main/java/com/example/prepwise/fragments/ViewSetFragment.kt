@@ -172,6 +172,15 @@ class ViewSetFragment : Fragment() {
 
                     categoriesContainer.addView(categoryTextView)
                 }
+
+                // Прогрес
+                val progress = loadedSet.calculateProgress()
+                progressBar.progress = progress
+                setProgressPersent.text = progress.toString() + "%"
+                setKnow.text = loadedSet.getCountLearned().toString()
+                var stillLearning: Int =
+                    loadedSet.questions.size - loadedSet.getCountLearned()
+                setStillLearning.text = stillLearning.toString()
             }
         }
     }

@@ -309,4 +309,8 @@ get back to you as soon as possible.</string>
     <string name="please_select_access_type">Please select access type</string>
 
     <string name="no_question_created_yet">No question created yet</string>
+
+    <string name="set_created_successfully">Set created successfully</string>
+    <string name="resource_created_successfully">Resource created successfully</string>
+    <string name="folder_created_successfully">Folder created successfully</string>
 </resources>

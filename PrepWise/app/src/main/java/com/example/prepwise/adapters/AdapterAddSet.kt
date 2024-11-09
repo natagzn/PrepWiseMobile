@@ -18,6 +18,8 @@ class AdapterAddSet(
     private val context: Context
 ) : RecyclerView.Adapter<AdapterAddSet.SetViewHolder>() {
 
+    var setsId = selectedSetId
+
     // ViewHolder клас для утримання посилань на UI елементи
     class SetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val setName: TextView = itemView.findViewById(R.id.set_name)

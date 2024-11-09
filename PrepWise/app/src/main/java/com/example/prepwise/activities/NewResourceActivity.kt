@@ -109,7 +109,11 @@ class NewResourceActivity : AppCompatActivity() {
                     val requestBody = ResourceRequestBody(title, description, level!!.id, category!!.id)
                     val response = RetrofitInstance.api().createResource(requestBody)
                     if (response.isSuccessful && response.body() != null) {
-                        // Handle successful response if needed
+                        Toast.makeText(
+                            this@NewResourceActivity,
+                            getString(R.string.resource_created_successfully),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         Log.e("NewResourceActivity", "Error: ${response.message()}")
                     }

@@ -65,7 +65,7 @@ class SetsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         adapterSet?.notifyDataSetChanged()
-        recyclerViewSet.adapter=adapterSet
+        //recyclerViewSet.adapter=adapterSet
     }
 
     override fun onCreateView(
