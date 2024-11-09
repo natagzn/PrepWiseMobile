@@ -20,6 +20,7 @@ import com.example.prepwise.dataClass.SetRequestBody
 import com.example.prepwise.dataClass.SetResponse
 import com.example.prepwise.dataClass.SignUpRequest
 import com.example.prepwise.dataClass.SignUpResponse
+import com.example.prepwise.dataClass.UpdateFolderRequest
 import com.example.prepwise.dataClass.UpdateProfileRequest
 import com.example.prepwise.dataClass.UpdateSetRequest
 import com.example.prepwise.models.Set
@@ -31,6 +32,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 // Інтерфейс для API
 interface ApiService {
@@ -139,9 +141,22 @@ interface ApiService {
         @Body requestBody: FolderRequestBody
     ): Response<FolderResponse>
 
-    @PUT("/api/folders/{id}/add-set")
+    @POST("/api/folders/{id}/add-set")
     suspend fun AddSetToFolder(
         @Path("id") id: Int,
-        @Path("setId") setId: Int,
+        @Query("setId") setId: Int
     ): Response<Void>
+
+    @PUT("/api/folders/{id}")
+    suspend fun updateFolder(
+        @Path("id") id: Int,
+        @Body body: UpdateFolderRequest
+    ): Response<Void>
+
+    @DELETE("/api/folders-set")
+    suspend fun DeleteSetFromFolder(
+        @Query("folderId") folderId: Int,
+        @Query("setId") setId: Int
+    ): Response<Void>
+
 }

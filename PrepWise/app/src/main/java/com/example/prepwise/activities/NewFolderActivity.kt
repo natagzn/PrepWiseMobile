@@ -1,11 +1,13 @@
 package com.example.prepwise.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -22,10 +24,14 @@ import com.example.prepwise.adapters.AdapterAddSet
 import com.example.prepwise.dataClass.FolderRequestBody
 import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.SetRequestBody
+import com.example.prepwise.dataClass.UpdateFolderRequest
+import com.example.prepwise.dataClass.UpdateSetRequest
 import com.example.prepwise.models.Folder
+import com.example.prepwise.objects.FolderRepository
 import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
 import com.example.prepwise.objects.LocaleHelper.setLocale
 import com.example.prepwise.objects.RetrofitInstance
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -37,8 +43,10 @@ class NewFolderActivity : AppCompatActivity() {
     private var adapterAddSet: AdapterAddSet? = null
     private lateinit var recyclerViewSet: RecyclerView
 
-    private lateinit var titleTxt: TextView
+    private lateinit var titleTxt: TextInputEditText
     private lateinit var selectedSetId: ArrayList<Int>
+
+    private var originalSelectedSetIds = ArrayList<Int>()
 
     fun loadLocale(context: Context) {
         val sharedPref = context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
@@ -76,7 +84,10 @@ class NewFolderActivity : AppCompatActivity() {
         val folderId = intent.getIntExtra("folderId", -1)
 
         if (mode == "edit" && folderId != -1) {
-            loadDataForEditing(folderId)
+            val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+            customScope.launch {
+                loadDataForEditing(folderId)
+            }
             findViewById<TextView>(R.id.mode).text = getString(R.string.edit_folder)
         }
 
@@ -104,59 +115,124 @@ class NewFolderActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-            customScope.launch {
-                try {
-                    val requestBody = FolderRequestBody(title, adapterAddSet!!.setsId)
-                    val response = RetrofitInstance.api().createFolder(requestBody)
+            if(mode=="create") {
+                val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+                customScope.launch {
+                    try {
+                        val requestBody = FolderRequestBody(title, adapterAddSet!!.setsId)
+                        val response = RetrofitInstance.api().createFolder(requestBody)
 
-                    if (response.isSuccessful && response.body() != null) {
-                        val newFolderId = response.body()!!.folder.folderId
-                        Toast.makeText(
-                            this@NewFolderActivity,
-                            getString(R.string.folder_created_successfully),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (response.isSuccessful && response.body() != null) {
+                            val newFolderId = response.body()!!.folder.folderId
+                            Toast.makeText(
+                                this@NewFolderActivity,
+                                getString(R.string.folder_created_successfully),
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                        // Якщо список сетів не порожній, додаємо їх у новостворену папку
-                        if (adapterAddSet!!.setsId.isNotEmpty()) {
-                            for (setId in adapterAddSet!!.setsId) {
-                                lifecycleScope.launch {
-                                    try {
-                                        val addSetResponse = RetrofitInstance.api().AddSetToFolder(newFolderId, setId)
-                                        if (!addSetResponse.isSuccessful) {
-                                            Log.e("NewFolderActivity", "Error adding set to folder: ${addSetResponse.message()}")
+                            // Якщо список сетів не порожній, додаємо їх у новостворену папку
+                            if (adapterAddSet!!.setsId.isNotEmpty()) {
+                                for (setId in adapterAddSet!!.setsId) {
+                                    lifecycleScope.launch {
+                                        try {
+                                            val addSetResponse = RetrofitInstance.api()
+                                                .AddSetToFolder(newFolderId, setId)
+                                            if (!addSetResponse.isSuccessful) {
+                                                Log.e(
+                                                    "NewFolderActivity",
+                                                    "Error adding set to folder: ${addSetResponse.message()}"
+                                                )
+                                            }
+                                        } catch (e: HttpException) {
+                                            Log.e(
+                                                "NewFolderActivity",
+                                                "HttpException: ${e.message}"
+                                            )
+                                        } catch (e: Exception) {
+                                            Log.e("NewFolderActivity", "Exception: ${e.message}")
                                         }
-                                    } catch (e: HttpException) {
-                                        Log.e("NewFolderActivity", "HttpException: ${e.message}")
-                                    } catch (e: Exception) {
-                                        Log.e("NewFolderActivity", "Exception: ${e.message}")
                                     }
                                 }
                             }
+                            val resultIntent = Intent()
+                            setResult(Activity.RESULT_OK, resultIntent)
+                            finish() // Закриваємо активність після успішного створення
+                        } else {
+                            Log.e(
+                                "NewFolderActivity",
+                                "Error creating folder: ${response.message()}"
+                            )
                         }
-                        finish() // Закриваємо активність після успішного створення
-                    } else {
-                        Log.e("NewFolderActivity", "Error creating folder: ${response.message()}")
+                    } catch (e: HttpException) {
+                        Log.e("NewFolderActivity", "HttpException: ${e.message}")
+                    } catch (e: Exception) {
+                        Log.e("NewFolderActivity", "Exception: ${e.message}")
                     }
-                } catch (e: HttpException) {
-                    Log.e("NewFolderActivity", "HttpException: ${e.message}")
-                } catch (e: Exception) {
-                    Log.e("NewFolderActivity", "Exception: ${e.message}")
                 }
+            }
+            else if (mode == "edit") {
+                val updatedSelectedSetIds = adapterAddSet?.setsId ?: emptyList()
+
+                val setsToAdd = updatedSelectedSetIds - originalSelectedSetIds
+                val setsToDelete = originalSelectedSetIds - updatedSelectedSetIds
+
+                updateFolderAndSets(title, folderId, setsToAdd, setsToDelete)
             }
         }
     }
 
-    private fun loadDataForEditing(folderId: Int) {
-        val folderData = MainActivity.getFolderById(folderId)
+    private fun updateFolderAndSets(title: String, folderId: Int, setsToAdd: List<Int>, setsToDelete: List<Int>) {
+        val updateRequest = UpdateFolderRequest(name = title)
+
+        CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+            try {
+                val updateResponse = RetrofitInstance.api().updateFolder(folderId, updateRequest)
+                if (updateResponse.isSuccessful) {
+                    setsToAdd.forEach { setId ->
+                        try {
+                            val addSetResponse = RetrofitInstance.api().AddSetToFolder(folderId, setId)
+                            if (!addSetResponse.isSuccessful) {
+                                Log.e(
+                                    "NewFolderActivity",
+                                    "Error adding set to folder: ${addSetResponse.message()}"
+                                )
+                            }
+                        } catch (e: Exception) {
+                            Log.e("NewFolderActivity", "Exception adding set: ${e.message}")
+                        }
+                    }
+                    setsToDelete.forEach { setId ->
+                        try {
+                            val deleteResponse = RetrofitInstance.api().DeleteSetFromFolder(folderId, setId)
+                            if (!deleteResponse.isSuccessful) {
+                                Log.e("NewFolderActivity", "Error deleting set: ${deleteResponse.message()}")
+                            }
+                        } catch (e: Exception) {
+                            Log.e("NewFolderActivity", "Exception deleting set: ${e.message}")
+                        }
+                    }
+                    val resultIntent = Intent()
+                    setResult(Activity.RESULT_OK, resultIntent)
+                    finish()
+                } else {
+                    Log.e("NewFolderActivity", "Error updating folder: ${updateResponse.message()}")
+                }
+            } catch (e: Exception) {
+                Log.e("NewFolderActivity", "Exception: ${e.message}")
+            }
+        }
+    }
+
+    private suspend fun loadDataForEditing(folderId: Int) {
+        val folderData = FolderRepository.getFolderById(folderId)
 
         if (folderData != null) {
-            titleTxt.text = folderData.name
+            titleTxt.setText(folderData.name)
             folderData.sets.forEach { set ->
                 selectedSetId.add(set.id)
             }
-            adapterAddSet?.updateSets(folderData.sets)
+            adapterAddSet?.notifyDataSetChanged()
+            originalSelectedSetIds = folderData.sets.map { it.id }.toMutableList() as ArrayList<Int>
         }
     }
 }

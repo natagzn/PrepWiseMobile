@@ -1,5 +1,6 @@
 package com.example.prepwise.fragments
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -13,17 +14,24 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
+import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewFolderActivity
 import com.example.prepwise.adapters.AdapterSetInFolder
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Set
+import com.example.prepwise.objects.FolderRepository
+import com.example.prepwise.objects.SetRepository
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 class ViewFolderFragment : Fragment() {
@@ -41,6 +49,9 @@ class ViewFolderFragment : Fragment() {
     private var adapterSet: AdapterSetInFolder? = null
     private lateinit var recyclerViewSet: RecyclerView
 
+    private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var contentPage: LinearLayout
+
     companion object {
         private const val ARG_FOLDER_ID = "folder_id"
 
@@ -50,6 +61,27 @@ class ViewFolderFragment : Fragment() {
             args.putInt(ARG_FOLDER_ID, folderId)
             fragment.arguments = args
             return fragment
+        }
+
+        private const val EDIT_FOLDER_REQUEST_CODE = 100
+    }
+
+    private fun loadFolderData(setId: Int) {
+        lifecycleScope.launch {
+            folder = FolderRepository.getFolderById(setId)
+
+            folder?.let { loadedFolder ->
+                setFolderName.text = loadedFolder.name
+                setNumberOfSet.text = loadedFolder.sets.size.toString()
+                val totalQuestions = loadedFolder.sets.sumOf { set -> set.questions.size }
+                setNumberOfQuestion.text = totalQuestions.toString()
+
+                // Оновлення списку даних
+                setList.clear()
+                setList.addAll(loadedFolder.sets)
+
+                adapterSet?.notifyDataSetChanged()
+            }
         }
     }
 
@@ -70,6 +102,10 @@ class ViewFolderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_view_folder, container, false)
+
+        loadingProgressBar =
+            view.findViewById(R.id.loadingProgressBar)
+        contentPage = view.findViewById(R.id.content)
 
         recyclerViewSet = view.findViewById(R.id.recyclerView)
         recyclerViewSet.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -169,7 +205,8 @@ class ViewFolderFragment : Fragment() {
             val intent = Intent(requireActivity(), NewFolderActivity::class.java)
             intent.putExtra("mode", "edit")
             intent.putExtra("folderId", folderId)
-            startActivity(intent)
+            startActivityForResult(intent, EDIT_FOLDER_REQUEST_CODE)
+
         }
 
         close.setOnClickListener {
@@ -181,5 +218,15 @@ class ViewFolderFragment : Fragment() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.BOTTOM)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == EDIT_FOLDER_REQUEST_CODE ) {
+            folderId?.let {
+                loadFolderData(it)  // Повторне завантаження оновлених даних
+                adapterSet?.notifyDataSetChanged() // Оновлення відображення списку
+            }
+        }
     }
 }
