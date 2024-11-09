@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.adapters.ViewPagerLibratyAdapter
+import com.example.prepwise.objects.FolderRepository
 import com.example.prepwise.objects.ResourceRepository
 import com.example.prepwise.objects.SetRepository
 import com.google.android.material.tabs.TabLayout
@@ -40,6 +41,7 @@ class LibraryFragment : Fragment() {
 
             SetRepository.fetchAllSets()
             ResourceRepository.fetchAllResources()
+            FolderRepository.fetchAllFolders()
 
             progressBarLoading.visibility = View.GONE
             viewPager.visibility = View.VISIBLE

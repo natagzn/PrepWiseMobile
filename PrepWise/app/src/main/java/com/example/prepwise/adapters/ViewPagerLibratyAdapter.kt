@@ -32,17 +32,4 @@ class ViewPagerLibratyAdapter(
             else -> SetsFragment.newInstance(setsList, "Library")
         }
     }
-
-    fun updateData(
-        newFolders: ArrayList<Folder>,
-        newSets: ArrayList<Set>,
-        newShared: ArrayList<SharedSet>,
-        newResources: ArrayList<Resource>
-    ) {
-        foldersList = newFolders
-        setsList = newSets
-        sharedList = newShared
-        resourcesList = newResources
-        notifyDataSetChanged()
-    }
 }

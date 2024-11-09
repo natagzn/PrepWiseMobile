@@ -1,5 +1,6 @@
 package com.example.prepwise
 
+import com.example.prepwise.dataClass.AllFoldersResponse
 import com.example.prepwise.dataClass.AllResourceIdResponse
 import com.example.prepwise.dataClass.CategoryResponse
 import com.example.prepwise.dataClass.LoginRequest
@@ -7,6 +8,7 @@ import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.AllSetIdResponse
 import com.example.prepwise.dataClass.DateOfVisitResponse
 import com.example.prepwise.dataClass.FavoriteRequestBody
+import com.example.prepwise.dataClass.FolderDetailsResponse
 import com.example.prepwise.dataClass.LevelResponse1
 import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.ResourceDetailsResponse
@@ -123,4 +125,10 @@ interface ApiService {
 
     @GET("/api/date-of-visits/days")
     suspend fun getDayIfVisit(): Response<DateOfVisitResponse>
+
+    @GET("/api/folders-with-all")
+    suspend fun getAllFolders(): Response<AllFoldersResponse>
+
+    @GET("/api/folders/{id}")
+    suspend fun getFolderById(@Path("id") id: Int): Response<FolderDetailsResponse>
 }
