@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -24,6 +25,7 @@ import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.SetRequestBody
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Set
+import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
 import com.example.prepwise.objects.LocaleHelper.setLocale
 import com.example.prepwise.objects.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +53,24 @@ class NewQuestionActivity : AppCompatActivity() {
 
         questionTxt = findViewById(R.id.question)
         answerTxt = findViewById(R.id.answer)
+
+        questionTxt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard(this, currentFocus ?: View(this))
+                true
+            } else {
+                false
+            }
+        }
+
+        answerTxt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard(this, currentFocus ?: View(this))
+                true
+            } else {
+                false
+            }
+        }
 
         // Закриття сторінки
         val close: TextView = findViewById(R.id.cancel)

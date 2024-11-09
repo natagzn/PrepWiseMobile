@@ -9,6 +9,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.ImageView
@@ -37,6 +38,7 @@ import com.example.prepwise.dataClass.UpdateSetRequest
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Question
+import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
 import com.example.prepwise.objects.LocaleHelper.setLocale
 import com.example.prepwise.objects.RetrofitInstance
 import com.example.prepwise.objects.SetRepository
@@ -96,6 +98,15 @@ class NewSetActivity : AppCompatActivity() {
         categoryListContainer = findViewById(R.id.category_list_container)
         recyclerView = findViewById(R.id.question_list)
         adapter = AdapterAddQuestion(mutableListOf(), this)
+
+        titleTxt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard(this, currentFocus ?: View(this))
+                true
+            } else {
+                false
+            }
+        }
 
         val mode = intent.getStringExtra("mode") ?: "create"
         val setId = intent.getIntExtra("setId", -1)

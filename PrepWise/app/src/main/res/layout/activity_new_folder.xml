@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/title"
             android:hint="@string/title"
+            android:imeOptions="actionDone"
             android:inputType="text"
             style="@style/regular_16"
             android:textColorHint="@color/gray" />

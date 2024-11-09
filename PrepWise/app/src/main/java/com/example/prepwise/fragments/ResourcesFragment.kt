@@ -1,10 +1,14 @@
 package com.example.prepwise.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +20,7 @@ import com.example.prepwise.adapters.AdapterResource
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Resource
+import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
 
 class ResourcesFragment : Fragment() {
 
@@ -110,9 +115,50 @@ class ResourcesFragment : Fragment() {
                     showAccess
                 )
             }
+
+            val searchInput: EditText = view.findViewById(R.id.input_resource)
+            searchInput.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val query = s.toString().trim()
+                    filterResource(query)
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+            searchInput.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    hideKeyboard(requireContext(), view)
+                    true
+                } else {
+                    false
+                }
+            }
         }
 
         return view
+    }
+
+    private fun filterResource(query: String) {
+        val filteredList = if (query.isEmpty()) {
+            resourceList  // Якщо поле пошуку порожнє, показуємо весь список
+        } else {
+            resourceList.filter { resource ->
+                resource.articleBook.contains(query, ignoreCase = true)  // Фільтруємо за назвою
+            }
+        }
+
+        adapterResource?.updateData(filteredList)  // Оновлюємо дані в адаптері
+
+        // Відображення або приховування тексту для порожнього списку
+        if (filteredList.isEmpty()) {
+            emptyFilteredListTxt.visibility = View.VISIBLE
+            recyclerViewResoure.visibility = View.GONE
+        } else {
+            emptyFilteredListTxt.visibility = View.GONE
+            recyclerViewResoure.visibility = View.VISIBLE
+        }
     }
 
     private fun applyFilters(

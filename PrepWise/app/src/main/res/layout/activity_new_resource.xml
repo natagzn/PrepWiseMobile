@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -70,6 +70,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name_article_book"
                     style="@style/regular_16"
+                    android:imeOptions="actionDone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/name_article_book"
@@ -94,6 +95,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/description"
                     style="@style/regular_16"
+                    android:imeOptions="actionDone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/description"

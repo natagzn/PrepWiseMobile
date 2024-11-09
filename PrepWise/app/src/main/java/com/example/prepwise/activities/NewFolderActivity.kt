@@ -3,6 +3,8 @@ package com.example.prepwise.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +17,7 @@ import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddSet
 import com.example.prepwise.models.Folder
+import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
 import com.example.prepwise.objects.LocaleHelper.setLocale
 
 class NewFolderActivity : AppCompatActivity() {
@@ -47,6 +50,15 @@ class NewFolderActivity : AppCompatActivity() {
 
         titleTxt = findViewById(R.id.title)
         selectedSetId = arrayListOf()
+
+        titleTxt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard(this, currentFocus ?: View(this))
+                true
+            } else {
+                false
+            }
+        }
 
         val mode = intent.getStringExtra("mode") ?: "create"
         val folderId = intent.getIntExtra("folderId", -1)

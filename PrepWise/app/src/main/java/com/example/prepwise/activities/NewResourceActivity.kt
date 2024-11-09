@@ -3,6 +3,8 @@ package com.example.prepwise.activities
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +18,7 @@ import com.example.prepwise.R
 import com.example.prepwise.dataClass.ResourceRequestBody
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
+import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
 import com.example.prepwise.objects.LocaleHelper.setLocale
 import com.example.prepwise.objects.RetrofitInstance
 import com.google.android.material.textfield.TextInputEditText
@@ -55,6 +58,24 @@ class NewResourceActivity : AppCompatActivity() {
 
         titleTxt = findViewById(R.id.name_article_book)
         descriptionTxt = findViewById(R.id.description)
+
+        titleTxt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard(this, currentFocus ?: View(this))
+                true
+            } else {
+                false
+            }
+        }
+
+        descriptionTxt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard(this, currentFocus ?: View(this))
+                true
+            } else {
+                false
+            }
+        }
 
         val close: TextView = findViewById(R.id.cancel)
         close.setOnClickListener {
