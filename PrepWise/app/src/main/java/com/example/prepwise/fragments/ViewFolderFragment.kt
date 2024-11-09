@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,15 +29,21 @@ import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewFolderActivity
 import com.example.prepwise.adapters.AdapterSetInFolder
+import com.example.prepwise.dataClass.SetRequestBody
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Set
 import com.example.prepwise.objects.FolderRepository
+import com.example.prepwise.objects.RetrofitInstance
 import com.example.prepwise.objects.SetRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.time.format.DateTimeFormatter
 
-class ViewFolderFragment : Fragment() {
-
+class ViewFolderFragment : Fragment()
+{
     private lateinit var setList: ArrayList<Set>
     private var folderId: Int? = null
     private var folder: Folder? = null
@@ -192,12 +200,26 @@ class ViewFolderFragment : Fragment() {
                 negativeButtonText = getString(R.string.cancel)
             ) { confirmed ->
                 if (confirmed) {
-
-                } else {
-
+                    val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+                    customScope.launch {
+                        try {
+                            val response = RetrofitInstance.api().deleteFolder(folderId!!)
+                            if (response.isSuccessful && response.body() != null) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.folder_deleted),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            parentFragmentManager.popBackStack()
+                        } catch (e: HttpException) {
+                            Log.e("NewSetActivity", "HttpException: ${e.message}")
+                        } catch (e: Exception) {
+                            Log.e("NewSetActivity", "Exception: ${e.message}")
+                        }
+                    }
                 }
             }
-
         }
 
         edit.setOnClickListener {
@@ -214,7 +236,10 @@ class ViewFolderFragment : Fragment() {
         }
 
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
         dialog.window?.setGravity(Gravity.BOTTOM)

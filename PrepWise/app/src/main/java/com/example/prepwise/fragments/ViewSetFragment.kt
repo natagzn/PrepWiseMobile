@@ -40,8 +40,13 @@ import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
+import com.example.prepwise.objects.RetrofitInstance
 import com.example.prepwise.objects.SetRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.time.format.DateTimeFormatter
 
 class ViewSetFragment : Fragment() {
@@ -534,12 +539,26 @@ class ViewSetFragment : Fragment() {
                 negativeButtonText = getString(R.string.cancel)
             ) { confirmed ->
                 if (confirmed) {
-
-                } else {
-
+                    val customScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+                    customScope.launch {
+                        try {
+                            val response = RetrofitInstance.api().deleteSet(setId!!)
+                            if (response.isSuccessful && response.body() != null) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    getString(R.string.set_deleted),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            parentFragmentManager.popBackStack()
+                        } catch (e: HttpException) {
+                            Log.e("ViewSetFragment", "HttpException: ${e.message}")
+                        } catch (e: Exception) {
+                            Log.e("ViewSetFragment", "Exception: ${e.message}")
+                        }
+                    }
                 }
             }
-
         }
 
         share.setOnClickListener {

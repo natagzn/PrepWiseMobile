@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -22,11 +20,7 @@ import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddSet
 import com.example.prepwise.dataClass.FolderRequestBody
-import com.example.prepwise.dataClass.QuestionRequestBody
-import com.example.prepwise.dataClass.SetRequestBody
 import com.example.prepwise.dataClass.UpdateFolderRequest
-import com.example.prepwise.dataClass.UpdateSetRequest
-import com.example.prepwise.models.Folder
 import com.example.prepwise.objects.FolderRepository
 import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
 import com.example.prepwise.objects.LocaleHelper.setLocale
@@ -136,7 +130,7 @@ class NewFolderActivity : AppCompatActivity() {
                                     lifecycleScope.launch {
                                         try {
                                             val addSetResponse = RetrofitInstance.api()
-                                                .AddSetToFolder(newFolderId, setId)
+                                                .addSetToFolder(newFolderId, setId)
                                             if (!addSetResponse.isSuccessful) {
                                                 Log.e(
                                                     "NewFolderActivity",
@@ -190,7 +184,7 @@ class NewFolderActivity : AppCompatActivity() {
                 if (updateResponse.isSuccessful) {
                     setsToAdd.forEach { setId ->
                         try {
-                            val addSetResponse = RetrofitInstance.api().AddSetToFolder(folderId, setId)
+                            val addSetResponse = RetrofitInstance.api().addSetToFolder(folderId, setId)
                             if (!addSetResponse.isSuccessful) {
                                 Log.e(
                                     "NewFolderActivity",
@@ -203,7 +197,7 @@ class NewFolderActivity : AppCompatActivity() {
                     }
                     setsToDelete.forEach { setId ->
                         try {
-                            val deleteResponse = RetrofitInstance.api().DeleteSetFromFolder(folderId, setId)
+                            val deleteResponse = RetrofitInstance.api().deleteSetFromFolder(folderId, setId)
                             if (!deleteResponse.isSuccessful) {
                                 Log.e("NewFolderActivity", "Error deleting set: ${deleteResponse.message()}")
                             }

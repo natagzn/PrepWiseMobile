@@ -312,4 +312,13 @@
     <string name="please_enter_a_title">Введіть назву</string>
     <string name="please_select_at_least_one_category">Виберіть принаймні одну категорію</string>
     <string name="please_select_access_type">Виберіть тип доступу</string>
+
+    <string name="no_question_created_yet">Питання ще не створено</string>
+
+    <string name="set_created_successfully">Модуль створено успішно</string>
+    <string name="resource_created_successfully">Ресурс створено успішно</string>
+    <string name="folder_created_successfully">Папку створено успішно</string>
+
+    <string name="folder_deleted">Папку видалено</string>
+    <string name="set_deleted">Модуль видалено</string>
 </resources>

@@ -313,4 +313,7 @@ get back to you as soon as possible.</string>
     <string name="set_created_successfully">Set created successfully</string>
     <string name="resource_created_successfully">Resource created successfully</string>
     <string name="folder_created_successfully">Folder created successfully</string>
+
+    <string name="folder_deleted">Folder deleted</string>
+    <string name="set_deleted">Set deleted</string>
 </resources>
