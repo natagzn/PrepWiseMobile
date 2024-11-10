@@ -13,6 +13,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
+import com.example.prepwise.activities.MainActivity.Companion.currentUser
+import com.example.prepwise.repositories.FavoritesRepository.deleteSetFromFavorites
+import com.example.prepwise.repositories.ReportRepository.submitComplaint
 import com.example.prepwise.repositories.ResourceRepository
 import com.example.prepwise.utils.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
@@ -138,6 +141,9 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
 
         holder.report.setOnClickListener{
             DialogUtils.showReportDialog(context, context.getString(R.string.report_this_resource)) { selectedReason ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    submitComplaint(userIdCompl = currentUser.id, resourcesId = resourse.id, context = selectedReason)
+                }
                 Toast.makeText(context, context.getString(R.string.report_sent_successfully_thank_you_for_your_help), Toast.LENGTH_SHORT).show()
             }
         }

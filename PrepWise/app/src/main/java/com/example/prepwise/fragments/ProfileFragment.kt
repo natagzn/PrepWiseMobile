@@ -59,8 +59,8 @@ class ProfileFragment : Fragment() {
                 if (response.isSuccessful && response.body() != null) {
                     val userProfile = response.body()!!
                     currentUser.apply {
-                        id = userProfile.id
-                        userImg = userProfile.userImg
+                        id = userProfile.user_id
+                        userImg = userProfile.avatar_url
                         username = userProfile.username
                         email = userProfile.email
                         bio = userProfile.bio

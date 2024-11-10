@@ -7,6 +7,7 @@ import com.example.prepwise.dataClass.CategoryResponse
 import com.example.prepwise.dataClass.LoginRequest
 import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.AllSetIdResponse
+import com.example.prepwise.dataClass.ComplaintRequest
 import com.example.prepwise.dataClass.DateOfVisitResponse
 import com.example.prepwise.dataClass.DeleteFavoriteResponse
 import com.example.prepwise.dataClass.FavoriteRequestBody
@@ -26,6 +27,7 @@ import com.example.prepwise.dataClass.SignUpResponse
 import com.example.prepwise.dataClass.UpdateFolderRequest
 import com.example.prepwise.dataClass.UpdateProfileRequest
 import com.example.prepwise.dataClass.UpdateSetRequest
+import com.example.prepwise.dataClass.UserResponse
 import com.example.prepwise.models.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -51,7 +53,7 @@ interface ApiService {
     suspend fun getLevels(): Response<List<LevelResponse1>>
 
     @GET("/api/profile")
-    suspend fun getUserProfile(): Response<User>
+    suspend fun getUserProfile(): Response<UserResponse>
 
     @GET("/api/setsAll")
     suspend fun getAllSets(): Response<List<AllSetIdResponse>>
@@ -193,4 +195,9 @@ interface ApiService {
     suspend fun deleteFolderFromFavorite(
         @Query("folderId") folderId: Int
     ): Response<DeleteFavoriteResponse>
+
+    @POST("/api/complaints")
+    suspend fun submitComplaint(
+        @Body complaintRequest: ComplaintRequest
+    ): Response<Void>
 }

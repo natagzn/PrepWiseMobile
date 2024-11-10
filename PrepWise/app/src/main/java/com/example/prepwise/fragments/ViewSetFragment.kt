@@ -31,6 +31,7 @@ import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
+import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewSetActivity
 import com.example.prepwise.activities.StudyFlascardActivity
@@ -40,6 +41,7 @@ import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
+import com.example.prepwise.repositories.ReportRepository.submitComplaint
 import com.example.prepwise.utils.RetrofitInstance
 import com.example.prepwise.repositories.SetRepository
 import kotlinx.coroutines.CoroutineScope
@@ -512,11 +514,10 @@ class ViewSetFragment : Fragment() {
                 requireContext(),
                 getString(R.string.report_this_set)
             ) { selectedReason ->
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.report_sent_successfully_thank_you_for_your_help),
-                    Toast.LENGTH_SHORT
-                ).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    submitComplaint(userIdCompl = currentUser.id, setId = setId, context = selectedReason)
+                }
+                Toast.makeText(requireContext(), getString(R.string.report_sent_successfully_thank_you_for_your_help), Toast.LENGTH_SHORT).show()
             }
         }
 
