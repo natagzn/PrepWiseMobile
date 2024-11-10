@@ -82,12 +82,11 @@ class UserProfileFragment : Fragment() {
         user?.let{
             setUsername.text = it.username
             setDescription.text = it.description
-            setEmail.text = it.email
             setLocation.text = it.location
 
-            if(it.status == "Friends") setStatus.text = getString(R.string.friends)
-            else if(it.status == "Follower") setStatus.text = getString(R.string.follower)
-            else if(it.status == "Following") setStatus.text = getString(R.string.following)
+            if(it.status == "friends") setStatus.text = getString(R.string.friends)
+            else if(it.status == "follower") setStatus.text = getString(R.string.follower)
+            else if(it.status == "following") setStatus.text = getString(R.string.following)
             else {
                 setStatus.text = getString(R.string.follow)
                 statusBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.gray_rounded_stroke)
@@ -95,7 +94,7 @@ class UserProfileFragment : Fragment() {
         }
 
         statusBtn.setOnClickListener {
-            if (user?.status == "Following") {
+            if (user?.status == "following") {
                 DialogUtils.showConfirmationDialog(
                     requireContext(),
                     message = getString(R.string.are_you_sure_you_want_to_unsubscribe),
@@ -110,7 +109,7 @@ class UserProfileFragment : Fragment() {
                     }
                 }
             }
-            if (user?.status == "Friends") {
+            if (user?.status == "friends") {
                 DialogUtils.showConfirmationDialog(
                     requireContext(),
                     message = getString(R.string.are_you_sure_you_want_to_unsubscribe),
@@ -118,21 +117,21 @@ class UserProfileFragment : Fragment() {
                     negativeButtonText = getString(R.string.cancel)
                 ) { confirmed ->
                     if (confirmed) {
-                        user!!.status = "Follower"
+                        user!!.status = "follower"
                         setStatus.text = getString(R.string.follower)
                         statusBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_rounded_background)
                         setStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                     }
                 }
             }
-            else if (user?.status == "Follower") {
-                user!!.status = "Friends"
+            else if (user?.status == "follower") {
+                user!!.status = "friends"
                 setStatus.text = getString(R.string.friends)
                 statusBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_rounded_background)
                 setStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
             else if (user?.status!!.toLowerCase() == "none") {
-                user!!.status = "Following"
+                user!!.status = "following"
                 setStatus.text = getString(R.string.following)
                 statusBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.green_rounded_background)
                 setStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))

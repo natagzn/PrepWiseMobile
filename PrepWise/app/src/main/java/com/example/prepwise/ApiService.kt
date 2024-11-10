@@ -16,6 +16,7 @@ import com.example.prepwise.dataClass.FolderDetailsResponse
 import com.example.prepwise.dataClass.FolderRequestBody
 import com.example.prepwise.dataClass.FolderResponse
 import com.example.prepwise.dataClass.LevelResponse1
+import com.example.prepwise.dataClass.PeopleDetailsResponse
 import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.ResourceDetailsResponse
 import com.example.prepwise.dataClass.ResourceRequestBody
@@ -200,4 +201,10 @@ interface ApiService {
     suspend fun submitComplaint(
         @Body complaintRequest: ComplaintRequest
     ): Response<Void>
+
+    @GET("api/favorites")
+    suspend fun getSearchResult(): Response<FavoritesResponse>
+
+    @GET("/api/another-profile/{id}")
+    suspend fun getPeopleById(@Path("id") id: Int): Response<PeopleDetailsResponse>
 }

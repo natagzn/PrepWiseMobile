@@ -60,7 +60,6 @@ class ProfileFragment : Fragment() {
                     val userProfile = response.body()!!
                     currentUser.apply {
                         id = userProfile.user_id
-                        userImg = userProfile.avatar_url
                         username = userProfile.username
                         email = userProfile.email
                         bio = userProfile.bio
@@ -88,7 +87,7 @@ class ProfileFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener("profileUpdate", this) { _, result ->
             val isUpdated = result.getBoolean("isUpdated", false)
             if (isUpdated) {
-                loadProfileData()  // Перезавантаження даних профілю
+                loadProfileData()
             }
         }
 
