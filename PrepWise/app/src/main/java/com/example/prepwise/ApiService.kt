@@ -1,5 +1,6 @@
 package com.example.prepwise
 
+import com.example.prepwise.dataClass.AddFavoriteResponse
 import com.example.prepwise.dataClass.AllFoldersResponse
 import com.example.prepwise.dataClass.AllResourceIdResponse
 import com.example.prepwise.dataClass.CategoryResponse
@@ -7,6 +8,7 @@ import com.example.prepwise.dataClass.LoginRequest
 import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.AllSetIdResponse
 import com.example.prepwise.dataClass.DateOfVisitResponse
+import com.example.prepwise.dataClass.DeleteFavoriteResponse
 import com.example.prepwise.dataClass.FavoriteRequestBody
 import com.example.prepwise.dataClass.FavoritesResponse
 import com.example.prepwise.dataClass.FolderDetailsResponse
@@ -171,4 +173,15 @@ interface ApiService {
 
     @GET("api/favorites")
     suspend fun getFavorites(): Response<FavoritesResponse>
+
+    @POST("/api/favorites/set")
+    suspend fun addSetToFavorites(
+        @Body requestBody: Map<String, Int>
+    ): Response<AddFavoriteResponse>
+
+    @DELETE("/api/favorites/set")
+    suspend fun deleteSetFromFavorite(
+        @Query("questionListId") questionListId: Int
+    ): Response<DeleteFavoriteResponse>
+
 }

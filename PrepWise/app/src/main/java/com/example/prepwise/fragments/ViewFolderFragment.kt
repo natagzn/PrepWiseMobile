@@ -1,6 +1,5 @@
 package com.example.prepwise.fragments
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -18,23 +17,19 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
-import com.example.prepwise.activities.MainActivity.Companion.dpToPx
 import com.example.prepwise.activities.NewFolderActivity
 import com.example.prepwise.adapters.AdapterSetInFolder
-import com.example.prepwise.dataClass.SetRequestBody
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Set
-import com.example.prepwise.objects.FolderRepository
-import com.example.prepwise.objects.RetrofitInstance
-import com.example.prepwise.objects.SetRepository
+import com.example.prepwise.repositories.FolderRepository
+import com.example.prepwise.utils.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

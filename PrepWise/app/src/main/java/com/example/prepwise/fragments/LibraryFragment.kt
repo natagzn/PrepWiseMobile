@@ -11,9 +11,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.adapters.ViewPagerLibratyAdapter
-import com.example.prepwise.objects.FolderRepository
-import com.example.prepwise.objects.ResourceRepository
-import com.example.prepwise.objects.SetRepository
+import com.example.prepwise.repositories.FolderRepository
+import com.example.prepwise.repositories.ResourceRepository
+import com.example.prepwise.repositories.SetRepository
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch

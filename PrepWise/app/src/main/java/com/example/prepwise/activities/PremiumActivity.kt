@@ -1,7 +1,6 @@
 package com.example.prepwise.activities
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -10,8 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.prepwise.R
-import com.example.prepwise.fragments.ProfileFragment
-import com.example.prepwise.objects.LocaleHelper.setLocale
+import com.example.prepwise.utils.LocaleHelper.setLocale
 
 class PremiumActivity : AppCompatActivity() {
     fun loadLocale(context: Context) {

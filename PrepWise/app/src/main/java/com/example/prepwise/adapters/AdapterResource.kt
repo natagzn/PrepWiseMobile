@@ -10,16 +10,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
-import com.example.prepwise.objects.ResourceRepository
-import com.example.prepwise.objects.RetrofitInstance
+import com.example.prepwise.repositories.ResourceRepository
+import com.example.prepwise.utils.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.time.format.DateTimeFormatter
 

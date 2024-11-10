@@ -13,7 +13,7 @@ import com.example.prepwise.adapters.ViewPagerLikedAdapter
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
-import com.example.prepwise.objects.FavoritesRepository
+import com.example.prepwise.repositories.FavoritesRepository
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch

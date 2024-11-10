@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.models.Question

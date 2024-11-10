@@ -1,9 +1,10 @@
-package com.example.prepwise.objects
+package com.example.prepwise.repositories
 
 import android.util.Log
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
+import com.example.prepwise.utils.RetrofitInstance
 
 object FavoritesRepository {
 
@@ -35,5 +36,40 @@ object FavoritesRepository {
         }
 
         return Triple(foldersList, setsList, resourcesList)
+    }
+
+    suspend fun addSetToFavorites(questionListId: Int): Boolean {
+        return try {
+            val requestBody = mapOf("questionListId" to questionListId)
+            val response = RetrofitInstance.api().addSetToFavorites(requestBody)
+
+            if (response.isSuccessful && response.body() != null) {
+                Log.d("FavoritesRepository", response.body()!!.message)
+                true
+            } else {
+                Log.e("FavoritesRepository", "Failed to add set to favorites: ${response.message()}")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("FavoritesRepository", "Exception: ${e.message}")
+            false
+        }
+    }
+
+    suspend fun deleteSetFromFavorites(questionListId: Int): Boolean {
+        return try {
+            val response = RetrofitInstance.api().deleteSetFromFavorite(questionListId)
+
+            if (response.isSuccessful && response.body() != null) {
+                Log.d("FavoritesRepository", response.body()!!.message)
+                true
+            } else {
+                Log.e("FavoritesRepository", "Failed to delete set from favorites: ${response.message()}")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("FavoritesRepository", "Exception: ${e.message}")
+            false
+        }
     }
 }

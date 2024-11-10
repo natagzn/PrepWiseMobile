@@ -1,4 +1,4 @@
-package com.example.prepwise.objects
+package com.example.prepwise.utils
 
 import android.content.Context
 import android.view.View

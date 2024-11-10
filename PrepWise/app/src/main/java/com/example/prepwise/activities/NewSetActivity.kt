@@ -2,7 +2,6 @@ package com.example.prepwise.activities
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
@@ -28,7 +27,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.objects.DialogUtils.showSelectionPopup
+import com.example.prepwise.utils.DialogUtils.showSelectionPopup
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddQuestion
@@ -38,10 +37,10 @@ import com.example.prepwise.dataClass.UpdateSetRequest
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Question
-import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
-import com.example.prepwise.objects.LocaleHelper.setLocale
-import com.example.prepwise.objects.RetrofitInstance
-import com.example.prepwise.objects.SetRepository
+import com.example.prepwise.utils.KeyboardUtils.hideKeyboard
+import com.example.prepwise.utils.LocaleHelper.setLocale
+import com.example.prepwise.utils.RetrofitInstance
+import com.example.prepwise.repositories.SetRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

@@ -13,15 +13,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterResource
-import com.example.prepwise.fragments.SetsFragment.Companion
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Resource
-import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
+import com.example.prepwise.utils.KeyboardUtils.hideKeyboard
 
 class ResourcesFragment : Fragment() {
 

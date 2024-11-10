@@ -21,10 +21,10 @@ import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterAddSet
 import com.example.prepwise.dataClass.FolderRequestBody
 import com.example.prepwise.dataClass.UpdateFolderRequest
-import com.example.prepwise.objects.FolderRepository
-import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
-import com.example.prepwise.objects.LocaleHelper.setLocale
-import com.example.prepwise.objects.RetrofitInstance
+import com.example.prepwise.repositories.FolderRepository
+import com.example.prepwise.utils.KeyboardUtils.hideKeyboard
+import com.example.prepwise.utils.LocaleHelper.setLocale
+import com.example.prepwise.utils.RetrofitInstance
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

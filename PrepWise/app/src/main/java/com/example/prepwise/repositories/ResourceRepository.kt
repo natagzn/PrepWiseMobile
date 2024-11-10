@@ -1,4 +1,4 @@
-package com.example.prepwise.objects
+package com.example.prepwise.repositories
 
 import android.util.Log
 import com.example.prepwise.activities.MainActivity
@@ -7,6 +7,7 @@ import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Resource
 import com.example.prepwise.models.User
+import com.example.prepwise.utils.RetrofitInstance
 import retrofit2.HttpException
 import retrofit2.Response
 import java.time.LocalDateTime

@@ -17,16 +17,14 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity.Companion.currentUser
-import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.UpdateProfileRequest
-import com.example.prepwise.objects.RetrofitInstance
+import com.example.prepwise.utils.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.net.URL
 

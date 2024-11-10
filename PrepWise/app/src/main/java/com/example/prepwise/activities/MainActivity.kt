@@ -30,10 +30,10 @@ import com.example.prepwise.models.Level
 import com.example.prepwise.models.People
 import com.example.prepwise.models.Set
 import com.example.prepwise.models.User
-import com.example.prepwise.objects.DialogUtils
-import com.example.prepwise.objects.LocaleHelper.loadLocale
-import com.example.prepwise.objects.RetrofitInstance
-import com.example.prepwise.objects.SetRepository
+import com.example.prepwise.utils.DialogUtils
+import com.example.prepwise.utils.LocaleHelper.loadLocale
+import com.example.prepwise.utils.RetrofitInstance
+import com.example.prepwise.repositories.SetRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch

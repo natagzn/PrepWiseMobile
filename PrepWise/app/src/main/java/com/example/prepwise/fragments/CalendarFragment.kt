@@ -10,11 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.ApiService
 import com.example.prepwise.R
 import com.example.prepwise.adapters.CalendarAdapter
 import com.example.prepwise.adapters.Day
-import com.example.prepwise.objects.RetrofitInstance
+import com.example.prepwise.utils.RetrofitInstance
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Month

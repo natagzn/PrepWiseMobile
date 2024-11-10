@@ -13,6 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.prepwise.R
 import com.example.prepwise.fragments.ViewSetFragment
 import com.example.prepwise.models.Set
+import com.example.prepwise.repositories.FavoritesRepository.addSetToFavorites
+import com.example.prepwise.repositories.FavoritesRepository.deleteSetFromFavorites
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 class AdapterSet(
@@ -105,10 +110,19 @@ class AdapterSet(
                 set.isLiked = true
                 holder.setLike.setImageResource(R.drawable.save)
                 holder.setLike.setTag(R.id.set_like_tag, R.drawable.save)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    addSetToFavorites(set.id)
+                }
+
             } else {
                 set.isLiked = false
                 holder.setLike.setImageResource(R.drawable.not_save)
                 holder.setLike.setTag(R.id.set_like_tag, R.drawable.not_save)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    deleteSetFromFavorites(set.id)
+                }
             }
         }
 
@@ -136,4 +150,5 @@ class AdapterSet(
     fun dpToPx(dp: Int, context: Context): Int {
         return (dp * context.resources.displayMetrics.density).toInt()
     }
+
 }

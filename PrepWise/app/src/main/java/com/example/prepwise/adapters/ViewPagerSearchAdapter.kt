@@ -3,7 +3,7 @@ package com.example.prepwise.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.activities.MainActivity
 import com.example.prepwise.fragments.AllResultFragment
 import com.example.prepwise.fragments.SetsFragment

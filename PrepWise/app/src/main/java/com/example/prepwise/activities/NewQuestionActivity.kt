@@ -1,7 +1,6 @@
 package com.example.prepwise.activities
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,7 +11,6 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,15 +20,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.prepwise.R
 import com.example.prepwise.activities.MainActivity.Companion.currentUser
 import com.example.prepwise.dataClass.QuestionRequestBody
-import com.example.prepwise.dataClass.SetRequestBody
-import com.example.prepwise.models.Level
 import com.example.prepwise.models.Set
-import com.example.prepwise.objects.KeyboardUtils.hideKeyboard
-import com.example.prepwise.objects.LocaleHelper.setLocale
-import com.example.prepwise.objects.RetrofitInstance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import com.example.prepwise.utils.KeyboardUtils.hideKeyboard
+import com.example.prepwise.utils.LocaleHelper.setLocale
+import com.example.prepwise.utils.RetrofitInstance
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 

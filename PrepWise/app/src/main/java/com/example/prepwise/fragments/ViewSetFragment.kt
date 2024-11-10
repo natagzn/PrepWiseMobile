@@ -27,7 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepwise.objects.DialogUtils
+import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.activities.MainActivity
@@ -40,8 +40,8 @@ import com.example.prepwise.adapters.AdapterQuestion
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Question
 import com.example.prepwise.models.Set
-import com.example.prepwise.objects.RetrofitInstance
-import com.example.prepwise.objects.SetRepository
+import com.example.prepwise.utils.RetrofitInstance
+import com.example.prepwise.repositories.SetRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
