@@ -54,19 +54,6 @@ class MainActivity : AppCompatActivity() {
             return currentUser?.folders?.find { it.id == folderId }
         }
 
-        fun getUserById(userId: Int): People? {
-            // Далі шукаємо серед друзів, підписників та підписок поточного користувача
-            currentUser?.let { currentUser ->
-                currentUser.friends.find { it.id == userId }?.let { return it }
-                currentUser.followers.find { it.id == userId }?.let { return it }
-                currentUser.following.find { it.id == userId }?.let { return it }
-            }
-
-            // Якщо користувача не знайдено
-            return null
-        }
-
-
         fun dpToPx(dp: Int, context: Context): Int {
             return (dp * context.resources.displayMetrics.density).toInt()
         }

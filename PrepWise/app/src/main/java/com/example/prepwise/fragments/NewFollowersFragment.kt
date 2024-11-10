@@ -30,7 +30,6 @@ class NewFollowersFragment : DialogFragment() {
             numberOfFollowing = 100,
             numberOfFollowers = 200,
             description = "User1 description",
-            email = "user1@example.com",
             location = "City1",
             sets = emptySetList,
             resouces = emptyResourcesList
@@ -43,7 +42,6 @@ class NewFollowersFragment : DialogFragment() {
             numberOfFollowing = 150,
             numberOfFollowers = 180,
             description = "User2 description",
-            email = "user2@example.com",
             location = "City2",
             sets = emptySetList,
             resouces = emptyResourcesList
@@ -56,7 +54,6 @@ class NewFollowersFragment : DialogFragment() {
             numberOfFollowing = 220,
             numberOfFollowers = 280,
             description = "User6 description",
-            email = "user6@example.com",
             location = "City6",
             sets = emptySetList,
             resouces = emptyResourcesList

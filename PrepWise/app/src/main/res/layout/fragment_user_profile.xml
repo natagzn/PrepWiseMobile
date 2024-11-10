@@ -7,7 +7,16 @@
     android:background="@color/background"
     tools:context=".fragments.UserProfileFragment">
 
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -77,8 +86,10 @@
                     style="@style/bold_20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginStart="12dp"
                     android:layout_marginBottom="2dp"
+                    android:gravity="center"
                     android:text="10"
                     android:textColor="@color/black" />
 
@@ -170,24 +181,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="I am student of HPK"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/txt2"
-                style="@style/light_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/email"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/email"
-                style="@style/regular_16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="nahalkaanna06@gmail.com"
                 android:textColor="@color/black" />
 
             <TextView

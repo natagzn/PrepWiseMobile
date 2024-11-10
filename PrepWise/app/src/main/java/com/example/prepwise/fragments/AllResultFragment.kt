@@ -65,6 +65,10 @@ class AllResultFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_all_result, container, false)
 
+        if(setList.isEmpty()) view.findViewById<TextView>(R.id.empty_filter_set).visibility = View.VISIBLE
+        if(resourceList.isEmpty()) view.findViewById<TextView>(R.id.empty_filter_resource).visibility = View.VISIBLE
+        if(userList.isEmpty()) view.findViewById<TextView>(R.id.empty_filter_user).visibility = View.VISIBLE
+
         // Ініціалізація user_list RecyclerView
         recyclerViewUser = view.findViewById(R.id.user_list)
         recyclerViewUser.layoutManager = LinearLayoutManager(requireContext())

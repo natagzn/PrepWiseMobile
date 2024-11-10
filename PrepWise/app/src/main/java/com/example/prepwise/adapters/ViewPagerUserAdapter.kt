@@ -19,8 +19,8 @@ class ViewPagerUserAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> SetsFragment.newInstance(setsList, "User")
-            1 -> ResourcesFragment.newInstance(resourcesList, "User")
+            0 -> SetsFragment.newInstance(setsList, "User", false)
+            1 -> ResourcesFragment.newInstance(resourcesList, "User", false)
             else -> SetsFragment.newInstance(setsList, "User")
         }
     }

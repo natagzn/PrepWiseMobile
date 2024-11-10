@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.prepwise.utils.DialogUtils
 import com.example.prepwise.R
@@ -21,14 +23,16 @@ import com.example.prepwise.adapters.ViewPagerUserAdapter
 import com.example.prepwise.models.People
 import com.example.prepwise.models.Resource
 import com.example.prepwise.models.Set
+import com.example.prepwise.repositories.PeopleRepository
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
 
 class UserProfileFragment : Fragment() {
     private var userId: Int? = null
     private var user: People? = null
-    private lateinit var userResources: ArrayList<Resource>
-    private lateinit var userSets: ArrayList<Set>
+    private var userResources: ArrayList<Resource> = arrayListOf()
+    private var userSets: ArrayList<Set> = arrayListOf()
 
     companion object {
         private const val ARG_USER_ID = "user_id"
@@ -48,19 +52,15 @@ class UserProfileFragment : Fragment() {
     private lateinit var setStatus: TextView
     private lateinit var statusBtn: LinearLayout
     private lateinit var setDescription: TextView
-    private lateinit var setEmail: TextView
     private lateinit var setLocation: TextView
+
+    private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var contentPage: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             userId = it.getInt(ARG_USER_ID)
-        }
-
-        userId?.let {
-            user = MainActivity.getUserById(it)
-            userResources = user?.resouces ?: arrayListOf()
-            userSets = user?.sets ?: arrayListOf()
         }
     }
 
@@ -75,21 +75,65 @@ class UserProfileFragment : Fragment() {
         setNumberOfFollower = view.findViewById(R.id.number_of_followers)
         setStatus = view.findViewById(R.id.people_status)
         setDescription = view.findViewById(R.id.description)
-        setEmail = view.findViewById(R.id.email)
         setLocation = view.findViewById(R.id.location)
         statusBtn = view.findViewById(R.id.status_btn)
 
-        user?.let{
-            setUsername.text = it.username
-            setDescription.text = it.description
-            setLocation.text = it.location
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
+        contentPage = view.findViewById(R.id.content)
 
-            if(it.status == "friends") setStatus.text = getString(R.string.friends)
-            else if(it.status == "follower") setStatus.text = getString(R.string.follower)
-            else if(it.status == "following") setStatus.text = getString(R.string.following)
-            else {
-                setStatus.text = getString(R.string.follow)
-                statusBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.gray_rounded_stroke)
+        userId?.let {
+            lifecycleScope.launch {
+                loadingProgressBar.visibility = View.VISIBLE
+                contentPage.visibility = View.GONE
+
+                user = PeopleRepository.getPeopleById(it)
+
+                loadingProgressBar.visibility = View.GONE
+                contentPage.visibility = View.VISIBLE
+
+                userResources = user?.resouces ?: arrayListOf()
+                userSets = user?.sets ?: arrayListOf()
+
+                user?.let{
+                    setUsername.text = it.username
+                    setDescription.text = it.description
+                    setLocation.text = it.location
+                    setNumberOfFollowing.text = it.numberOfFollowing.toString()
+                    setNumberOfFollower.text = it.numberOfFollowers.toString()
+
+                    if(it.status == "friends") setStatus.text = getString(R.string.friends)
+                    else if(it.status == "follower") setStatus.text = getString(R.string.follower)
+                    else if(it.status == "following") setStatus.text = getString(R.string.following)
+                    else {
+                        setStatus.text = getString(R.string.follow)
+                        statusBtn.background = ContextCompat.getDrawable(requireContext(), R.drawable.gray_rounded_stroke)
+                        setStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                    }
+
+                    // Встановлення фото профілю
+                    val (initials, backgroundColor) = generateAvatar(it.username)
+                    val userInitialsView:TextView = view.findViewById(R.id.user_initials)
+                    userInitialsView.text = initials
+
+                    val drawable = GradientDrawable().apply {
+                        shape = GradientDrawable.OVAL
+                        color = ColorStateList.valueOf(backgroundColor)
+                    }
+                    userInitialsView.background = drawable
+                }
+
+                val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
+                val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
+
+                val adapter = ViewPagerUserAdapter(userSets, userResources, requireActivity())
+                viewPager.adapter = adapter
+
+                TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                    when (position) {
+                        0 -> tab.text = user!!.sets.size.toString() + " " + getString(R.string.sets)
+                        1 -> tab.text = user!!.resouces.size.toString() + " " + getString(R.string.resources)
+                    }
+                }.attach()
             }
         }
 
@@ -138,34 +182,10 @@ class UserProfileFragment : Fragment() {
             }
         }
 
-        val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
-        val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
-
-        val adapter = ViewPagerUserAdapter(userSets, userResources, requireActivity())
-        viewPager.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = getString(R.string.sets)
-                1 -> tab.text = getString(R.string.resources)
-            }
-        }.attach()
-
         val backButton: ImageView = view.findViewById(R.id.back)
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-
-        // Встановлення фото профілю
-        val (initials, backgroundColor) = generateAvatar(currentUser.username)
-        val userInitialsView:TextView = view.findViewById(R.id.user_initials)
-        userInitialsView.text = initials
-
-        val drawable = GradientDrawable().apply {
-            shape = GradientDrawable.OVAL
-            color = ColorStateList.valueOf(backgroundColor)
-        }
-        userInitialsView.background = drawable
 
         return view
     }

@@ -92,12 +92,16 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
         holder.setLike.setOnClickListener {
             if(!resourse.isLiked && !resourse.isDisLiked){
                 resourse.isLiked = true
+                holder.setLike.setImageResource(R.drawable.checkedlike)
                 resourse.numberOfLikes += 1
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.addFavoriteResource(resourse.id, true)
                 }
+                notifyDataSetChanged()
             }
             else if(resourse.isDisLiked){
+                holder.setLike.setImageResource(R.drawable.checkedlike)
+                holder.setDisLike.setImageResource(R.drawable.dislike)
                 resourse.isDisLiked = false
                 resourse.isLiked = true
                 resourse.numberOfLikes += 1
@@ -105,24 +109,32 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.addFavoriteResource(resourse.id, true)
                 }
+                notifyDataSetChanged()
             }
             else if(resourse.isLiked){
+                resourse.isLiked = false
                 resourse.numberOfLikes -= 1
+                holder.setLike.setImageResource(R.drawable.like)
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.removeFavoriteResource(resourse.id)
                 }
+                notifyDataSetChanged()
             }
         }
 
         holder.setDisLike.setOnClickListener {
             if(!resourse.isLiked && !resourse.isDisLiked){
+                holder.setDisLike.setImageResource(R.drawable.checkeddis)
                 resourse.isDisLiked = true
                 resourse.numberOfDislikes += 1
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.addFavoriteResource(resourse.id, false)
                 }
+                notifyDataSetChanged()
             }
             else if(resourse.isLiked){
+                holder.setLike.setImageResource(R.drawable.like)
+                holder.setDisLike.setImageResource(R.drawable.checkeddis)
                 resourse.isDisLiked = true
                 resourse.isLiked = false
                 resourse.numberOfDislikes += 1
@@ -130,12 +142,16 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.addFavoriteResource(resourse.id, false)
                 }
+                notifyDataSetChanged()
             }
             else if(resourse.isDisLiked){
+                resourse.isDisLiked = false
                 resourse.numberOfDislikes -= 1
+                holder.setDisLike.setImageResource(R.drawable.dislike)
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.removeFavoriteResource(resourse.id)
                 }
+                notifyDataSetChanged()
             }
         }
 

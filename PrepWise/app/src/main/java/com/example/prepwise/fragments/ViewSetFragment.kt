@@ -199,8 +199,7 @@ class ViewSetFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_view_set, container, false)
 
         // Ініціалізація елементів макета
-        loadingProgressBar =
-            view.findViewById(R.id.loadingProgressBar) // Ініціалізація прогрес-бару
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
         contentPage = view.findViewById(R.id.content)
         emptyListTxt = view.findViewById(R.id.empty)
         sortBtn = view.findViewById(R.id.sort)

@@ -20,6 +20,7 @@ import com.example.prepwise.dataClass.PeopleDetailsResponse
 import com.example.prepwise.dataClass.QuestionRequestBody
 import com.example.prepwise.dataClass.ResourceDetailsResponse
 import com.example.prepwise.dataClass.ResourceRequestBody
+import com.example.prepwise.dataClass.SearchResponse
 import com.example.prepwise.dataClass.SetDetailsResponse
 import com.example.prepwise.dataClass.SetRequestBody
 import com.example.prepwise.dataClass.SetResponse
@@ -202,8 +203,8 @@ interface ApiService {
         @Body complaintRequest: ComplaintRequest
     ): Response<Void>
 
-    @GET("api/favorites")
-    suspend fun getSearchResult(): Response<FavoritesResponse>
+    @GET("/api/global-search")
+    suspend fun getSearchResult(@Query("query") query: String): Response<SearchResponse>
 
     @GET("/api/another-profile/{id}")
     suspend fun getPeopleById(@Path("id") id: Int): Response<PeopleDetailsResponse>

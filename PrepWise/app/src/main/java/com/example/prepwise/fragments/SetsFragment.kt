@@ -31,6 +31,7 @@ class SetsFragment : Fragment() {
     private var selectedLevels = mutableListOf<Level>()
     private var selectedAccesses = mutableListOf<String>()
     private var paramPage: String = "Library"
+    private var paramSortFilter: Boolean = true
 
     private lateinit var contentLayout: LinearLayout
     private lateinit var emptyListTxt: TextView
@@ -39,12 +40,14 @@ class SetsFragment : Fragment() {
     companion object {
         private const val ARG_SET_LIST = "set_list"
         private const val ARG_PARAM_PAGE = "param_page"
+        private const val ARG_PARAM_SORT_FILTER = "param_sort_filter"
 
-        fun newInstance(setList: ArrayList<Set>, paramPage: String): SetsFragment {
+        fun newInstance(setList: ArrayList<Set>, paramPage: String, paramSortFilter: Boolean = true): SetsFragment {
             val fragment = SetsFragment()
             val args = Bundle()
             args.putSerializable(ARG_SET_LIST, setList)
             args.putString(ARG_PARAM_PAGE, paramPage)
+            args.putBoolean(ARG_PARAM_SORT_FILTER, paramSortFilter)
             fragment.arguments = args
             return fragment
         }
@@ -56,6 +59,7 @@ class SetsFragment : Fragment() {
             @Suppress("UNCHECKED_CAST")
             setList = it.getSerializable(ARG_SET_LIST) as? ArrayList<Set> ?: arrayListOf()
             paramPage = it.getSerializable(ARG_PARAM_PAGE) as? String ?: "Library"
+            paramSortFilter = it.getSerializable(ARG_PARAM_SORT_FILTER) as? Boolean ?: true
         }
     }
 
@@ -77,6 +81,11 @@ class SetsFragment : Fragment() {
         contentLayout = view.findViewById(R.id.content)
         emptyListTxt = view.findViewById(R.id.empty)
         emptyFilteredListTxt = view.findViewById(R.id.empty_filter)
+
+        if(!paramSortFilter){
+            view.findViewById<LinearLayout>(R.id.search_container).visibility = View.GONE
+            view.findViewById<LinearLayout>(R.id.sort_filter_container).visibility = View.GONE
+        }
 
         if (setList.isEmpty()) {
             emptyListTxt.visibility = View.VISIBLE

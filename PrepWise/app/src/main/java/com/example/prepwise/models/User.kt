@@ -16,5 +16,5 @@ class User(
     var friends: ArrayList<People> = arrayListOf(),
     var followers: ArrayList<People> = arrayListOf(),
     var following: ArrayList<People> = arrayListOf(),
-    var premium: Boolean = false
+    var premium: Boolean = true
 ) : Serializable
