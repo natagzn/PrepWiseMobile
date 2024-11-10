@@ -17,6 +17,7 @@ import com.example.prepwise.objects.DialogUtils
 import com.example.prepwise.R
 import com.example.prepwise.SpaceItemDecoration
 import com.example.prepwise.adapters.AdapterResource
+import com.example.prepwise.fragments.SetsFragment.Companion
 import com.example.prepwise.models.Category
 import com.example.prepwise.models.Level
 import com.example.prepwise.models.Resource
@@ -32,13 +33,17 @@ class ResourcesFragment : Fragment() {
     private lateinit var emptyListTxt: TextView
     private lateinit var emptyFilteredListTxt: TextView
 
+    private var paramPage: String = "Library"
+
     companion object {
         private const val ARG_PESOURCE_LIST = "resource_list"
+        private const val ARG_PARAM_PAGE = "param_page"
 
-        fun newInstance(resourceList: ArrayList<Resource>): ResourcesFragment {
+        fun newInstance(resourceList: ArrayList<Resource>, paramPage: String): ResourcesFragment {
             val fragment = ResourcesFragment()
             val args = Bundle()
             args.putSerializable(ARG_PESOURCE_LIST, resourceList)
+            args.putString(ARG_PARAM_PAGE, paramPage)
             fragment.arguments = args
             return fragment
         }
@@ -49,6 +54,7 @@ class ResourcesFragment : Fragment() {
         arguments?.let {
             @Suppress("UNCHECKED_CAST")
             resourceList = it.getSerializable(ARG_PESOURCE_LIST) as? ArrayList<Resource> ?: arrayListOf()
+            paramPage = it.getSerializable(ARG_PARAM_PAGE) as? String ?: "Library"
         }
     }
 
@@ -74,7 +80,8 @@ class ResourcesFragment : Fragment() {
 
             recyclerViewResoure = view.findViewById(R.id.resource_list)
             recyclerViewResoure.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapterResource = AdapterResource(resourceList, requireContext())
+            if(paramPage=="Library") adapterResource = AdapterResource(resourceList, requireContext(), "delete")
+            else adapterResource = AdapterResource(resourceList, requireContext())
             recyclerViewResoure.adapter = adapterResource
 
             val spacingInDp = 10

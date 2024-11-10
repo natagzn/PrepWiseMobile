@@ -28,7 +28,7 @@ class ViewPagerLibratyAdapter(
             0 -> SetsFragment.newInstance(setsList, "Library")
             1 -> FoldersFragment.newInstance(foldersList)
             2 -> SharedFragment.newInstance(sharedList, "Library")
-            3 -> ResourcesFragment.newInstance(resourcesList)
+            3 -> ResourcesFragment.newInstance(resourcesList, "Library")
             else -> SetsFragment.newInstance(setsList, "Library")
         }
     }

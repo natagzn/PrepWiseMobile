@@ -12,9 +12,10 @@ import com.example.prepwise.R
 import com.example.prepwise.fragments.ViewFolderFragment
 import com.example.prepwise.fragments.ViewSetFragment
 import com.example.prepwise.models.Folder
+import com.example.prepwise.models.Resource
 import java.time.format.DateTimeFormatter
 
-class AdapterFolder(private val folderList: ArrayList<Folder>, private val context: Context, private val fragmentManager: FragmentManager,) :
+class AdapterFolder(private var folderList: ArrayList<Folder>, private val context: Context, private val fragmentManager: FragmentManager,) :
     RecyclerView.Adapter<AdapterFolder.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
@@ -74,6 +75,11 @@ class AdapterFolder(private val folderList: ArrayList<Folder>, private val conte
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    fun updateData(newList: List<Folder>) {
+        folderList = newList as ArrayList<Folder>
+        notifyDataSetChanged() // Оновлення адаптера з новими даними
     }
 
     // Повертаємо кількість елементів у списку

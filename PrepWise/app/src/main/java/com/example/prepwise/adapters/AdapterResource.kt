@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.time.format.DateTimeFormatter
 
-class AdapterResource(private var resourceList: ArrayList<Resource>, private val context: Context) :
+class AdapterResource(private var resourceList: ArrayList<Resource>, private val context: Context, private val param: String = "report") :
     RecyclerView.Adapter<AdapterResource.SetViewHolder>() {
 
     // ViewHolder клас для утримання посилань на UI елементи
@@ -79,7 +79,7 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
             holder.setDisLike.setImageResource(R.drawable.dislike)
         }
 
-        if(resourse.isAuthor){
+        if(param!="report"){
             holder.report.visibility = View.GONE
             holder.delete.visibility = View.VISIBLE
         }
@@ -89,21 +89,24 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
         }
 
         holder.setLike.setOnClickListener {
-            if (!resourse.isLiked) {
+            if(!resourse.isLiked && !resourse.isDisLiked){
                 resourse.isLiked = true
-                resourse.isDisLiked = false
                 resourse.numberOfLikes += 1
-                if (resourse.numberOfDislikes > 0) resourse.numberOfDislikes -= 1
-                notifyItemChanged(position)
-
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.addFavoriteResource(resourse.id, true)
                 }
-            } else {
-                resourse.isLiked = false
+            }
+            else if(resourse.isDisLiked){
+                resourse.isDisLiked = false
+                resourse.isLiked = true
+                resourse.numberOfLikes += 1
+                resourse.numberOfDislikes -= 1
+                CoroutineScope(Dispatchers.IO).launch {
+                    ResourceRepository.addFavoriteResource(resourse.id, true)
+                }
+            }
+            else if(resourse.isLiked){
                 resourse.numberOfLikes -= 1
-                notifyItemChanged(position)
-
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.removeFavoriteResource(resourse.id)
                 }
@@ -111,21 +114,24 @@ class AdapterResource(private var resourceList: ArrayList<Resource>, private val
         }
 
         holder.setDisLike.setOnClickListener {
-            if (!resourse.isDisLiked) {
+            if(!resourse.isLiked && !resourse.isDisLiked){
                 resourse.isDisLiked = true
-                resourse.isLiked = false
                 resourse.numberOfDislikes += 1
-                if (resourse.numberOfLikes > 0) resourse.numberOfLikes -= 1
-                notifyItemChanged(position)
-
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.addFavoriteResource(resourse.id, false)
                 }
-            } else {
-                resourse.isDisLiked = false
+            }
+            else if(resourse.isLiked){
+                resourse.isDisLiked = true
+                resourse.isLiked = false
+                resourse.numberOfDislikes += 1
+                resourse.numberOfLikes -= 1
+                CoroutineScope(Dispatchers.IO).launch {
+                    ResourceRepository.addFavoriteResource(resourse.id, false)
+                }
+            }
+            else if(resourse.isDisLiked){
                 resourse.numberOfDislikes -= 1
-                notifyItemChanged(position)
-
                 CoroutineScope(Dispatchers.IO).launch {
                     ResourceRepository.removeFavoriteResource(resourse.id)
                 }

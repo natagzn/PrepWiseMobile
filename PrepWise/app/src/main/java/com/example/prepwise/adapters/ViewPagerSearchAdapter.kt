@@ -32,7 +32,7 @@ class ViewPagerSearchAdapter(
                     ArrayList(resourcesList.take(3))
                 )
                 1 -> SetsFragment.newInstance(setsList, "Search")
-                2 -> ResourcesFragment.newInstance(resourcesList)
+                2 -> ResourcesFragment.newInstance(resourcesList, "Search")
                 3 -> UsersFragment.newInstance(usersList)
                 else -> AllResultFragment.newInstance(
                     ArrayList(usersList.take(3)),
@@ -45,7 +45,7 @@ class ViewPagerSearchAdapter(
 
             return when (position) {
                 1 -> SetsFragment.newInstance(ArrayList(setsList.take(3)), "Search")
-                2 -> ResourcesFragment.newInstance(ArrayList(resourcesList.take(3)))
+                2 -> ResourcesFragment.newInstance(ArrayList(resourcesList.take(3)), "Library")
                 3 -> UsersFragment.newInstance(ArrayList(usersList.take(3)))
                 else -> AllResultFragment.newInstance(
                     ArrayList(usersList.take(3)),

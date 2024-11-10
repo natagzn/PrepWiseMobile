@@ -25,7 +25,7 @@ class ViewPagerLikedAdapter(
         return when (position) {
             0 -> SetsFragment.newInstance(setsList, "Liked")
             1 -> FoldersFragment.newInstance(foldersList)
-            2 -> ResourcesFragment.newInstance(resourcesList)
+            2 -> ResourcesFragment.newInstance(resourcesList, "Liked")
             else -> SetsFragment.newInstance(setsList, "Liked")
         }
     }

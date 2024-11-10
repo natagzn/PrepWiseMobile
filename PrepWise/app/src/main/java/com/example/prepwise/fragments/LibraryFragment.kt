@@ -35,7 +35,7 @@ class LibraryFragment : Fragment() {
         progressBarLoading = view.findViewById(R.id.progressBarLoading)
         viewPager = view.findViewById(R.id.viewPager)
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch{
             progressBarLoading.visibility = View.VISIBLE
             viewPager.visibility = View.GONE
 

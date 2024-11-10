@@ -48,6 +48,8 @@ class FoldersFragment : Fragment() {
     private var adapterFolder: AdapterFolder? = null
     private lateinit var recyclerViewFolder: RecyclerView
 
+    private lateinit var emptyFilteredListTxt: TextView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +58,7 @@ class FoldersFragment : Fragment() {
 
         val contentLayout: LinearLayout = view.findViewById(R.id.content)
         val emptyListTxt: TextView = view.findViewById(R.id.empty)
+        emptyFilteredListTxt = view.findViewById(R.id.empty_filter)
 
         if (folderList.isEmpty()) {
             emptyListTxt.visibility = View.VISIBLE
@@ -123,15 +126,15 @@ class FoldersFragment : Fragment() {
             }
         }
 
-        /*adapterFolder?.updateData(filteredList)  // Оновлюємо дані в адаптері
+        adapterFolder?.updateData(filteredList)  // Оновлюємо дані в адаптері
 
         // Відображення або приховування тексту для порожнього списку
         if (filteredList.isEmpty()) {
             emptyFilteredListTxt.visibility = View.VISIBLE
-            recyclerViewSet.visibility = View.GONE
+            recyclerViewFolder.visibility = View.GONE
         } else {
             emptyFilteredListTxt.visibility = View.GONE
-            recyclerViewSet.visibility = View.VISIBLE
-        }*/
+            recyclerViewFolder.visibility = View.VISIBLE
+        }
     }
 }

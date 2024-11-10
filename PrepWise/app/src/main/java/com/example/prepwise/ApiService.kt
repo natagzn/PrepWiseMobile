@@ -8,6 +8,7 @@ import com.example.prepwise.dataClass.LoginResponse
 import com.example.prepwise.dataClass.AllSetIdResponse
 import com.example.prepwise.dataClass.DateOfVisitResponse
 import com.example.prepwise.dataClass.FavoriteRequestBody
+import com.example.prepwise.dataClass.FavoritesResponse
 import com.example.prepwise.dataClass.FolderDetailsResponse
 import com.example.prepwise.dataClass.FolderRequestBody
 import com.example.prepwise.dataClass.FolderResponse
@@ -168,4 +169,6 @@ interface ApiService {
         @Path("id") id: Int,
     ): Response<Void>
 
+    @GET("api/favorites")
+    suspend fun getFavorites(): Response<FavoritesResponse>
 }
