@@ -184,4 +184,13 @@ interface ApiService {
         @Query("questionListId") questionListId: Int
     ): Response<DeleteFavoriteResponse>
 
+    @POST("/api/favorites/folder")
+    suspend fun addFolderToFavorites(
+        @Body requestBody: Map<String, Int>
+    ): Response<AddFavoriteResponse>
+
+    @DELETE("/api/favorites/folder")
+    suspend fun deleteFolderFromFavorite(
+        @Query("folderId") folderId: Int
+    ): Response<DeleteFavoriteResponse>
 }

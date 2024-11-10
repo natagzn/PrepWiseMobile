@@ -65,7 +65,7 @@
         <ImageView
             android:id="@+id/like"
             android:layout_width="22dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:visibility="visible"
             app:srcCompat="@drawable/not_save" />
 

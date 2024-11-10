@@ -13,6 +13,13 @@ import com.example.prepwise.fragments.ViewFolderFragment
 import com.example.prepwise.fragments.ViewSetFragment
 import com.example.prepwise.models.Folder
 import com.example.prepwise.models.Resource
+import com.example.prepwise.repositories.FavoritesRepository.addFolderToFavorites
+import com.example.prepwise.repositories.FavoritesRepository.addSetToFavorites
+import com.example.prepwise.repositories.FavoritesRepository.deleteFolderFromFavorites
+import com.example.prepwise.repositories.FavoritesRepository.deleteSetFromFavorites
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 class AdapterFolder(private var folderList: ArrayList<Folder>, private val context: Context, private val fragmentManager: FragmentManager,) :
@@ -59,10 +66,18 @@ class AdapterFolder(private var folderList: ArrayList<Folder>, private val conte
                 folder.isLiked = true
                 holder.setLike.setImageResource(R.drawable.save)
                 holder.setLike.setTag(R.id.set_like_tag, R.drawable.save)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    addFolderToFavorites(folder.id)
+                }
             } else {
                 folder.isLiked = false
                 holder.setLike.setImageResource(R.drawable.not_save)
                 holder.setLike.setTag(R.id.set_like_tag, R.drawable.not_save)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    deleteFolderFromFavorites(folder.id)
+                }
             }
         }
 

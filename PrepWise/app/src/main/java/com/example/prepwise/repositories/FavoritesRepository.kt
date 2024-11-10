@@ -72,4 +72,39 @@ object FavoritesRepository {
             false
         }
     }
+
+    suspend fun addFolderToFavorites(folderId: Int): Boolean {
+        return try {
+            val requestBody = mapOf("folderId" to folderId)
+            val response = RetrofitInstance.api().addFolderToFavorites(requestBody)
+
+            if (response.isSuccessful && response.body() != null) {
+                Log.d("FavoritesRepository", response.body()!!.message)
+                true
+            } else {
+                Log.e("FavoritesRepository", "Failed to add folder to favorites: ${response.message()}")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("FavoritesRepository", "Exception: ${e.message}")
+            false
+        }
+    }
+
+    suspend fun deleteFolderFromFavorites(folderId: Int): Boolean {
+        return try {
+            val response = RetrofitInstance.api().deleteFolderFromFavorite(folderId)
+
+            if (response.isSuccessful && response.body() != null) {
+                Log.d("FavoritesRepository", response.body()!!.message)
+                true
+            } else {
+                Log.e("FavoritesRepository", "Failed to delete folder from favorites: ${response.message()}")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("FavoritesRepository", "Exception: ${e.message}")
+            false
+        }
+    }
 }

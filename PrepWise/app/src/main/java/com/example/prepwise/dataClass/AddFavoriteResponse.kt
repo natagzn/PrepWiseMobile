@@ -7,7 +7,7 @@ data class AddFavoriteResponse(
 
 data class Favourite(
     val user_id: Int,
-    val question_list_id: Int,
+   // val question_list_id: Int,
     val created_at: String,
     val updated_at: String,
     val favourite_id: Int
